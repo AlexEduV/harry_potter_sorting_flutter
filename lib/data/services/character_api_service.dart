@@ -6,13 +6,13 @@ import 'package:retrofit/http.dart';
 
 part 'character_api_service.g.dart';
 
-const randomUserEndPoint = 'https://hp-api.onrender.com/api/';
+const randomUserEndPoint = 'https://hp-api.onrender.com/api';
 
 @RestApi(baseUrl: randomUserEndPoint)
 abstract class CharacterApiService {
   factory CharacterApiService(Dio dio, {String baseUrl}) = _CharacterApiService;
 
-  @GET('characters/')
-  Future<CharacterWrapper> getAllCharacters();
+  @GET('/characters')
+  Future<List<Character>> getAllCharacters();
 
 }

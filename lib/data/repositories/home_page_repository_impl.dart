@@ -15,20 +15,22 @@ class HomePageRepositoryImpl implements HomePageRepository {
 
     try {
 
+      debugPrint('New service');
+
       final service = CharacterApiService(client);
-      final CharacterWrapper response = await service.getAllCharacters();
+      final List<Character> response = await service.getAllCharacters();
 
       debugPrint(response.toString());
 
       //get random character
-      if (response.results.isEmpty) {
+      if (response.isEmpty) {
         throw Exception('List is empty!');
       }
 
       final random = Random();
-      int index = random.nextInt(response.results.length);
+      int index = random.nextInt(response.length);
 
-      return response.results[index];
+      return response[index];
 
     } on DioException catch (e) {
       DioClient.handleError(e);

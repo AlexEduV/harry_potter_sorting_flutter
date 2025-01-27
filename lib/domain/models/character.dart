@@ -5,9 +5,9 @@ part 'character.g.dart';
 @JsonSerializable()
 class Character {
 
-  final int id;
+  final String id;
   final String name;
-  final String imageSrc;
+  @JsonKey(name: 'image') final String imageSrc;
   final String house;
   final String dateOfBirth;
   final String actor;

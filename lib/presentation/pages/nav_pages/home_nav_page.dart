@@ -128,6 +128,8 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
   }
 
   Future<void> loadCharacter() async {
+    debugPrint('loading...');
+
     character = await HomePageRepositoryImpl().loadRandomCharacter(DioClient.client);
 
     setState(() {
