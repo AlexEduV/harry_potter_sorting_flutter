@@ -13,8 +13,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Harry Potter Magic Sorting Hat',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        brightness: Brightness.light,
         useMaterial3: true,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+        ),
+        scaffoldBackgroundColor: Colors.white,
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          backgroundColor: Colors.white,
+          selectedItemColor: Colors.black,
+        )
       ),
       home: const MyHomePage(),
       debugShowCheckedModeBanner: false,
