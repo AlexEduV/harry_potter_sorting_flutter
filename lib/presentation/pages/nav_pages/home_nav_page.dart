@@ -55,7 +55,25 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
               child: Container(
                 width: 150,
                 height: 200,
-                color: Colors.grey,
+                decoration: BoxDecoration(
+                  color: character?.imageSrc == null ? Colors.grey : null,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: character?.imageSrc != null && character!.imageSrc.isNotEmpty
+                      ? Image.network(
+                          character!.imageSrc,
+                          fit: BoxFit.cover,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return const Center(child: CircularProgressIndicator());
+                          },
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container();
+                          },
+                  ) : Container(),
+                ),
               ),
             ),
 
@@ -128,12 +146,11 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
   }
 
   Future<void> loadCharacter() async {
-    debugPrint('loading...');
 
-    character = await HomePageRepositoryImpl().loadRandomCharacter(DioClient.client);
+    final result = await HomePageRepositoryImpl().loadRandomCharacter(DioClient.client);
 
     setState(() {
-
+      character = result;
     });
   }
 }

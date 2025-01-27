@@ -23,7 +23,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onTap: onItemTapped,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.list), label: 'List')
+          BottomNavigationBarItem(icon: Icon(Icons.list), label: 'List'),
         ],
       ),
     );

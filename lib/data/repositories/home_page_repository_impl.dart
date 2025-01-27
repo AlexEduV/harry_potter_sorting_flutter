@@ -20,8 +20,6 @@ class HomePageRepositoryImpl implements HomePageRepository {
       final service = CharacterApiService(client);
       final List<Character> response = await service.getAllCharacters();
 
-      debugPrint(response.toString());
-
       //get random character
       if (response.isEmpty) {
         throw Exception('List is empty!');
