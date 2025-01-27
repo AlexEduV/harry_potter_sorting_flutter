@@ -15,8 +15,8 @@ class InfoBox extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Container(
-      width: 90,
-      height: 90,
+      width: 80,
+      height: 80,
       color: Colors.grey.shade300,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
