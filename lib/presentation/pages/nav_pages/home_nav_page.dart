@@ -14,10 +14,13 @@ class HomeNavPage extends StatefulWidget {
 
 class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
-  String characterName = '';
-  String characterImageSrc = '';
-
   Character? character;
+
+  //todo: refresh Indicator -> loadCharacter
+  //todo: image placeholder -> fancier
+  //todo: loading indicator?
+
+  //todo: global storage or a db
 
   @override
   void initState() {
