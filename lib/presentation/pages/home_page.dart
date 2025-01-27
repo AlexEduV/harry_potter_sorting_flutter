@@ -13,14 +13,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   int selectedBottomNavigationIndex = 0;
 
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
 
