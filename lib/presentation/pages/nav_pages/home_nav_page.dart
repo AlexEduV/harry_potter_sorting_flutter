@@ -10,6 +10,17 @@ class HomeNavPage extends StatefulWidget {
 }
 
 class _HomeNavPageState extends State<HomeNavPage> {
+
+  String characterName = '';
+  String characterImageSrc = '';
+
+  @override
+  void initState() {
+    super.initState();
+
+    loadCharacter();
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -107,5 +118,9 @@ class _HomeNavPageState extends State<HomeNavPage> {
         ),
       ),
     );
+  }
+
+  void loadCharacter() {
+
   }
 }
