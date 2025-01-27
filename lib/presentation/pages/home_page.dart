@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/nav_pages/home_nav_page.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/nav_pages/list_nav_page.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -9,7 +11,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  int currentIndex = 0;
+  int selectedBottomNavigationIndex = 0;
 
   int _counter = 0;
 
@@ -23,25 +25,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home Screen'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
+      body: selectedBottomNavigationIndex == 0 ? const HomeNavPage() : const ListNavPage(),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
+        currentIndex: selectedBottomNavigationIndex,
         onTap: onItemTapped,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
@@ -53,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void onItemTapped(int newIndex) {
     setState(() {
-      currentIndex = newIndex;
+      selectedBottomNavigationIndex = newIndex;
     });
   }
 }
