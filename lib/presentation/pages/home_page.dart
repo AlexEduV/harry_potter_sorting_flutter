@@ -8,6 +8,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  int currentIndex = 0;
+
   int _counter = 0;
 
   void _incrementCounter() {
@@ -21,7 +24,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text('Home Screen'),
       ),
       body: Center(
@@ -39,11 +41,19 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-            BottomNavigationBarItem(icon: Icon(Icons.list), label: 'List')
-          ]
+        currentIndex: currentIndex,
+        onTap: onItemTapped,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.list), label: 'List')
+        ],
       ),
     );
+  }
+
+  void onItemTapped(int newIndex) {
+    setState(() {
+      currentIndex = newIndex;
+    });
   }
 }
