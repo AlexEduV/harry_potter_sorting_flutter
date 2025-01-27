@@ -60,14 +60,14 @@ class _HomeNavPageState extends State<HomeNavPage> {
                   children: [
                     PickerItem(
                       name: 'Gryffindor',
-                      imageSrc: 'assets/house_crests/gryffindor-64.png',
+                      imageSrc: 'assets/house_crests/gryffindor-96.png',
                     ),
 
                     SizedBox(width: 8.0,),
 
                     PickerItem(
                       name: 'Slytherin',
-                      imageSrc: 'assets/house_crests/slytherin-64.png',
+                      imageSrc: 'assets/house_crests/slytherin-96.png',
                     )
                   ],
                 ),
@@ -78,14 +78,14 @@ class _HomeNavPageState extends State<HomeNavPage> {
                   children: [
                     PickerItem(
                       name: 'Ravenclaw',
-                      imageSrc: 'assets/house_crests/ravenclaw-64.png',
+                      imageSrc: 'assets/house_crests/ravenclaw-96.png',
                     ),
 
                     SizedBox(width: 8.0,),
 
                     PickerItem(
                       name: 'Hufflepuff',
-                      imageSrc: 'assets/house_crests/hufflepuff-64.png',
+                      imageSrc: 'assets/house_crests/hufflepuff-96.png',
                     ),
                   ],
                 ),
