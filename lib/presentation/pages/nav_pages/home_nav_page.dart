@@ -33,10 +33,12 @@ class _HomeNavPageState extends State<HomeNavPage> {
             const SizedBox(height: 32.0,),
 
             //photo and name
-            Container(
-              width: 150,
-              height: 200,
-              color: Colors.grey,
+            Expanded(
+              child: Container(
+                width: 150,
+                height: 200,
+                color: Colors.grey,
+              ),
             ),
 
             const SizedBox(height: 8.0,),
@@ -80,9 +82,14 @@ class _HomeNavPageState extends State<HomeNavPage> {
 
                 Row(
                   children: [
-                    Expanded(child: PickerItem(name: 'No House', isJustText: true,))
+                    Expanded(
+                      child: PickerItem(
+                        name: 'Not in House',
+                        isJustText: true,
+                      ),
+                    ),
                   ],
-                )
+                ),
 
               ],
             ),
