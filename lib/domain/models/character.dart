@@ -14,8 +14,7 @@ class Character {
 
   final String house;
 
-  @JsonKey(fromJson: _dateFromJson)
-  final DateTime? dateOfBirth;
+  final String? dateOfBirth;
 
   final String actor;
   final String species;
@@ -31,23 +30,5 @@ class Character {
   });
 
   factory Character.fromJson(Map<String, dynamic> json) => _$CharacterFromJson(json);
-
-  static DateTime? _dateFromJson(String? date) {
-    if (date == null || date.isEmpty) return null;
-
-    try {
-      final parts = date.split('-');
-      if (parts.length == 3) {
-        final day = int.parse(parts[0]);
-        final month = int.parse(parts[1]);
-        final year = int.parse(parts[2]);
-        return DateTime(year, month, day);
-      }
-    } catch (e) {
-      debugPrint('Failed to parse date: $date, error: $e');
-    }
-
-    throw FormatException('Invalid date format: $date');
-  }
 
 }

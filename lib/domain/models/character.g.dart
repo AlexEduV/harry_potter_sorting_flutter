@@ -11,7 +11,7 @@ Character _$CharacterFromJson(Map<String, dynamic> json) => Character(
       name: json['name'] as String,
       imageSrc: json['image'] as String,
       house: json['house'] as String,
-      dateOfBirth: Character._dateFromJson(json['dateOfBirth'] as String?),
+      dateOfBirth: json['dateOfBirth'] as String?,
       actor: json['actor'] as String,
       species: json['species'] as String,
     );
@@ -21,7 +21,7 @@ Map<String, dynamic> _$CharacterToJson(Character instance) => <String, dynamic>{
       'name': instance.name,
       'image': instance.imageSrc,
       'house': instance.house,
-      'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
+      'dateOfBirth': instance.dateOfBirth,
       'actor': instance.actor,
       'species': instance.species,
     };
