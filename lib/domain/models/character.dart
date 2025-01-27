@@ -1,11 +1,14 @@
-import 'package:harry_potter_sorting_flutter/domain/models/house.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'character.g.dart';
+
+@JsonSerializable()
 class Character {
 
   final int id;
   final String name;
   final String imageSrc;
-  final House house;
+  final String house;
   final String dateOfBirth;
   final String actor;
   final String species;
@@ -19,5 +22,7 @@ class Character {
     required this.actor,
     required this.species,
   });
+
+  factory Character.fromJson(Map<String, dynamic> json) => _$CharacterFromJson(json);
 
 }

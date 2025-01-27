@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:harry_potter_sorting_flutter/data/network/dio_client.dart';
+import 'package:harry_potter_sorting_flutter/data/repositories/home_page_repository_impl.dart';
+import 'package:harry_potter_sorting_flutter/domain/models/character.dart';
 import 'package:harry_potter_sorting_flutter/presentation/widgets/info_box.dart';
 import 'package:harry_potter_sorting_flutter/presentation/widgets/picker_item.dart';
 
@@ -9,16 +12,20 @@ class HomeNavPage extends StatefulWidget {
   State<HomeNavPage> createState() => _HomeNavPageState();
 }
 
-class _HomeNavPageState extends State<HomeNavPage> {
+class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   String characterName = '';
   String characterImageSrc = '';
+
+  Character? character;
 
   @override
   void initState() {
     super.initState();
 
-    loadCharacter();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await loadCharacter();
+    });
   }
 
   @override
@@ -54,8 +61,8 @@ class _HomeNavPageState extends State<HomeNavPage> {
 
             const SizedBox(height: 8.0,),
 
-            const Text('Harry Potter',
-              style: TextStyle(
+            Text(character?.name ?? '',
+              style: const TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 16.0,
               ),
@@ -120,7 +127,11 @@ class _HomeNavPageState extends State<HomeNavPage> {
     );
   }
 
-  void loadCharacter() {
+  Future<void> loadCharacter() async {
+    character = await HomePageRepositoryImpl().loadRandomCharacter(DioClient.client);
 
+    setState(() {
+
+    });
   }
 }
