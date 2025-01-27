@@ -58,11 +58,17 @@ class _HomeNavPageState extends State<HomeNavPage> {
 
                 Row(
                   children: [
-                    Expanded(child: PickerItem(name: 'Gryffindor',)),
+                    PickerItem(
+                      name: 'Gryffindor',
+                      imageSrc: 'assets/house_crests/gryffindor-64.png',
+                    ),
 
                     SizedBox(width: 8.0,),
 
-                    Expanded(child: PickerItem(name: 'Slytherin',))
+                    PickerItem(
+                      name: 'Slytherin',
+                      imageSrc: 'assets/house_crests/slytherin-64.png',
+                    )
                   ],
                 ),
 
@@ -70,11 +76,17 @@ class _HomeNavPageState extends State<HomeNavPage> {
 
                 Row(
                   children: [
-                    Expanded(child: PickerItem(name: 'Ravenclaw',)),
+                    PickerItem(
+                      name: 'Ravenclaw',
+                      imageSrc: 'assets/house_crests/ravenclaw-64.png',
+                    ),
 
                     SizedBox(width: 8.0,),
 
-                    Expanded(child: PickerItem(name: 'Hufflepuff',))
+                    PickerItem(
+                      name: 'Hufflepuff',
+                      imageSrc: 'assets/house_crests/hufflepuff-64.png',
+                    ),
                   ],
                 ),
 
@@ -82,11 +94,8 @@ class _HomeNavPageState extends State<HomeNavPage> {
 
                 Row(
                   children: [
-                    Expanded(
-                      child: PickerItem(
-                        name: 'Not in House',
-                        isJustText: true,
-                      ),
+                    PickerItem(
+                      name: 'Not in House',
                     ),
                   ],
                 ),
