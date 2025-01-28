@@ -18,10 +18,14 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   //todo: refresh Indicator -> loadCharacter
   //todo: image placeholder -> fancier
-  //todo: loading indicator?
+  //todo: loading circular indicator?
 
   //todo: global storage or a db
+  // persistence is needed because we have to have the ability to return to a character and see the previous tries;
+  // the static storage would work only while we use the app, so I added drift db to load tries.
+
   //todo: bloc
+  //todo: reset button
 
   int totalCount = 0;
   int successCount = 0;
@@ -171,6 +175,8 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
   Future<void> loadCharacter() async {
 
     final result = await HomePageRepositoryImpl().loadRandomCharacter(DioClient.client);
+
+    //load tries from the base or insert a new character
 
     setState(() {
       character = result;
