@@ -7,6 +7,7 @@ import 'package:harry_potter_sorting_flutter/data/storage/database_schema.dart';
 import 'package:harry_potter_sorting_flutter/domain/models/character_dto.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/widgets/info_box.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/widgets/picker_item.dart';
+import 'package:harry_potter_sorting_flutter/presentation/widgets/character_photo.dart';
 
 class HomeNavPage extends StatefulWidget {
   const HomeNavPage({super.key});
@@ -78,40 +79,12 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                       const SizedBox(height: 32.0,),
               
                       //photo and name
-                      Container(
+                      CharacterPhoto(
                         width: 150,
                         height: 200,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        child: ClipRRect(
-                          child: character?.imageSrc != null && character!.imageSrc.isNotEmpty
-                              ? Image.network(
-                                  character!.imageSrc,
-                                  fit: BoxFit.cover,
-                                  loadingBuilder: (context, child, loadingProgress) {
-                                    if (loadingProgress == null) return child;
-                                    return const Center(child: CircularProgressIndicator());
-                                  },
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return const Center(
-                                      child: Icon(
-                                        Icons.broken_image,
-                                        color: Colors.red,
-                                        size: 40,
-                                      ),
-                                    );
-                                  },
-                          ) :
-                          const Center(
-                            child: Icon(
-                              Icons.image,
-                              color: Colors.grey,
-                              size: 40,
-                            ),
-                          ),
-                        ),
+                        borderRadius: 8.0,
+                        imageSrc: character?.imageSrc,
+                        smallIconSize: 40,
                       ),
               
                       const SizedBox(height: 8.0,),
