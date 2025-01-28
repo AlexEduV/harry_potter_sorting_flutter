@@ -48,7 +48,9 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Home Screen'),),
+      appBar: AppBar(
+        title: const Text('Home Screen'),
+      ),
       body: RefreshIndicator(
         onRefresh: () async {
           await loadCharacter();
@@ -85,6 +87,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                         borderRadius: 8.0,
                         imageSrc: character?.imageSrc,
                         smallIconSize: 40,
+                        onTap: () {},
                       ),
               
                       const SizedBox(height: 8.0,),
@@ -271,5 +274,9 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
         ));
 
     }
+  }
+  
+  void openDetailsPage(CharacterDTO character) {
+
   }
 }
