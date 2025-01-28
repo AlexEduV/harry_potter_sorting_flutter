@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
 class PickerItem extends StatelessWidget {
-
   final String name;
   final String? imageSrc;
   final Function() onTap;
+  final Color backgroundColor;
 
   const PickerItem({
     required this.name,
     required this.onTap,
+    required this.backgroundColor,
     this.imageSrc,
     super.key,
   });
@@ -22,7 +23,7 @@ class PickerItem extends StatelessWidget {
         child: Container(
           height: imageSrc == null ? 70 : 90,
           decoration: BoxDecoration(
-            color: Colors.grey.shade300,
+            color: backgroundColor,
             borderRadius: BorderRadius.circular(16.0),
           ),
           child: Column(
@@ -52,4 +53,5 @@ class PickerItem extends StatelessWidget {
       ),
     );
   }
+
 }

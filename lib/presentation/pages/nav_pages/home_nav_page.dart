@@ -30,6 +30,8 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
   int successCount = 0;
   int failedCount = 0;
 
+  List<Color> buttonColors = List.filled(5, Colors.grey.shade300);
+
   @override
   void initState() {
     super.initState();
@@ -108,8 +110,9 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                     PickerItem(
                       name: 'Gryffindor',
                       imageSrc: 'assets/house_crests/gryffindor-96.png',
+                      backgroundColor: buttonColors[0],
                       onTap: () {
-                        onPickerItemTap('gryffindor');
+                        onPickerItemTap(0, 'gryffindor',);
                       },
                     ),
 
@@ -118,8 +121,9 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                     PickerItem(
                       name: 'Slytherin',
                       imageSrc: 'assets/house_crests/slytherin-96.png',
+                      backgroundColor: buttonColors[1],
                       onTap: () {
-                        onPickerItemTap('slytherin');
+                        onPickerItemTap(1, 'slytherin');
                       },
                     )
                   ],
@@ -132,8 +136,9 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                     PickerItem(
                       name: 'Ravenclaw',
                       imageSrc: 'assets/house_crests/ravenclaw-96.png',
+                      backgroundColor: buttonColors[2],
                       onTap: () {
-                        onPickerItemTap('ravenclaw');
+                        onPickerItemTap(2, 'ravenclaw');
                       },
                     ),
 
@@ -142,8 +147,9 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                     PickerItem(
                       name: 'Hufflepuff',
                       imageSrc: 'assets/house_crests/hufflepuff-96.png',
+                      backgroundColor: buttonColors[3],
                       onTap: () {
-                        onPickerItemTap('hufflepuff');
+                        onPickerItemTap(3, 'hufflepuff');
                       },
                     ),
                   ],
@@ -155,8 +161,9 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                   children: [
                     PickerItem(
                       name: 'Not in House',
+                      backgroundColor: buttonColors[4],
                       onTap: () {
-                        onPickerItemTap('');
+                        onPickerItemTap(4, '');
                       },
                     ),
                   ],
@@ -204,11 +211,11 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     });
   }
 
-  bool checkCharacterHouse(String value) {
-    return value == character?.house;
-  }
+  bool checkCharacterHouse(String value) => value == character?.house;
 
-  void onPickerItemTap(String houseName) {
+  Color getBackgroundColor(bool isSuccessful) => isSuccessful ? Colors.green : Colors.red;
+
+  void onPickerItemTap(int index, String houseName) async {
 
     setState(() {
       totalCount++;
@@ -217,19 +224,25 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     if (checkCharacterHouse(houseName)) {
       setState(() {
         successCount++;
+        buttonColors[index] = Colors.green;
       });
 
       //block buttons for further clicks
 
-      //make the container green
     }
     else {
       setState(() {
         failedCount++;
+        buttonColors[index] = Colors.red;
       });
-
-      //make the container red for 1 second
+      
     }
+
+    Future.delayed(const Duration(seconds: 1), () {
+      setState(() {
+        buttonColors[index] = Colors.grey.shade300;
+      });
+    });
 
     //update database by name
     if (character?.name != null) {
