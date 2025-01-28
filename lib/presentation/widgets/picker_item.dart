@@ -18,37 +18,43 @@ class PickerItem extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Expanded(
-      child: InkWell(
-        onTap: onTap,
-        child: Container(
-          height: imageSrc == null ? 70 : 90,
-          decoration: BoxDecoration(
-            color: backgroundColor,
-            borderRadius: BorderRadius.circular(16.0),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+      child: Material(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(16.0),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(16.0),
+          onTap: onTap,
+          splashColor: Colors.white.withAlpha(126),
+          highlightColor: Colors.transparent,
+          child: Container(
+            height: imageSrc == null ? 70 : 90,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16.0),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
 
-              //image
-              if (imageSrc != null) Container(
-                height: 40,
-                width: 40,
-                decoration: BoxDecoration(
-                  image: DecorationImage(image: AssetImage(imageSrc!)),
+                //image
+                if (imageSrc != null) Container(
+                  height: 40,
+                  width: 40,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(image: AssetImage(imageSrc!)),
+                  ),
                 ),
-              ),
 
-              //name
-              Text(
-                name,
-                style: TextStyle(
-                  fontWeight: imageSrc == null ? FontWeight.bold : null,
-                  color: backgroundColor != Colors.grey.shade300 ? Colors.white : null,
+                //name
+                Text(
+                  name,
+                  style: TextStyle(
+                    fontWeight: imageSrc == null ? FontWeight.bold : null,
+                    color: backgroundColor != Colors.grey.shade300 ? Colors.white : null,
+                  ),
                 ),
-              ),
 
-            ],
+              ],
+            ),
           ),
         ),
       ),
