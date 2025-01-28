@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:harry_potter_sorting_flutter/domain/models/character.dart';
+import 'package:harry_potter_sorting_flutter/domain/models/character_dto.dart';
 
 abstract class HomePageRepository {
-  Future<Character?> loadRandomCharacter(Dio client);
+  Future<CharacterDTO?> loadRandomCharacter(Dio client);
 }

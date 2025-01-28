@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'character.g.dart';
+part 'character_dto.g.dart';
 
 @JsonSerializable()
-class Character {
+class CharacterDTO {
 
   final String id;
   final String name;
@@ -19,7 +19,7 @@ class Character {
   final String actor;
   final String species;
 
-  const Character({
+  const CharacterDTO({
     required this.id,
     required this.name,
     required this.imageSrc,
@@ -29,6 +29,6 @@ class Character {
     required this.species,
   });
 
-  factory Character.fromJson(Map<String, dynamic> json) => _$CharacterFromJson(json);
+  factory CharacterDTO.fromJson(Map<String, dynamic> json) => _$CharacterDTOFromJson(json);
 
 }

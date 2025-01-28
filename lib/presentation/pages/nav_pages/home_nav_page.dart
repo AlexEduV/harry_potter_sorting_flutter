@@ -1,7 +1,10 @@
+import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:harry_potter_sorting_flutter/data/network/dio_client.dart';
 import 'package:harry_potter_sorting_flutter/data/repositories/home_page_repository_impl.dart';
-import 'package:harry_potter_sorting_flutter/domain/models/character.dart';
+import 'package:harry_potter_sorting_flutter/data/storage/database_init.dart';
+import 'package:harry_potter_sorting_flutter/data/storage/database_schema.dart';
+import 'package:harry_potter_sorting_flutter/domain/models/character_dto.dart';
 import 'package:harry_potter_sorting_flutter/presentation/widgets/info_box.dart';
 import 'package:harry_potter_sorting_flutter/presentation/widgets/picker_item.dart';
 
@@ -14,15 +17,11 @@ class HomeNavPage extends StatefulWidget {
 
 class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
-  Character? character;
+  CharacterDTO? character;
 
   //todo: refresh Indicator -> loadCharacter
   //todo: image placeholder -> fancier
   //todo: loading circular indicator?
-
-  //todo: global storage or a db
-  // persistence is needed because we have to have the ability to return to a character and see the previous tries;
-  // the static storage would work only while we use the app, so I added drift db to load tries.
 
   //todo: bloc
   //todo: reset button
@@ -177,9 +176,31 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     final result = await HomePageRepositoryImpl().loadRandomCharacter(DioClient.client);
 
     //load tries from the base or insert a new character
+    final dbResult = await database.managers.characters.filter((table) => table.name.equals(result.name)).getSingleOrNull();
+    if (dbResult == null) {
+
+      //insert a new character
+      await database.into(database.characters).insert(
+
+        CharactersCompanion.insert(
+          longId: result.id,
+          name: result.name,
+          imageSrc: result.imageSrc,
+          house: result.house,
+          actor: result.actor,
+          species: result.species,
+          dateOfBirth: result.dateOfBirth ?? '',
+        )
+      );
+    }
 
     setState(() {
       character = result;
+
+      totalCount = dbResult?.totalCount ?? 0;
+      successCount = dbResult?.successCount ?? 0;
+      failedCount = dbResult?.failCount ?? 0;
+
     });
   }
 
@@ -208,6 +229,18 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
       });
 
       //make the container red for 1 second
+    }
+
+    //update database by name
+    if (character?.name != null) {
+      database.update(database.characters)
+        ..where((table) => table.name.equals(character!.name))
+        ..write(CharactersCompanion(
+          totalCount: drift.Value(totalCount),
+          failCount: drift.Value(failedCount),
+          successCount: drift.Value(successCount),
+        ));
+
     }
   }
 }
