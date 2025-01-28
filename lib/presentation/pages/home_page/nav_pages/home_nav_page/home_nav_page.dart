@@ -5,8 +5,8 @@ import 'package:harry_potter_sorting_flutter/data/repositories/home_page_reposit
 import 'package:harry_potter_sorting_flutter/data/storage/database_init.dart';
 import 'package:harry_potter_sorting_flutter/data/storage/database_schema.dart';
 import 'package:harry_potter_sorting_flutter/domain/models/character_dto.dart';
-import 'package:harry_potter_sorting_flutter/presentation/widgets/info_box.dart';
-import 'package:harry_potter_sorting_flutter/presentation/widgets/picker_item.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/widgets/info_box.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/widgets/picker_item.dart';
 
 class HomeNavPage extends StatefulWidget {
   const HomeNavPage({super.key});

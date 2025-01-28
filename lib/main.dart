@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harry_potter_sorting_flutter/presentation/pages/home_page.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/home_page.dart';
 
 void main() {
   runApp(const MyApp());

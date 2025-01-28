@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:harry_potter_sorting_flutter/presentation/pages/nav_pages/home_nav_page.dart';
-import 'package:harry_potter_sorting_flutter/presentation/pages/nav_pages/list_nav_page.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/home_nav_page.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/list_nav_page.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
