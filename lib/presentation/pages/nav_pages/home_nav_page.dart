@@ -233,6 +233,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
       );
     }
 
+    //todo: memory leak if exited to list while the request is still processing
     setState(() {
       character = result;
 
