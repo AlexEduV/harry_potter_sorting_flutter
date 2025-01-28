@@ -20,6 +20,7 @@ class PickerItem extends StatelessWidget {
     return Expanded(
       child: Material(
         color: backgroundColor,
+        elevation: 2,
         borderRadius: BorderRadius.circular(16.0),
         child: InkWell(
           borderRadius: BorderRadius.circular(16.0),
