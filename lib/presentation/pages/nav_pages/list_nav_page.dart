@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harry_potter_sorting_flutter/data/storage/database_init.dart';
 import 'package:harry_potter_sorting_flutter/data/storage/database_schema.dart';
+import 'package:harry_potter_sorting_flutter/presentation/widgets/status_icon.dart';
 
 class ListNavPage extends StatefulWidget {
   const ListNavPage({super.key});
@@ -38,7 +39,7 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
             //search bar
             const SearchBar(),
 
-            const SizedBox(height: 16.0,),
+            const SizedBox(height: 32.0,),
 
             //list view
             Expanded(
@@ -110,7 +111,23 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
                         ],
                       ),
 
-                      
+                      const Spacer(),
+
+                      //show success icon if there is 1 successful attempt
+                      if (character.successCount > 0)
+                        const StatusIcon(icon: Icons.check, backgroundColor: Colors.green),
+
+                      //show error icon, if 0 successful and not 0 total & show retry icon, which loads the character again
+                      if (character.totalCount > 0 && character.successCount == 0)
+                        const Row(
+                          spacing: 12.0,
+                          children: [
+
+                            StatusIcon(icon: Icons.refresh, backgroundColor: Colors.grey),
+
+                            StatusIcon(icon: Icons.close, backgroundColor: Colors.red),
+                          ],
+                        ),
 
                     ],
                   );
@@ -122,7 +139,7 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
                 itemCount: listSize,
               ),
 
-            )
+            ),
 
           ],
         ),
