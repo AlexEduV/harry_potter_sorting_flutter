@@ -21,6 +21,11 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
   //todo: loading indicator?
 
   //todo: global storage or a db
+  //todo: bloc
+
+  int totalCount = 0;
+  int successCount = 0;
+  int failedCount = 0;
 
   @override
   void initState() {
@@ -42,12 +47,12 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
           children: [
 
             // info items
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                InfoBox(value: '4', description: 'Total'),
-                InfoBox(value: '3', description: 'Success'),
-                InfoBox(value: '1', description: 'Failed'),
+                InfoBox(value: '$totalCount', description: 'Total'),
+                InfoBox(value: '$successCount', description: 'Success'),
+                InfoBox(value: '$failedCount', description: 'Failed'),
               ],
             ),
 
@@ -59,7 +64,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                 width: 150,
                 height: 200,
                 decoration: BoxDecoration(
-                  color: Colors.grey,
+                  color: Colors.grey.shade300,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: ClipRRect(
@@ -92,7 +97,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
             const SizedBox(height: 16.0,),
 
             //picker
-            const Column(
+            Column(
               children: [
 
                 Row(
@@ -100,41 +105,56 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                     PickerItem(
                       name: 'Gryffindor',
                       imageSrc: 'assets/house_crests/gryffindor-96.png',
+                      onTap: () {
+                        onPickerItemTap('gryffindor');
+                      },
                     ),
 
-                    SizedBox(width: 8.0,),
+                    const SizedBox(width: 8.0,),
 
                     PickerItem(
                       name: 'Slytherin',
                       imageSrc: 'assets/house_crests/slytherin-96.png',
+                      onTap: () {
+                        onPickerItemTap('slytherin');
+                      },
                     )
                   ],
                 ),
 
-                SizedBox(height: 8.0,),
+                const SizedBox(height: 8.0,),
 
                 Row(
                   children: [
                     PickerItem(
                       name: 'Ravenclaw',
                       imageSrc: 'assets/house_crests/ravenclaw-96.png',
+                      onTap: () {
+                        onPickerItemTap('ravenclaw');
+                      },
                     ),
 
-                    SizedBox(width: 8.0,),
+                    const SizedBox(width: 8.0,),
 
                     PickerItem(
                       name: 'Hufflepuff',
                       imageSrc: 'assets/house_crests/hufflepuff-96.png',
+                      onTap: () {
+                        onPickerItemTap('hufflepuff');
+                      },
                     ),
                   ],
                 ),
 
-                SizedBox(height: 8.0,),
+                const SizedBox(height: 8.0,),
 
                 Row(
                   children: [
                     PickerItem(
                       name: 'Not in House',
+                      onTap: () {
+                        onPickerItemTap('');
+                      },
                     ),
                   ],
                 ),
@@ -155,5 +175,33 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     setState(() {
       character = result;
     });
+  }
+
+  bool checkCharacterHouse(String value) {
+    return value == character?.house;
+  }
+
+  void onPickerItemTap(String houseName) {
+
+    setState(() {
+      totalCount++;
+    });
+
+    if (checkCharacterHouse(houseName)) {
+      setState(() {
+        successCount++;
+      });
+
+      //block buttons for further clicks
+
+      //make the container green
+    }
+    else {
+      setState(() {
+        failedCount++;
+      });
+
+      //make the container red for 1 second
+    }
   }
 }
