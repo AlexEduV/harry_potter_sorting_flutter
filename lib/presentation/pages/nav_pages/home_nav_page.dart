@@ -82,11 +82,10 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                         width: 150,
                         height: 200,
                         decoration: BoxDecoration(
-                          color: Colors.grey.shade300,
-                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(8.0),
                         ),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
                           child: character?.imageSrc != null && character!.imageSrc.isNotEmpty
                               ? Image.network(
                                   character!.imageSrc,
@@ -98,7 +97,14 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                                   errorBuilder: (context, error, stackTrace) {
                                     return Container();
                                   },
-                          ) : null,
+                          ) :
+                          const Center(
+                            child: Icon(
+                              Icons.image,
+                              color: Colors.grey,
+                              size: 40,
+                            ),
+                          ),
                         ),
                       ),
               
