@@ -127,17 +127,19 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
                       if (character.successCount > 0)
                         const StatusIcon(icon: Icons.check, backgroundColor: Colors.green),
 
-                      //show error icon, if 0 successful and not 0 total & show retry icon, which loads the character again
-                      if (character.totalCount > 0 && character.successCount == 0)
-                        const Row(
-                          spacing: 12.0,
-                          children: [
+                      Row(
+                        spacing: 12.0,
+                        children: [
 
-                            StatusIcon(icon: Icons.refresh, backgroundColor: Colors.grey),
+                          //show retry button if no success recorded
+                          if (character.successCount == 0)
+                            const StatusIcon(icon: Icons.refresh, backgroundColor: Colors.grey),
 
-                            StatusIcon(icon: Icons.close, backgroundColor: Colors.red),
-                          ],
-                        ),
+                          //show failure icon if attempts were made, but 0 successful;
+                          if (character.totalCount > 0 && character.successCount == 0)
+                            const StatusIcon(icon: Icons.close, backgroundColor: Colors.red),
+                        ],
+                      ),
 
                     ],
                   );
