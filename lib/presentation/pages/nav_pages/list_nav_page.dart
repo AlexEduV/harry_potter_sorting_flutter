@@ -32,7 +32,7 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
     return Scaffold(
       appBar: AppBar(title: const Text('List Screen'),),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
         child: Column(
           children: [
 
@@ -49,11 +49,12 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
               },
             ),
 
-            const SizedBox(height: 32.0,),
+            const SizedBox(height: 16.0,),
 
             //list view
             Expanded(
               child: ListView.separated(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
                 itemBuilder: (context, index) {
 
                   final character = entries[index];
