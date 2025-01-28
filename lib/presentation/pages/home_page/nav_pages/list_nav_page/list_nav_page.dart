@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:harry_potter_sorting_flutter/data/storage/database_init.dart';
-import 'package:harry_potter_sorting_flutter/data/storage/database_schema.dart';
+import 'package:harry_potter_sorting_flutter/data/database/database_provider.dart';
+import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/widgets/status_icon.dart';
-import 'package:harry_potter_sorting_flutter/presentation/widgets/character_photo.dart';
+import 'package:harry_potter_sorting_flutter/presentation/common/widgets/character_photo.dart';
 
 class ListNavPage extends StatefulWidget {
   const ListNavPage({super.key});
@@ -134,7 +134,7 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
 
   Future<void> getAllSubmittedCharacters({String filter = ''}) async {
 
-    final result = await database.managers.characters.get();
+    final result = await DatabaseProvider.getDatabase().managers.characters.get();
 
     final filteredResult = filter.isNotEmpty
         ? result.where((character) =>

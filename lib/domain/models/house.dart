@@ -1,1 +1,0 @@
-enum House {gryffindor, slytherin, ravenclaw, hufflepuff, none}

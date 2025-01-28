@@ -5,9 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:harry_potter_sorting_flutter/data/network/dio_client.dart';
 import 'package:harry_potter_sorting_flutter/data/services/character_api_service.dart';
 import 'package:harry_potter_sorting_flutter/domain/models/character_dto.dart';
-import 'package:harry_potter_sorting_flutter/domain/repositories/home_page_repository.dart';
+import 'package:harry_potter_sorting_flutter/domain/repositories/character_repository.dart';
 
-class HomePageRepositoryImpl implements HomePageRepository {
+class CharacterRepositoryImpl implements CharacterRepository {
 
   @override
   Future<CharacterDTO> loadRandomCharacter(Dio client) async {

@@ -1,13 +1,13 @@
 import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:harry_potter_sorting_flutter/data/network/dio_client.dart';
-import 'package:harry_potter_sorting_flutter/data/repositories/home_page_repository_impl.dart';
-import 'package:harry_potter_sorting_flutter/data/storage/database_init.dart';
-import 'package:harry_potter_sorting_flutter/data/storage/database_schema.dart';
+import 'package:harry_potter_sorting_flutter/data/repositories/character_repository_impl.dart';
+import 'package:harry_potter_sorting_flutter/data/database/database_provider.dart';
+import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
 import 'package:harry_potter_sorting_flutter/domain/models/character_dto.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/widgets/info_box.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/widgets/picker_item.dart';
-import 'package:harry_potter_sorting_flutter/presentation/widgets/character_photo.dart';
+import 'package:harry_potter_sorting_flutter/presentation/common/widgets/character_photo.dart';
 
 class HomeNavPage extends StatefulWidget {
   const HomeNavPage({super.key});
@@ -188,14 +188,14 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   Future<void> loadCharacter() async {
 
-    final result = await HomePageRepositoryImpl().loadRandomCharacter(DioClient.client);
+    final result = await CharacterRepositoryImpl().loadRandomCharacter(DioClient.client);
 
     //load tries from the base or insert a new character
-    final dbResult = await database.managers.characters.filter((table) => table.name.equals(result.name)).getSingleOrNull();
+    final dbResult = await DatabaseProvider.getDatabase().managers.characters.filter((table) => table.name.equals(result.name)).getSingleOrNull();
     if (dbResult == null) {
 
       //insert a new character
-      await database.into(database.characters).insert(
+      await DatabaseProvider.getDatabase().into(DatabaseProvider.getDatabase().characters).insert(
 
         CharactersCompanion.insert(
           longId: result.id,
@@ -265,7 +265,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
     //update database by name
     if (character?.name != null) {
-      database.update(database.characters)
+      DatabaseProvider.getDatabase().update(DatabaseProvider.getDatabase().characters)
         ..where((table) => table.name.equals(character!.name))
         ..write(CharactersCompanion(
           totalCount: drift.Value(totalCount),
