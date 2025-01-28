@@ -29,6 +29,10 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
   //todo: every time a loadCharacter is called, the request is the same, and it contains a lot of data.
   // maybe I should just store it somewhere and call GET request only once on load?
 
+  //todo: move business logic away from presentation layer
+
+  //todo: the repositories should not return DTOs. They usually work with Entity classes
+
   int totalCount = 0;
   int successCount = 0;
   int failedCount = 0;
@@ -188,7 +192,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   Future<void> loadCharacter() async {
 
-    final result = await CharacterRepositoryImpl().loadRandomCharacter(DioClient.client);
+    final result = await CharacterRepositoryImpl(DioClient.client).loadRandomCharacter();
 
     //load tries from the base or insert a new character
     final dbResult = await DatabaseProvider.getDatabase().managers.characters.filter((table) => table.name.equals(result.name)).getSingleOrNull();
