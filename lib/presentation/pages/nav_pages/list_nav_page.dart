@@ -42,17 +42,82 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
 
             //list view
             Expanded(
-              child: ListView.builder(
-                itemBuilder: (BuildContext context, int index) {
+              child: ListView.separated(
+                itemBuilder: (context, index) {
 
                   final character = entries[index];
 
                   return Row(
                     children: [
-                      Text(character.name)
+
+                      Container(
+                        height: 50,
+                        width: 35,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(2.0),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(2.0),
+                          child: character.imageSrc.isNotEmpty
+                              ?  Image.network(
+                                  character.imageSrc,
+                                  fit: BoxFit.cover,
+                                  loadingBuilder: (context, child, loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return const Center(child: CircularProgressIndicator());
+                                  },
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return const Center(
+                                      child: Icon(
+                                        Icons.broken_image,
+                                        color: Colors.red,
+                                        size: 20,
+                                      ),
+                                    );
+                                  },
+                                )
+                              : const Center(
+                                child: Icon(
+                                  Icons.image,
+                                  color: Colors.grey,
+                                  size: 20,
+                                ),
+                              ),
+                        ),
+                      ),
+
+                      const SizedBox(width: 12.0,),
+
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+
+                          Text(
+                            character.name,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+
+                          Text(
+                            'Attempts: ${character.totalCount}',
+                            style: const TextStyle(
+                              fontSize: 12.0
+                            ),
+                          ),
+
+                        ],
+                      ),
+
+                      
+
                     ],
                   );
 
+                },
+                separatorBuilder: (context, index) {
+                  return const SizedBox(height: 8.0,);
                 },
                 itemCount: listSize,
               ),
