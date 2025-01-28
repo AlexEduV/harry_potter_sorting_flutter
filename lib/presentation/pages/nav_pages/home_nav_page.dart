@@ -217,6 +217,10 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   void onPickerItemTap(int index, String houseName) async {
 
+    if (buttonColors.contains(Colors.red) || buttonColors.contains(Colors.green)) {
+      return;
+    }
+
     setState(() {
       totalCount++;
     });
@@ -227,22 +231,21 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
         buttonColors[index] = Colors.green;
       });
 
-      //block buttons for further clicks
-
     }
     else {
       setState(() {
         failedCount++;
         buttonColors[index] = Colors.red;
       });
-      
-    }
 
-    Future.delayed(const Duration(seconds: 1), () {
-      setState(() {
-        buttonColors[index] = Colors.grey.shade300;
+      //make color go to default in 1 second
+      Future.delayed(const Duration(seconds: 1), () {
+        setState(() {
+          buttonColors[index] = Colors.grey.shade300;
+        });
       });
-    });
+
+    }
 
     //update database by name
     if (character?.name != null) {
