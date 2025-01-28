@@ -28,7 +28,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -37,7 +37,7 @@ class AppDatabase extends _$AppDatabase {
       },
       onUpgrade: (Migrator migrator, int from, int to) async {
 
-        if (from < 1) {
+        if (from < 2) {
           await migrator.deleteTable('characters');
           await migrator.createAll();
         }
