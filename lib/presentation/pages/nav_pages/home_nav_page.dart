@@ -229,6 +229,8 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
       successCount = dbResult?.successCount ?? 0;
       failedCount = dbResult?.failCount ?? 0;
 
+      buttonColors = List.filled(5, Colors.grey.shade300);
+
     });
   }
 
