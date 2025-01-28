@@ -44,6 +44,7 @@ class PickerItem extends StatelessWidget {
                 name,
                 style: TextStyle(
                   fontWeight: imageSrc == null ? FontWeight.bold : null,
+                  color: backgroundColor != Colors.grey.shade300 ? Colors.white : null,
                 ),
               ),
 

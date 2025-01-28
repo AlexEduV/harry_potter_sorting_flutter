@@ -19,7 +19,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   CharacterDTO? character;
 
-  //todo: image placeholder -> fancier
+  //todo: I have made draggable only part of the screen, which may cause some confusion
   //todo: loading circular indicator?
 
   //todo: bloc
@@ -95,7 +95,13 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                                     return const Center(child: CircularProgressIndicator());
                                   },
                                   errorBuilder: (context, error, stackTrace) {
-                                    return Container();
+                                    return const Center(
+                                      child: Icon(
+                                        Icons.broken_image,
+                                        color: Colors.red,
+                                        size: 40,
+                                      ),
+                                    );
                                   },
                           ) :
                           const Center(
