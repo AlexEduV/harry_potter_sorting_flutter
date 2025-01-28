@@ -26,6 +26,9 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
   //todo: bloc
   //todo: reset button
 
+  //todo: every time a loadCharacter is called, the request is the same, and it contains a lot of data.
+  // maybe I should just store it somewhere and call GET request only once on load?
+
   int totalCount = 0;
   int successCount = 0;
   int failedCount = 0;
@@ -52,137 +55,145 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
         },
         color: Colors.white,
         backgroundColor: Colors.blue,
-        child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
+        child: Column(
+          children: [
+            
+            Expanded(
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+              
+                      // info items
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          InfoBox(value: '$totalCount', description: 'Total'),
+                          InfoBox(value: '$successCount', description: 'Success'),
+                          InfoBox(value: '$failedCount', description: 'Failed'),
+                        ],
+                      ),
+              
+                      const SizedBox(height: 32.0,),
+              
+                      //photo and name
+                      Container(
+                        width: 150,
+                        height: 200,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade300,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: character?.imageSrc != null && character!.imageSrc.isNotEmpty
+                              ? Image.network(
+                                  character!.imageSrc,
+                                  fit: BoxFit.cover,
+                                  loadingBuilder: (context, child, loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return const Center(child: CircularProgressIndicator());
+                                  },
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Container();
+                                  },
+                          ) : null,
+                        ),
+                      ),
+              
+                      const SizedBox(height: 8.0,),
+              
+                      Text(character?.name ?? '',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16.0,
+                        ),
+                      ),
 
-                // info items
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    InfoBox(value: '$totalCount', description: 'Total'),
-                    InfoBox(value: '$successCount', description: 'Success'),
-                    InfoBox(value: '$failedCount', description: 'Failed'),
-                  ],
-                ),
-
-                const SizedBox(height: 32.0,),
-
-                //photo and name
-                Expanded(
-                  child: Container(
-                    width: 150,
-                    height: 200,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade300,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: character?.imageSrc != null && character!.imageSrc.isNotEmpty
-                          ? Image.network(
-                              character!.imageSrc,
-                              fit: BoxFit.cover,
-                              loadingBuilder: (context, child, loadingProgress) {
-                                if (loadingProgress == null) return child;
-                                return const Center(child: CircularProgressIndicator());
-                              },
-                              errorBuilder: (context, error, stackTrace) {
-                                return Container();
-                              },
-                      ) : null,
-                    ),
+                    ],
                   ),
                 ),
-
-                const SizedBox(height: 8.0,),
-
-                Text(character?.name ?? '',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16.0,
-                  ),
-                ),
-
-                const SizedBox(height: 16.0,),
-
-                //picker
-                Column(
-                  children: [
-
-                    Row(
-                      children: [
-                        PickerItem(
-                          name: 'Gryffindor',
-                          imageSrc: 'assets/house_crests/gryffindor-96.png',
-                          backgroundColor: buttonColors[0],
-                          onTap: () {
-                            onPickerItemTap(0, 'gryffindor',);
-                          },
-                        ),
-
-                        const SizedBox(width: 8.0,),
-
-                        PickerItem(
-                          name: 'Slytherin',
-                          imageSrc: 'assets/house_crests/slytherin-96.png',
-                          backgroundColor: buttonColors[1],
-                          onTap: () {
-                            onPickerItemTap(1, 'slytherin');
-                          },
-                        )
-                      ],
-                    ),
-
-                    const SizedBox(height: 8.0,),
-
-                    Row(
-                      children: [
-                        PickerItem(
-                          name: 'Ravenclaw',
-                          imageSrc: 'assets/house_crests/ravenclaw-96.png',
-                          backgroundColor: buttonColors[2],
-                          onTap: () {
-                            onPickerItemTap(2, 'ravenclaw');
-                          },
-                        ),
-
-                        const SizedBox(width: 8.0,),
-
-                        PickerItem(
-                          name: 'Hufflepuff',
-                          imageSrc: 'assets/house_crests/hufflepuff-96.png',
-                          backgroundColor: buttonColors[3],
-                          onTap: () {
-                            onPickerItemTap(3, 'hufflepuff');
-                          },
-                        ),
-                      ],
-                    ),
-
-                    const SizedBox(height: 8.0,),
-
-                    Row(
-                      children: [
-                        PickerItem(
-                          name: 'Not in House',
-                          backgroundColor: buttonColors[4],
-                          onTap: () {
-                            onPickerItemTap(4, '');
-                          },
-                        ),
-                      ],
-                    ),
-
-                  ],
-                ),
-
-              ],
+              ),
             ),
-          ),
+
+
+            //picker
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+
+                  Row(
+                    children: [
+                      PickerItem(
+                        name: 'Gryffindor',
+                        imageSrc: 'assets/house_crests/gryffindor-96.png',
+                        backgroundColor: buttonColors[0],
+                        onTap: () {
+                          onPickerItemTap(0, 'gryffindor',);
+                        },
+                      ),
+
+                      const SizedBox(width: 8.0,),
+
+                      PickerItem(
+                        name: 'Slytherin',
+                        imageSrc: 'assets/house_crests/slytherin-96.png',
+                        backgroundColor: buttonColors[1],
+                        onTap: () {
+                          onPickerItemTap(1, 'slytherin');
+                        },
+                      )
+                    ],
+                  ),
+
+                  const SizedBox(height: 8.0,),
+
+                  Row(
+                    children: [
+                      PickerItem(
+                        name: 'Ravenclaw',
+                        imageSrc: 'assets/house_crests/ravenclaw-96.png',
+                        backgroundColor: buttonColors[2],
+                        onTap: () {
+                          onPickerItemTap(2, 'ravenclaw');
+                        },
+                      ),
+
+                      const SizedBox(width: 8.0,),
+
+                      PickerItem(
+                        name: 'Hufflepuff',
+                        imageSrc: 'assets/house_crests/hufflepuff-96.png',
+                        backgroundColor: buttonColors[3],
+                        onTap: () {
+                          onPickerItemTap(3, 'hufflepuff');
+                        },
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 8.0,),
+
+                  Row(
+                    children: [
+                      PickerItem(
+                        name: 'Not in House',
+                        backgroundColor: buttonColors[4],
+                        onTap: () {
+                          onPickerItemTap(4, '');
+                        },
+                      ),
+                    ],
+                  ),
+
+                ],
+              ),
+            ),
+
+          ],
         ),
       ),
     );
