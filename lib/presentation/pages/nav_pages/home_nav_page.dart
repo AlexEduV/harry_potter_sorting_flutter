@@ -19,7 +19,6 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   CharacterDTO? character;
 
-  //todo: refresh Indicator -> loadCharacter
   //todo: image placeholder -> fancier
   //todo: loading circular indicator?
 
@@ -132,7 +131,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                         imageSrc: 'assets/house_crests/gryffindor-96.png',
                         backgroundColor: buttonColors[0],
                         onTap: () {
-                          onPickerItemTap(0, 'gryffindor',);
+                          onPickerItemTap(0, 'Gryffindor',);
                         },
                       ),
 
@@ -143,7 +142,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                         imageSrc: 'assets/house_crests/slytherin-96.png',
                         backgroundColor: buttonColors[1],
                         onTap: () {
-                          onPickerItemTap(1, 'slytherin');
+                          onPickerItemTap(1, 'Slytherin');
                         },
                       )
                     ],
@@ -158,7 +157,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                         imageSrc: 'assets/house_crests/ravenclaw-96.png',
                         backgroundColor: buttonColors[2],
                         onTap: () {
-                          onPickerItemTap(2, 'ravenclaw');
+                          onPickerItemTap(2, 'Ravenclaw');
                         },
                       ),
 
@@ -169,7 +168,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                         imageSrc: 'assets/house_crests/hufflepuff-96.png',
                         backgroundColor: buttonColors[3],
                         onTap: () {
-                          onPickerItemTap(3, 'hufflepuff');
+                          onPickerItemTap(3, 'Hufflepuff');
                         },
                       ),
                     ],
