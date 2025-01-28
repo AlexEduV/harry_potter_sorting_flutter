@@ -37,7 +37,17 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
           children: [
 
             //search bar
-            const SearchBar(),
+            SearchBar(
+              padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 16.0)),
+              hintText: 'Filter Characters...',
+              trailing: const [
+                Icon(Icons.search),
+              ],
+              keyboardType: TextInputType.text,
+              onChanged: (value) async {
+                getAllSubmittedCharacters(filter: value);
+              },
+            ),
 
             const SizedBox(height: 32.0,),
 
@@ -147,13 +157,19 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
     );
   }
 
-  Future<void> getAllSubmittedCharacters() async {
+  Future<void> getAllSubmittedCharacters({String filter = ''}) async {
 
     final result = await database.managers.characters.get();
 
+    final filteredResult = filter.isNotEmpty
+        ? result.where((character) =>
+        character.name.toLowerCase().contains(filter.toLowerCase()))
+        .toList()
+        : result;
+
     setState(() {
-      entries = result;
-      listSize = result.length;
+      entries = filteredResult;
+      listSize = filteredResult.length;
     });
 
   }
