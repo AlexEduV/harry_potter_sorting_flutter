@@ -6,6 +6,7 @@ import 'package:harry_potter_sorting_flutter/data/repositories/character_reposit
 import 'package:harry_potter_sorting_flutter/data/database/database_provider.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
 import 'package:harry_potter_sorting_flutter/domain/models/character_dto.dart';
+import 'package:harry_potter_sorting_flutter/domain/notifiers/character_stats_notifier.dart';
 import 'package:harry_potter_sorting_flutter/domain/notifiers/character_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/widgets/info_box.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/widgets/picker_item.dart';
@@ -37,10 +38,6 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
   //todo: move business logic away from presentation layer
 
   //todo: the repositories should not return DTOs. They usually work with Entity classes
-
-  int totalCount = 0;
-  int successCount = 0;
-  int failedCount = 0;
 
   List<Color> buttonColors = List.filled(5, Colors.grey.shade300);
 
@@ -84,13 +81,19 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                         children: [
 
                           // info items
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              InfoBox(value: '$totalCount', description: 'Total'),
-                              InfoBox(value: '$successCount', description: 'Success'),
-                              InfoBox(value: '$failedCount', description: 'Failed'),
-                            ],
+                          Consumer<CharacterStatsNotifier>(
+                            builder: (context, notifier, child) {
+
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  InfoBox(value: '${notifier.totalCount}', description: 'Total'),
+                                  InfoBox(value: '${notifier.successCount}', description: 'Success'),
+                                  InfoBox(value: '${notifier.failedCount}', description: 'Failed'),
+                                ],
+                              );
+
+                            },
                           ),
 
                           const SizedBox(height: 32.0,),
@@ -195,6 +198,11 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     final result = await getCharacter(selectedCharacter);
 
     //todo: memory leak if exited to list while the request is still processing
+
+    context.read<CharacterStatsNotifier>().updateTotal(result.totalCount);
+    context.read<CharacterStatsNotifier>().updateSuccessCount(result.successCount);
+    context.read<CharacterStatsNotifier>().updateFailedCount(result.failCount);
+
     setState(() {
       character = CharacterDTO(
           id: result.longId,
@@ -204,10 +212,6 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
           actor: result.actor,
           species: result.species,
       );
-
-      totalCount = result.totalCount;
-      successCount = result.successCount;
-      failedCount = result.failCount;
 
       buttonColors = List.filled(5, Colors.grey.shade300);
 
@@ -277,25 +281,28 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
       return;
     }
 
-    setState(() {
-      totalCount++;
-    });
+    context.read<CharacterStatsNotifier>().incrementTotal();
 
     if (checkCharacterHouse(houseName)) {
+
+      context.read<CharacterStatsNotifier>().incrementSuccessCount();
+
       setState(() {
-        successCount++;
         buttonColors[index] = Colors.green;
       });
 
     }
     else {
+
+      context.read<CharacterStatsNotifier>().incrementFailedCount();
+
       setState(() {
-        failedCount++;
         buttonColors[index] = Colors.red;
       });
 
       //make color go to default in 1 second
       Future.delayed(const Duration(seconds: 1), () {
+
         setState(() {
           buttonColors[index] = Colors.grey.shade300;
         });
