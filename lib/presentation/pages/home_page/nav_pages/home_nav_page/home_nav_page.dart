@@ -11,6 +11,7 @@ import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/notifi
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/widgets/info_box.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/widgets/picker_item.dart';
 import 'package:harry_potter_sorting_flutter/presentation/common/widgets/character_photo.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/notifiers/picker_color_notifier.dart';
 import 'package:harry_potter_sorting_flutter/router/router.dart';
 import 'package:provider/provider.dart';
 
@@ -38,8 +39,6 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
   //todo: move business logic away from presentation layer
 
   //todo: the repositories should not return DTOs. They usually work with Entity classes
-
-  List<Color> buttonColors = List.filled(5, Colors.grey.shade300);
 
   @override
   void initState() {
@@ -121,67 +120,73 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
 
                 //picker
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
+                Consumer<PickerColorNotifier>(
+                  builder: (index, notifier, child) {
 
-                      Row(
+                    return Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
                         children: [
-                          PickerItem(
-                            name: 'Gryffindor',
-                            imageSrc: 'assets/house_crests/gryffindor-96.png',
-                            backgroundColor: buttonColors[0],
-                            onTap: () => onPickerItemTap(0, 'Gryffindor',),
+
+                          Row(
+                            children: [
+                              PickerItem(
+                                name: 'Gryffindor',
+                                imageSrc: 'assets/house_crests/gryffindor-96.png',
+                                backgroundColor: notifier.buttonColors[0],
+                                onTap: () => onPickerItemTap(0, 'Gryffindor',),
+                              ),
+
+                              const SizedBox(width: 8.0,),
+
+                              PickerItem(
+                                name: 'Slytherin',
+                                imageSrc: 'assets/house_crests/slytherin-96.png',
+                                backgroundColor: notifier.buttonColors[1],
+                                onTap: () => onPickerItemTap(1, 'Slytherin'),
+                              ),
+                            ],
                           ),
 
-                          const SizedBox(width: 8.0,),
+                          const SizedBox(height: 8.0,),
 
-                          PickerItem(
-                            name: 'Slytherin',
-                            imageSrc: 'assets/house_crests/slytherin-96.png',
-                            backgroundColor: buttonColors[1],
-                            onTap: () => onPickerItemTap(1, 'Slytherin'),
+                          Row(
+                            children: [
+                              PickerItem(
+                                name: 'Ravenclaw',
+                                imageSrc: 'assets/house_crests/ravenclaw-96.png',
+                                backgroundColor: notifier.buttonColors[2],
+                                onTap: () => onPickerItemTap(2, 'Ravenclaw'),
+                              ),
+
+                              const SizedBox(width: 8.0,),
+
+                              PickerItem(
+                                name: 'Hufflepuff',
+                                imageSrc: 'assets/house_crests/hufflepuff-96.png',
+                                backgroundColor: notifier.buttonColors[3],
+                                onTap: () => onPickerItemTap(3, 'Hufflepuff'),
+                              ),
+                            ],
                           ),
+
+                          const SizedBox(height: 8.0,),
+
+                          Row(
+                            children: [
+                              PickerItem(
+                                name: 'Not in House',
+                                backgroundColor: notifier.buttonColors[4],
+                                onTap: () => onPickerItemTap(4, ''),
+                              ),
+                            ],
+                          ),
+
                         ],
                       ),
+                    );
 
-                      const SizedBox(height: 8.0,),
-
-                      Row(
-                        children: [
-                          PickerItem(
-                            name: 'Ravenclaw',
-                            imageSrc: 'assets/house_crests/ravenclaw-96.png',
-                            backgroundColor: buttonColors[2],
-                            onTap: () => onPickerItemTap(2, 'Ravenclaw'),
-                          ),
-
-                          const SizedBox(width: 8.0,),
-
-                          PickerItem(
-                            name: 'Hufflepuff',
-                            imageSrc: 'assets/house_crests/hufflepuff-96.png',
-                            backgroundColor: buttonColors[3],
-                            onTap: () => onPickerItemTap(3, 'Hufflepuff'),
-                          ),
-                        ],
-                      ),
-
-                      const SizedBox(height: 8.0,),
-
-                      Row(
-                        children: [
-                          PickerItem(
-                            name: 'Not in House',
-                            backgroundColor: buttonColors[4],
-                            onTap: () => onPickerItemTap(4, ''),
-                          ),
-                        ],
-                      ),
-
-                    ],
-                  ),
+                  },
                 ),
 
               ],
@@ -199,10 +204,6 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
     //todo: memory leak if exited to list while the request is still processing
 
-    context.read<CharacterStatsNotifier>().updateTotal(result.totalCount);
-    context.read<CharacterStatsNotifier>().updateSuccessCount(result.successCount);
-    context.read<CharacterStatsNotifier>().updateFailedCount(result.failCount);
-
     setState(() {
       character = CharacterDTO(
           id: result.longId,
@@ -213,7 +214,11 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
           species: result.species,
       );
 
-      buttonColors = List.filled(5, Colors.grey.shade300);
+      context.read<PickerColorNotifier>().resetColors();
+
+      context.read<CharacterStatsNotifier>().updateTotal(result.totalCount);
+      context.read<CharacterStatsNotifier>().updateSuccessCount(result.successCount);
+      context.read<CharacterStatsNotifier>().updateFailedCount(result.failCount);
 
     });
   }
@@ -281,6 +286,8 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   void onPickerItemTap(int index, String houseName) async {
 
+    final buttonColors = context.read<PickerColorNotifier>().buttonColors;
+
     if (buttonColors.contains(Colors.red) || buttonColors.contains(Colors.green)) {
       return;
     }
@@ -290,26 +297,17 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     if (checkCharacterHouse(houseName)) {
 
       context.read<CharacterStatsNotifier>().incrementSuccessCount();
-
-      setState(() {
-        buttonColors[index] = Colors.green;
-      });
+      context.read<PickerColorNotifier>().updateColor(index, Colors.green);
 
     }
     else {
 
       context.read<CharacterStatsNotifier>().incrementFailedCount();
-
-      setState(() {
-        buttonColors[index] = Colors.red;
-      });
+      context.read<PickerColorNotifier>().updateColor(index, Colors.red);
 
       //make color go to default in 1 second
       Future.delayed(const Duration(seconds: 1), () {
-
-        setState(() {
-          buttonColors[index] = Colors.grey.shade300;
-        });
+        context.read<PickerColorNotifier>().resetColor(index);
       });
 
     }

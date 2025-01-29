@@ -17,9 +17,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  int _selectedNavigationIndex = 0;
-  Character? selectedCharacter;
-
   @override
   Widget build(BuildContext context) {
 

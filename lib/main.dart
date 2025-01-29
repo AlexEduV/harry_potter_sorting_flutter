@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/notifiers/bottom_nav_index_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/notifiers/character_stats_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/notifiers/character_notifier.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/notifiers/picker_color_notifier.dart';
 import 'package:harry_potter_sorting_flutter/router/router.dart';
 import 'package:provider/provider.dart';
 
@@ -12,6 +13,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => CharacterNotifier()),
         ChangeNotifierProvider(create: (_) => BottomNavIndexNotifier()),
         ChangeNotifierProvider(create: (_) => CharacterStatsNotifier()),
+        ChangeNotifierProvider(create: (_) => PickerColorNotifier()),
       ],
       child: MyApp()
     ),
