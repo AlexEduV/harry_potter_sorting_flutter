@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
 import 'package:harry_potter_sorting_flutter/data/network/dio_client.dart';
 import 'package:harry_potter_sorting_flutter/data/repositories/character_repository_impl.dart';
+import 'package:harry_potter_sorting_flutter/domain/notifiers/bottom_nav_index_notifier.dart';
+import 'package:harry_potter_sorting_flutter/domain/notifiers/character_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/widgets/status_icon.dart';
 import 'package:harry_potter_sorting_flutter/presentation/common/widgets/character_photo.dart';
 import 'package:harry_potter_sorting_flutter/router/router.dart';
+import 'package:provider/provider.dart';
 
 class ListNavPage extends StatefulWidget {
 
-  final Function(Character) onListItemRetryTap;
-
   const ListNavPage({
-    required this.onListItemRetryTap,
     super.key,
   });
 
@@ -123,8 +123,8 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
                                 icon: Icons.refresh,
                                 backgroundColor: Colors.grey,
                                 onTap: () {
-                                  //todo: use provider here, not propagated function call
-                                  widget.onListItemRetryTap(character);
+                                  context.read<BottomNavIndexNotifier>().updateIndex(0);
+                                  context.read<CharacterNotifier>().selectCharacter(character);
                                 }
                               ),
 

@@ -1,6 +1,7 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
+import 'package:harry_potter_sorting_flutter/domain/notifiers/bottom_nav_index_notifier.dart';
 import 'package:harry_potter_sorting_flutter/domain/notifiers/character_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/home_nav_page.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/list_nav_page.dart';
@@ -22,37 +23,32 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      body: IndexedStack(
-        index: _selectedNavigationIndex,
-        children: [
-          const HomeNavPage(),
-          ListNavPage(onListItemRetryTap: onCharacterRetryTap),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedNavigationIndex,
-        onTap: onItemTapped,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.list), label: 'List'),
-        ],
-      ),
+    return Consumer<BottomNavIndexNotifier>(
+      builder: (context, notifier, child) {
+
+        return Scaffold(
+          body: IndexedStack(
+            index: notifier.selectedIndex,
+            children: const [
+              HomeNavPage(),
+              ListNavPage(),
+            ],
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: notifier.selectedIndex,
+            onTap: onItemTapped,
+            items: const [
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+              BottomNavigationBarItem(icon: Icon(Icons.list), label: 'List'),
+            ],
+          ),
+        );
+
+      },
     );
   }
 
   void onItemTapped(int newIndex) {
-    setState(() {
-      _selectedNavigationIndex = newIndex;
-    });
-  }
-  
-  void onCharacterRetryTap(Character character) {
-
-    setState(() {
-      _selectedNavigationIndex = 0;
-    });
-
-    context.read<CharacterNotifier>().selectCharacter(character);
+    context.read<BottomNavIndexNotifier>().updateIndex(newIndex);
   }
 }

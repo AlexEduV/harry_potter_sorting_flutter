@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:harry_potter_sorting_flutter/domain/notifiers/bottom_nav_index_notifier.dart';
 import 'package:harry_potter_sorting_flutter/domain/notifiers/character_notifier.dart';
 import 'package:harry_potter_sorting_flutter/router/router.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => CharacterNotifier(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => CharacterNotifier()),
+        ChangeNotifierProvider(create: (_) => BottomNavIndexNotifier()),
+      ],
       child: MyApp()
     ),
   );
