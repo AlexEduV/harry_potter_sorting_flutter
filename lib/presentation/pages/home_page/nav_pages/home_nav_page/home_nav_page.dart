@@ -12,7 +12,12 @@ import 'package:harry_potter_sorting_flutter/presentation/common/widgets/charact
 import 'package:harry_potter_sorting_flutter/router/router.dart';
 
 class HomeNavPage extends StatefulWidget {
-  const HomeNavPage({super.key});
+  final Character? selectedCharacter;
+
+  const HomeNavPage({
+    this.selectedCharacter,
+    super.key,
+  });
 
   @override
   State<HomeNavPage> createState() => _HomeNavPageState();
@@ -46,7 +51,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await loadCharacter();
+      await loadCharacter(widget.selectedCharacter);
     });
   }
 
@@ -59,7 +64,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-          await loadCharacter();
+          await loadCharacter(widget.selectedCharacter);
         },
         color: Colors.white,
         backgroundColor: Colors.blue,
@@ -190,40 +195,73 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     );
   }
 
-  Future<void> loadCharacter() async {
+  Future<void> loadCharacter(Character? selectedCharacter) async {
 
-    final result = await CharacterRepositoryImpl(DioClient.client).loadRandomCharacter();
+    final result = await getCharacter(selectedCharacter);
 
-    //load tries from the base or insert a new character
-    final dbResult = await DatabaseProvider.getDatabase().managers.characters.filter((table) => table.name.equals(result.name)).getSingleOrNull();
-    if (dbResult == null) {
-
-      //insert a new character
-      await DatabaseProvider.getDatabase().into(DatabaseProvider.getDatabase().characters).insert(
-
-        CharactersCompanion.insert(
-          longId: result.id,
+    //todo: memory leak if exited to list while the request is still processing
+    setState(() {
+      character = CharacterDTO(
+          id: result.longId,
           name: result.name,
           imageSrc: result.imageSrc,
           house: result.house,
           actor: result.actor,
           species: result.species,
-          dateOfBirth: result.dateOfBirth ?? '',
-        )
       );
-    }
 
-    //todo: memory leak if exited to list while the request is still processing
-    setState(() {
-      character = result;
-
-      totalCount = dbResult?.totalCount ?? 0;
-      successCount = dbResult?.successCount ?? 0;
-      failedCount = dbResult?.failCount ?? 0;
+      totalCount = result.totalCount;
+      successCount = result.successCount;
+      failedCount = result.failCount;
 
       buttonColors = List.filled(5, Colors.grey.shade300);
 
     });
+  }
+
+  Future<Character> getCharacter(Character? selectedCharacter) async {
+    if (selectedCharacter != null) {
+      return selectedCharacter;
+    }
+    else {
+
+      final result = await CharacterRepositoryImpl(DioClient.client).loadRandomCharacter();
+
+      //load tries from the base or insert a new character
+      Character? dbResult = await DatabaseProvider.getDatabase().managers.characters.filter((table) => table.name.equals(result.name)).getSingleOrNull();
+      if (dbResult == null) {
+
+        //insert a new character
+        await DatabaseProvider.getDatabase().into(DatabaseProvider.getDatabase().characters).insert(
+
+            CharactersCompanion.insert(
+              longId: result.id,
+              name: result.name,
+              imageSrc: result.imageSrc,
+              house: result.house,
+              actor: result.actor,
+              species: result.species,
+              dateOfBirth: result.dateOfBirth ?? '',
+            )
+        );
+
+        dbResult = Character(
+            id: 0,
+            longId: result.id,
+            name: result.name,
+            imageSrc: result.imageSrc,
+            house: result.house,
+            actor: result.actor,
+            species: result.species,
+            dateOfBirth: result.dateOfBirth ?? '',
+            successCount: successCount,
+            failCount: failedCount,
+            totalCount: totalCount,
+        );
+      }
+
+      return dbResult;
+    }
   }
 
   bool checkCharacterHouse(String value) {

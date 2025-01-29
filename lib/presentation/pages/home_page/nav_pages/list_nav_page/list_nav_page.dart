@@ -8,7 +8,13 @@ import 'package:harry_potter_sorting_flutter/presentation/common/widgets/charact
 import 'package:harry_potter_sorting_flutter/router/router.dart';
 
 class ListNavPage extends StatefulWidget {
-  const ListNavPage({super.key});
+
+  final Function(Character) onListItemRetryTap;
+
+  const ListNavPage({
+    required this.onListItemRetryTap,
+    super.key,
+  });
 
   @override
   State<ListNavPage> createState() => _ListNavPageState();
@@ -117,8 +123,8 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
                                 icon: Icons.refresh,
                                 backgroundColor: Colors.grey,
                                 onTap: () {
-                                  // todo: open home page with the selected character
-                                },
+                                  widget.onListItemRetryTap(character);
+                                }
                               ),
 
                             //show failure icon if attempts were made, but 0 successful;
