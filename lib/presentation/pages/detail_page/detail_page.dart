@@ -4,6 +4,8 @@ import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart'
 import 'package:harry_potter_sorting_flutter/data/network/dio_client.dart';
 import 'package:harry_potter_sorting_flutter/data/repositories/character_repository_impl.dart';
 import 'package:harry_potter_sorting_flutter/presentation/common/widgets/character_photo.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/detail_page/notifiers/detail_character_notifier.dart';
+import 'package:provider/provider.dart';
 
 @RoutePage()
 class DetailPage extends StatefulWidget {
@@ -20,8 +22,6 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> with WidgetsBindingObserver {
-
-  Character? character;
 
   @override
   void initState() {
@@ -41,43 +41,51 @@ class _DetailPageState extends State<DetailPage> with WidgetsBindingObserver {
       appBar: AppBar(
         title: Text(widget.name),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: 32.0,
-          children: [
+      body: Consumer<DetailCharacterNotifier>(
+        builder: (context, notifier, child) {
 
-            CharacterPhoto(imageSrc: character?.imageSrc ?? ''),
+          final character = notifier.character;
 
-            if (character?.successCount != null && character!.successCount > 0)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 12.0,
-                children: [
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: 32.0,
+              children: [
 
-                  Text('House: ${character?.house}'),
+                CharacterPhoto(imageSrc: character?.imageSrc ?? ''),
 
-                  Text('Date of Birth: ${character?.dateOfBirth}'),
+                if (character?.successCount != null && character!.successCount > 0)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: 12.0,
+                    children: [
 
-                  Text('Actor: ${character?.actor}'),
+                      Text('House: ${character.house}'),
 
-                  Text('Species: ${character?.species}'),
+                      Text('Date of Birth: ${character.dateOfBirth}'),
 
-                ],
-              ),
+                      Text('Actor: ${character.actor}'),
 
-            if (character?.successCount == 0)
-              Expanded(
-                child: SizedBox(
-                  child: ClipRRect(
-                    child: Image.asset('assets/access-denied-badge.png')
+                      Text('Species: ${character.species}'),
+
+                    ],
                   ),
-                ),
-              ),
 
-          ],
-        ),
+                if (character?.successCount == 0)
+                  Expanded(
+                    child: SizedBox(
+                      child: ClipRRect(
+                          child: Image.asset('assets/access-denied-badge.png')
+                      ),
+                    ),
+                  ),
+
+              ],
+            ),
+          );
+
+        },
       ),
     );
 
@@ -86,9 +94,7 @@ class _DetailPageState extends State<DetailPage> with WidgetsBindingObserver {
   Future<void> getCharacterByName(String name) async {
     final result = await CharacterRepositoryImpl(DioClient.client).getCharacterByName(name);
 
-    setState(() {
-      character = result;
-    });
+    context.read<DetailCharacterNotifier>().setCharacter(result);
   }
 
 }
