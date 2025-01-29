@@ -42,28 +42,31 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
     return Scaffold(
       appBar: AppBar(title: const Text('List Screen'),),
       body: Padding(
-        padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
+        padding: const EdgeInsets.only(top: 16.0,),
         child: Column(
           children: [
 
             //search bar
-            SearchBar(
-              padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 16.0)),
-              hintText: 'Filter Characters...',
-              trailing: const [
-                Icon(Icons.search),
-              ],
-              keyboardType: TextInputType.text,
-              onChanged: (value) async {
-                getAllSubmittedCharacters(filter: value);
-              },
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: SearchBar(
+                padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 16.0)),
+                hintText: 'Filter Characters...',
+                trailing: const [
+                  Icon(Icons.search),
+                ],
+                keyboardType: TextInputType.text,
+                onChanged: (value) async {
+                  getAllSubmittedCharacters(filter: value);
+                },
+              ),
             ),
 
             const SizedBox(height: 16.0,),
 
             //list view
             Expanded(
-              child: ListView.separated(
+              child: ListView.builder(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 itemBuilder: (context, index) {
 
@@ -71,77 +74,77 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
 
                   return InkWell(
                     onTap: () => context.router.push(DetailRoute(name: entries[index].name)),
-                    child: Row(
-                      children: [
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+                      child: Row(
+                        children: [
 
-                        CharacterPhoto(
-                          width: 35,
-                          height: 50,
-                          borderRadius: 2.0,
-                          imageSrc: character.imageSrc,
-                          smallIconSize: 20,
-                        ),
+                          CharacterPhoto(
+                            width: 35,
+                            height: 50,
+                            borderRadius: 2.0,
+                            imageSrc: character.imageSrc,
+                            smallIconSize: 20,
+                          ),
 
-                        const SizedBox(width: 12.0,),
+                          const SizedBox(width: 12.0,),
 
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
 
-                            Text(
-                              character.name,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-
-                            Text(
-                              'Attempts: ${character.totalCount}',
-                              style: const TextStyle(
-                                fontSize: 12.0
-                              ),
-                            ),
-
-                          ],
-                        ),
-
-                        const Spacer(),
-
-                        //show success icon if there is 1 successful attempt
-                        if (character.successCount > 0)
-                          const StatusIcon(icon: Icons.check, backgroundColor: Colors.green),
-
-                        Row(
-                          spacing: 12.0,
-                          children: [
-
-                            //show retry button if no success recorded
-                            if (character.successCount == 0)
-                              StatusIcon(
-                                icon: Icons.refresh,
-                                backgroundColor: Colors.grey,
-                                onTap: () {
-                                  context.read<BottomNavIndexNotifier>().updateIndex(0);
-                                  context.read<CharacterNotifier>().selectCharacter(character);
-                                }
+                              Text(
+                                character.name,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
 
-                            //show failure icon if attempts were made, but 0 successful;
-                            if (character.totalCount > 0 && character.successCount == 0)
-                              const StatusIcon(
-                                icon: Icons.close,
-                                backgroundColor: Colors.red,
+                              Text(
+                                'Attempts: ${character.totalCount}',
+                                style: const TextStyle(
+                                  fontSize: 12.0
+                                ),
                               ),
-                          ],
-                        ),
 
-                      ],
+                            ],
+                          ),
+
+                          const Spacer(),
+
+                          //show success icon if there is 1 successful attempt
+                          if (character.successCount > 0)
+                            const StatusIcon(icon: Icons.check, backgroundColor: Colors.green),
+
+                          Row(
+                            spacing: 12.0,
+                            children: [
+
+                              //show retry button if no success recorded
+                              if (character.successCount == 0)
+                                StatusIcon(
+                                  icon: Icons.refresh,
+                                  backgroundColor: Colors.grey,
+                                  onTap: () {
+                                    context.read<BottomNavIndexNotifier>().updateIndex(0);
+                                    context.read<CharacterNotifier>().selectCharacter(character);
+                                  }
+                                ),
+
+                              //show failure icon if attempts were made, but 0 successful;
+                              if (character.totalCount > 0 && character.successCount == 0)
+                                const StatusIcon(
+                                  icon: Icons.close,
+                                  backgroundColor: Colors.red,
+                                ),
+                            ],
+                          ),
+
+                        ],
+                      ),
                     ),
                   );
 
-                },
-                separatorBuilder: (context, index) {
-                  return const SizedBox(height: 8.0,);
                 },
                 itemCount: listSize,
               ),
