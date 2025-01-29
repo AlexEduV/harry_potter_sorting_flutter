@@ -69,6 +69,10 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
 
                   final entries = notifier.entries;
 
+                  if (entries.isEmpty) {
+                    return const Center(child: Text('No characters found'));
+                  }
+
                   return ListView.builder(
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
                     itemBuilder: (context, index) {
@@ -155,7 +159,7 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
                         ),
                       );
                     },
-                    itemCount: notifier.entries.length,
+                    itemCount: entries.length,
                   );
                 }
               ),
@@ -168,6 +172,8 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
     );
   }
 
+
+  //todo: move to domain layer; maybe use usecases
   Future<void> getAllSubmittedCharacters({String filter = ''}) async {
 
     final result = await CharacterRepositoryImpl(DioClient.client).getAllSubmittedCharacters(filter: filter);
