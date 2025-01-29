@@ -10,6 +10,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: 'Harry Potter Magic Sorting Hat',
       theme: ThemeData(
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
           selectedItemColor: Colors.black,
         )
       ),
-      home: const MyHomePage(),
+      home: const HomePage(),
       debugShowCheckedModeBanner: false,
     );
   }
