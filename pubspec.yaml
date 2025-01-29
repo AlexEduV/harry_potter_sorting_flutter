@@ -20,6 +20,7 @@ dependencies:
   drift_flutter: ^0.2.4
   auto_route: ^9.3.0+1
   provider: ^6.1.2
+  cached_network_image: ^3.4.1
 
 dev_dependencies:
   flutter_test:

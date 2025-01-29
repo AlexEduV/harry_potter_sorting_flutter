@@ -1,7 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:harry_potter_sorting_flutter/data/network/dio_client.dart';
-import 'package:harry_potter_sorting_flutter/data/repositories/character_repository_impl.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/character_list_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/notifiers/bottom_nav_index_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_notifier.dart';
@@ -22,6 +20,8 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
 
   //todo: when selecting item through retry button, and then going to home page -> details,
   // on return the keyboard shows again;
+
+  //todo: the list is pretty slow to scroll;
 
   @override
   void initState() {

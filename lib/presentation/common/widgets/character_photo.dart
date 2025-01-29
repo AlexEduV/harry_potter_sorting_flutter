@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class CharacterPhoto extends StatelessWidget {
@@ -42,22 +43,22 @@ class CharacterPhoto extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(borderRadius),
             child: imageSrc != null && imageSrc!.isNotEmpty
-                ? Image.network(
-              imageSrc!,
-              fit: BoxFit.cover,
-              loadingBuilder: (context, child, loadingProgress) {
-                if (loadingProgress == null) return child;
-                return const Center(child: CircularProgressIndicator());
-              },
-              errorBuilder: (context, error, stackTrace) {
-                return Center(
-                  child: Icon(
-                    Icons.broken_image,
-                    color: Colors.red,
-                    size: smallIconSize,
-                  ),
-                );
-              },
+                ? CachedNetworkImage(
+                    imageUrl: imageSrc!,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) {
+                      return const Center(child: CircularProgressIndicator(strokeWidth: 2,),);
+                    },
+                    errorWidget: (context, url, error) {
+
+                      return Center(
+                        child: Icon(
+                          Icons.broken_image,
+                          color: Colors.red,
+                          size: smallIconSize,
+                        ),
+                      );
+                    },
             ) :
             Center(
               child: Icon(
