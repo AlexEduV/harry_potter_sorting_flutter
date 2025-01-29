@@ -45,27 +45,37 @@ class _DetailPageState extends State<DetailPage> with WidgetsBindingObserver {
         padding: const EdgeInsets.all(16.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          spacing: 32.0,
           crossAxisAlignment: CrossAxisAlignment.start,
+          spacing: 32.0,
           children: [
 
             CharacterPhoto(imageSrc: character?.imageSrc ?? ''),
 
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: 12.0,
-              children: [
+            if (character?.successCount != null && character!.successCount > 0)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 12.0,
+                children: [
 
-                Text('House: ${character?.house}'),
+                  Text('House: ${character?.house}'),
 
-                Text('Date of Birth: ${character?.dateOfBirth}'),
+                  Text('Date of Birth: ${character?.dateOfBirth}'),
 
-                Text('Actor: ${character?.actor}'),
+                  Text('Actor: ${character?.actor}'),
 
-                Text('Species: ${character?.species}'),
+                  Text('Species: ${character?.species}'),
 
-              ],
-            ),
+                ],
+              ),
+
+            if (character?.successCount == 0)
+              SizedBox(
+                height: 120,
+                width: 120,
+                child: ClipRRect(
+                  child: Image.asset('assets/access-denied-badge.png')
+                ),
+              ),
 
           ],
         ),
