@@ -22,8 +22,6 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
   //todo: when selecting item through retry button, and then going to home page -> details,
   // on return the keyboard shows again;
 
-  //todo: the list is pretty slow to scroll;
-
   @override
   void initState() {
     super.initState();
