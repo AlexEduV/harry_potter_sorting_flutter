@@ -19,7 +19,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => DetailCharacterNotifier()),
         ChangeNotifierProvider(create: (_) => CharacterListNotifier()),
       ],
-      child: MyApp()
+      child: MyApp(),
     ),
   );
 }

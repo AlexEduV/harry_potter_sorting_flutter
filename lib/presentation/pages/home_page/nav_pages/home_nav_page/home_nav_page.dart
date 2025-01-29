@@ -28,7 +28,6 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
   //todo: I have made draggable only part of the screen, which may cause some confusion
   //todo: loading circular indicator?
 
-  //todo: bloc / provider
   //todo: reset button
 
   //todo: every time a loadCharacter is called, the request is the same, and it contains a lot of data.
@@ -122,7 +121,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
                 //picker
                 Consumer<PickerColorNotifier>(
-                  builder: (index, notifier, child) {
+                  builder: (context, notifier, child) {
 
                     return Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -201,9 +200,9 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   Future<void> loadCharacter(Character? selectedCharacter) async {
 
-    //todo: memory leak if exited to list while the request is still processing
+    final result = await CharacterRepositoryImpl(DioClient.client).getCharacter(selectedCharacter, context);
 
-    final result = await getCharacter(selectedCharacter);
+    if (!mounted) return;
 
     final character = CharacterDTO(
       id: result.longId,
@@ -224,58 +223,6 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   }
 
-  Future<Character> getCharacter(Character? selectedCharacter) async {
-    if (selectedCharacter != null) {
-      //clear the selection
-      context.read<CharacterNotifier>().selectCharacter(null);
-
-      return selectedCharacter;
-    }
-    else {
-
-      final result = await CharacterRepositoryImpl(DioClient.client).loadRandomCharacter();
-
-      //load tries from the base or insert a new character
-      Character? dbResult = await DatabaseProvider.getDatabase().managers.characters.filter((table) => table.name.equals(result.name)).getSingleOrNull();
-      if (dbResult == null) {
-
-        final totalCount = context.read<CharacterStatsNotifier>().totalCount;
-        final successCount = context.read<CharacterStatsNotifier>().successCount;
-        final failedCount = context.read<CharacterStatsNotifier>().failedCount;
-
-        //insert a new character
-        await DatabaseProvider.getDatabase().into(DatabaseProvider.getDatabase().characters).insert(
-
-            CharactersCompanion.insert(
-              longId: result.id,
-              name: result.name,
-              imageSrc: result.imageSrc,
-              house: result.house,
-              actor: result.actor,
-              species: result.species,
-              dateOfBirth: result.dateOfBirth ?? '',
-            )
-        );
-
-        dbResult = Character(
-            id: 0,
-            longId: result.id,
-            name: result.name,
-            imageSrc: result.imageSrc,
-            house: result.house,
-            actor: result.actor,
-            species: result.species,
-            dateOfBirth: result.dateOfBirth ?? '',
-            successCount: successCount,
-            failCount: failedCount,
-            totalCount: totalCount,
-        );
-      }
-
-      return dbResult;
-    }
-  }
-
   bool isRightHouse(CharacterDTO? character, String value) {
     debugPrint('house value: $value');
     debugPrint('house expected: ${character?.house}');
@@ -285,9 +232,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
   
   void onPickerItemTap(int index, String houseName) async {
 
-    final buttonColors = context.read<PickerColorNotifier>().buttonColors;
-
-    if (buttonColors.contains(Colors.red) || buttonColors.contains(Colors.green)) {
+    if (context.read<PickerColorNotifier>().containsActiveColor) {
       return;
     }
 

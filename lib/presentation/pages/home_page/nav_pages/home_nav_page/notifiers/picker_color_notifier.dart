@@ -22,4 +22,6 @@ class PickerColorNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool get containsActiveColor => _buttonColors.contains(Colors.green) || _buttonColors.contains(Colors.red);
+
 }
