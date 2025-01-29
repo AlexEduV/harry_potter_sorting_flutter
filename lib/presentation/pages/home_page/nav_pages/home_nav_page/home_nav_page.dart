@@ -28,7 +28,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
   //todo: I have made draggable only part of the screen, which may cause some confusion
   //todo: loading circular indicator?
 
-  //todo: bloc
+  //todo: bloc / provider
   //todo: reset button
 
   //todo: every time a loadCharacter is called, the request is the same, and it contains a lot of data.

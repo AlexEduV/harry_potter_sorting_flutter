@@ -44,7 +44,6 @@ class _DetailPageState extends State<DetailPage> with WidgetsBindingObserver {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 32.0,
           children: [
@@ -69,11 +68,11 @@ class _DetailPageState extends State<DetailPage> with WidgetsBindingObserver {
               ),
 
             if (character?.successCount == 0)
-              SizedBox(
-                height: 120,
-                width: 120,
-                child: ClipRRect(
-                  child: Image.asset('assets/access-denied-badge.png')
+              Expanded(
+                child: SizedBox(
+                  child: ClipRRect(
+                    child: Image.asset('assets/access-denied-badge.png')
+                  ),
                 ),
               ),
 
