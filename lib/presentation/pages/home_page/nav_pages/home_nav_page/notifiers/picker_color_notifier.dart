@@ -10,6 +10,12 @@ class PickerColorNotifier extends ChangeNotifier {
   void updateColor(int index, Color color) {
     _buttonColors[index] = color;
     notifyListeners();
+
+    //reset color after 1 second
+    Future.delayed(const Duration(seconds: 1), () {
+      resetColor(index);
+    });
+
   }
 
   void resetColors() {

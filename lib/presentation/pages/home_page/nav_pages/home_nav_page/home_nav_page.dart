@@ -251,11 +251,6 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
       context.read<CharacterStatsNotifier>().incrementFailedCount();
       context.read<PickerColorNotifier>().updateColor(index, Colors.red);
 
-      //make color go to default in 1 second
-      Future.delayed(const Duration(seconds: 1), () {
-        context.read<PickerColorNotifier>().resetColor(index);
-      });
-
     }
 
     //update database by name
