@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:dio/dio.dart';
+import 'package:drift/drift.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_provider.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
@@ -32,8 +33,8 @@ class CharacterRepositoryImpl implements CharacterRepository {
 
       final random = Random();
       int index = random.nextInt(response.length);
-      
-      final character = response[index];
+
+      //todo: use entity here, not dto objects
       return response[index];
 
     } on DioException catch (e) {
@@ -55,6 +56,17 @@ class CharacterRepositoryImpl implements CharacterRepository {
         : result;
 
     return filteredResult;
+  }
+
+  @override
+  Future<Character?> getCharacterByName(String name) async {
+
+    final results = await DatabaseProvider.getDatabase().managers.characters.get();
+
+    final result = results.firstWhere((character) => character.name == name);
+
+    return result;
+
   }
 
 }

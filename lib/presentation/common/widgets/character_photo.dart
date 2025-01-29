@@ -12,11 +12,11 @@ class CharacterPhoto extends StatelessWidget {
   final Function()? onTap;
 
   const CharacterPhoto({
-    required this.width,
-    required this.height,
-    required this.borderRadius,
     required this.imageSrc,
-    required this.smallIconSize,
+    this.width = 150,
+    this.height = 200,
+    this.borderRadius = 8.0,
+    this.smallIconSize = 40,
     this.onTap,
     super.key,
   });

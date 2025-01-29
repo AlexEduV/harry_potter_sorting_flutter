@@ -88,11 +88,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
               
                       //photo and name
                       CharacterPhoto(
-                        width: 150,
-                        height: 200,
-                        borderRadius: 8.0,
                         imageSrc: character?.imageSrc,
-                        smallIconSize: 40,
                         onTap: () {
                           openDetailsPage(character);
                         },
