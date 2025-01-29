@@ -24,41 +24,47 @@ class CharacterPhoto extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return InkWell(
-      onTap: onTap,
+    return Material(
+      elevation: onTap != null ? 2 : 0,
+      color: imageSrc == null || imageSrc!.isEmpty ? Colors.grey.shade200 : Colors.transparent,
       borderRadius: BorderRadius.circular(borderRadius),
-      child: Container(
-        width: width,
-        height: height,
-        decoration: BoxDecoration(
-          color: Colors.grey.shade200,
-          borderRadius: BorderRadius.circular(borderRadius),
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(borderRadius),
-          child: imageSrc != null && imageSrc!.isNotEmpty
-              ? Image.network(
-            imageSrc!,
-            fit: BoxFit.cover,
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress == null) return child;
-              return const Center(child: CircularProgressIndicator());
-            },
-            errorBuilder: (context, error, stackTrace) {
-              return Center(
-                child: Icon(
-                  Icons.broken_image,
-                  color: Colors.red,
-                  size: smallIconSize,
-                ),
-              );
-            },
-          ) :
-          Center(
-            child: Icon(
-              Icons.image,
-              color: Colors.grey,
-              size: smallIconSize,
+      child: InkWell(
+        onTap: onTap,
+        splashColor: Colors.white.withAlpha(126),
+        highlightColor: Colors.transparent,
+        borderRadius: BorderRadius.circular(borderRadius),
+        child: Container(
+          width: width,
+          height: height,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(borderRadius),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(borderRadius),
+            child: imageSrc != null && imageSrc!.isNotEmpty
+                ? Image.network(
+              imageSrc!,
+              fit: BoxFit.cover,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return const Center(child: CircularProgressIndicator());
+              },
+              errorBuilder: (context, error, stackTrace) {
+                return Center(
+                  child: Icon(
+                    Icons.broken_image,
+                    color: Colors.red,
+                    size: smallIconSize,
+                  ),
+                );
+              },
+            ) :
+            Center(
+              child: Icon(
+                Icons.image,
+                color: Colors.grey,
+                size: smallIconSize,
+              ),
             ),
           ),
         ),
