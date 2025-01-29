@@ -73,7 +73,10 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
                   final character = entries[index];
 
                   return InkWell(
-                    onTap: () => context.router.push(DetailRoute(name: entries[index].name)),
+                    onTap: () {
+                      //open details page
+                      context.router.push(DetailRoute(name: entries[index].name));
+                    },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
                       child: Row(
@@ -126,6 +129,10 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
                                   icon: Icons.refresh,
                                   backgroundColor: Colors.grey,
                                   onTap: () {
+
+                                    //hide keyboard
+                                    FocusScope.of(context).unfocus();
+
                                     context.read<BottomNavIndexNotifier>().updateIndex(0);
                                     context.read<CharacterNotifier>().selectCharacter(character);
                                   }
