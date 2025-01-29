@@ -15,11 +15,19 @@ class _HomePageState extends State<HomePage> {
 
   int selectedBottomNavigationIndex = 0;
 
+  List<Widget> pages = [
+    const HomeNavPage(),
+    const ListNavPage()
+  ];
+
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
-      body: selectedBottomNavigationIndex == 0 ? const HomeNavPage() : const ListNavPage(),
+      body: IndexedStack(
+        index: selectedBottomNavigationIndex,
+        children: pages,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: selectedBottomNavigationIndex,
         onTap: onItemTapped,
