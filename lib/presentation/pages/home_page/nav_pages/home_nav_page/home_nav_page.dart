@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:harry_potter_sorting_flutter/data/network/dio_client.dart';
@@ -8,6 +9,7 @@ import 'package:harry_potter_sorting_flutter/domain/models/character_dto.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/widgets/info_box.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/widgets/picker_item.dart';
 import 'package:harry_potter_sorting_flutter/presentation/common/widgets/character_photo.dart';
+import 'package:harry_potter_sorting_flutter/router/router.dart';
 
 class HomeNavPage extends StatefulWidget {
   const HomeNavPage({super.key});
@@ -91,7 +93,9 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                         borderRadius: 8.0,
                         imageSrc: character?.imageSrc,
                         smallIconSize: 40,
-                        onTap: () {},
+                        onTap: () {
+                          openDetailsPage(character);
+                        },
                       ),
               
                       const SizedBox(height: 8.0,),
@@ -280,7 +284,9 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     }
   }
   
-  void openDetailsPage(CharacterDTO character) {
+  void openDetailsPage(CharacterDTO? character) {
+    if (character == null) return;
 
+    context.router.push(DetailRoute(name: character.name));
   }
 }

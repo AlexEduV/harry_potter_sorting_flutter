@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/home_page.dart';
+import 'package:harry_potter_sorting_flutter/router/router.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  final _router = AppRouter();
 
   @override
   Widget build(BuildContext context) {
 
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Harry Potter Magic Sorting Hat',
       theme: ThemeData(
         brightness: Brightness.light,
@@ -27,7 +29,7 @@ class MyApp extends StatelessWidget {
           selectedItemColor: Colors.black,
         )
       ),
-      home: const HomePage(),
+      routerConfig: _router.config(),
       debugShowCheckedModeBanner: false,
     );
   }
