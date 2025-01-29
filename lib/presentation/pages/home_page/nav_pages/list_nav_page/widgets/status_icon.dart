@@ -18,6 +18,7 @@ class StatusIcon extends StatelessWidget {
     
     return InkWell(
       onTap: onTap,
+      borderRadius: BorderRadius.circular(50.0),
       child: Container(
         padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(

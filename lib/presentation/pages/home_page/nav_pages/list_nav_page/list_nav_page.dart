@@ -70,9 +70,7 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
                   final character = entries[index];
 
                   return InkWell(
-                    onTap: () {
-                      context.router.push(DetailRoute(name: entries[index].name));
-                    },
+                    onTap: () => context.router.push(DetailRoute(name: entries[index].name)),
                     child: Row(
                       children: [
 

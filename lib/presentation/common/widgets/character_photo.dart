@@ -26,6 +26,7 @@ class CharacterPhoto extends StatelessWidget {
 
     return InkWell(
       onTap: onTap,
+      borderRadius: BorderRadius.circular(borderRadius),
       child: Container(
         width: width,
         height: height,
@@ -34,6 +35,7 @@ class CharacterPhoto extends StatelessWidget {
           borderRadius: BorderRadius.circular(borderRadius),
         ),
         child: ClipRRect(
+          borderRadius: BorderRadius.circular(borderRadius),
           child: imageSrc != null && imageSrc!.isNotEmpty
               ? Image.network(
             imageSrc!,
