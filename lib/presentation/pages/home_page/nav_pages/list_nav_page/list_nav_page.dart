@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/character_list_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/notifiers/bottom_nav_index_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_notifier.dart';
@@ -64,10 +65,9 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
 
             //list view
             Expanded(
-              child: Consumer<CharacterListNotifier>(
-                builder: (context, notifier, child) {
-
-                  final entries = notifier.entries;
+              child: Selector<CharacterListNotifier, List<Character>>(
+                selector: (_, notifier) => notifier.entries,
+                builder: (context, entries, child) {
 
                   if (entries.isEmpty) {
                     return const Center(child: Text('No characters found'));
@@ -75,6 +75,7 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
 
                   return ListView.builder(
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    cacheExtent: 500,
                     itemBuilder: (context, index) {
 
                       final character = entries[index];
