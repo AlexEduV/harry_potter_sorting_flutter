@@ -133,16 +133,16 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
                                   //show retry button if no success recorded
                                   if (character.successCount == 0)
                                     StatusIcon(
-                                        icon: Icons.refresh,
-                                        backgroundColor: Colors.grey,
-                                        onTap: () {
+                                      icon: Icons.refresh,
+                                      backgroundColor: Colors.grey,
+                                      onTap: () {
 
-                                          //hide keyboard
-                                          FocusScope.of(context).unfocus();
+                                        //hide keyboard
+                                        FocusScope.of(context).unfocus();
 
-                                          context.read<BottomNavIndexNotifier>().updateIndex(0);
-                                          context.read<CharacterNotifier>().selectCharacter(character);
-                                        }
+                                        context.read<BottomNavIndexNotifier>().updateIndex(0);
+                                        context.read<CharacterNotifier>().selectCharacter(character);
+                                      }
                                     ),
 
                                   //show failure icon if attempts were made, but 0 successful;
@@ -172,12 +172,9 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
     );
   }
 
-
-  //todo: move to domain layer; maybe use usecases
   Future<void> getAllSubmittedCharacters({String filter = ''}) async {
 
-    final result = await CharacterRepositoryImpl(DioClient.client).getAllSubmittedCharacters(filter: filter);
-    context.read<CharacterListNotifier>().update(result);
+    context.read<CharacterListNotifier>().fetchCharacters(filter: filter);
 
   }
 }
