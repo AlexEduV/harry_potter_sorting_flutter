@@ -233,6 +233,10 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
       Character? dbResult = await DatabaseProvider.getDatabase().managers.characters.filter((table) => table.name.equals(result.name)).getSingleOrNull();
       if (dbResult == null) {
 
+        final totalCount = context.read<CharacterStatsNotifier>().totalCount;
+        final successCount = context.read<CharacterStatsNotifier>().successCount;
+        final failedCount = context.read<CharacterStatsNotifier>().failedCount;
+
         //insert a new character
         await DatabaseProvider.getDatabase().into(DatabaseProvider.getDatabase().characters).insert(
 
@@ -312,6 +316,11 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
     //update database by name
     if (character?.name != null) {
+
+      final totalCount = context.read<CharacterStatsNotifier>().totalCount;
+      final failedCount = context.read<CharacterStatsNotifier>().failedCount;
+      final successCount = context.read<CharacterStatsNotifier>().successCount;
+
       DatabaseProvider.getDatabase().update(DatabaseProvider.getDatabase().characters)
         ..where((table) => table.name.equals(character!.name))
         ..write(CharactersCompanion(
