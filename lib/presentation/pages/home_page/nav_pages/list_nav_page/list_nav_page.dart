@@ -22,6 +22,9 @@ class ListNavPage extends StatefulWidget {
 
 class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
 
+  //todo: when selecting item through retry button, and then going to home page -> details,
+  // on return the keyboard shows again;
+
   int listSize = 0;
   List<Character> entries = [];
 
