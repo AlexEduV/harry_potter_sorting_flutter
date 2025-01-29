@@ -47,7 +47,15 @@ class CharacterPhoto extends StatelessWidget {
                     imageUrl: imageSrc!,
                     fit: BoxFit.cover,
                     placeholder: (context, url) {
-                      return const Center(child: CircularProgressIndicator(strokeWidth: 2,),);
+
+                      return const Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(2.0),
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                          ),
+                        ),
+                      );
                     },
                     errorWidget: (context, url, error) {
 
