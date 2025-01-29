@@ -25,8 +25,6 @@ class HomeNavPage extends StatefulWidget {
 
 class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
-  CharacterDTO? character;
-
   //todo: I have made draggable only part of the screen, which may cause some confusion
   //todo: loading circular indicator?
 
@@ -64,9 +62,12 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
         backgroundColor: Colors.blue,
         child: Consumer<CharacterNotifier>(
           builder: (context, characterNotifier, child) {
+
             if (characterNotifier.selectedCharacter != null) {
               loadCharacter(characterNotifier.selectedCharacter);
             }
+
+            final CharacterDTO? character = characterNotifier.character;
 
             return Column(
               children: [
@@ -200,27 +201,27 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   Future<void> loadCharacter(Character? selectedCharacter) async {
 
-    final result = await getCharacter(selectedCharacter);
-
     //todo: memory leak if exited to list while the request is still processing
 
-    setState(() {
-      character = CharacterDTO(
-          id: result.longId,
-          name: result.name,
-          imageSrc: result.imageSrc,
-          house: result.house,
-          actor: result.actor,
-          species: result.species,
-      );
+    final result = await getCharacter(selectedCharacter);
 
-      context.read<PickerColorNotifier>().resetColors();
+    final character = CharacterDTO(
+      id: result.longId,
+      name: result.name,
+      imageSrc: result.imageSrc,
+      house: result.house,
+      actor: result.actor,
+      species: result.species,
+    );
 
-      context.read<CharacterStatsNotifier>().updateTotal(result.totalCount);
-      context.read<CharacterStatsNotifier>().updateSuccessCount(result.successCount);
-      context.read<CharacterStatsNotifier>().updateFailedCount(result.failCount);
+    context.read<CharacterNotifier>().updateCharacter(character);
 
-    });
+    context.read<PickerColorNotifier>().resetColors();
+
+    context.read<CharacterStatsNotifier>().updateTotal(result.totalCount);
+    context.read<CharacterStatsNotifier>().updateSuccessCount(result.successCount);
+    context.read<CharacterStatsNotifier>().updateFailedCount(result.failCount);
+
   }
 
   Future<Character> getCharacter(Character? selectedCharacter) async {
@@ -275,7 +276,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     }
   }
 
-  bool checkCharacterHouse(String value) {
+  bool checkCharacterHouse(CharacterDTO? character, String value) {
     debugPrint('house value: $value');
     debugPrint('house expected: ${character?.house}');
 
@@ -292,9 +293,11 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
       return;
     }
 
+    final character = context.read<CharacterNotifier>().character;
+
     context.read<CharacterStatsNotifier>().incrementTotal();
 
-    if (checkCharacterHouse(houseName)) {
+    if (checkCharacterHouse(character, houseName)) {
 
       context.read<CharacterStatsNotifier>().incrementSuccessCount();
       context.read<PickerColorNotifier>().updateColor(index, Colors.green);
