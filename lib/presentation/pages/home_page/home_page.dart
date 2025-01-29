@@ -50,5 +50,7 @@ class _HomePageState extends State<HomePage> {
       selectedCharacter = character;
       _selectedNavigationIndex = 0;
     });
+
+    selectedCharacter = null;
   }
 }
