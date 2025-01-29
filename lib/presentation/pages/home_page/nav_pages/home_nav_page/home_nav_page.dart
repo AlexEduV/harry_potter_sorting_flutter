@@ -6,18 +6,16 @@ import 'package:harry_potter_sorting_flutter/data/repositories/character_reposit
 import 'package:harry_potter_sorting_flutter/data/database/database_provider.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
 import 'package:harry_potter_sorting_flutter/domain/models/character_dto.dart';
+import 'package:harry_potter_sorting_flutter/domain/notifiers/character_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/widgets/info_box.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/widgets/picker_item.dart';
 import 'package:harry_potter_sorting_flutter/presentation/common/widgets/character_photo.dart';
 import 'package:harry_potter_sorting_flutter/router/router.dart';
+import 'package:provider/provider.dart';
 
 class HomeNavPage extends StatefulWidget {
-  final Character? selectedCharacter;
 
-  const HomeNavPage({
-    this.selectedCharacter,
-    super.key,
-  });
+  const HomeNavPage({super.key,});
 
   @override
   State<HomeNavPage> createState() => _HomeNavPageState();
@@ -51,7 +49,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await loadCharacter(widget.selectedCharacter);
+      await loadCharacter(context.read<CharacterNotifier>().selectedCharacter);
     });
   }
 
@@ -64,132 +62,141 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-          await loadCharacter(widget.selectedCharacter);
+          await loadCharacter(context.read<CharacterNotifier>().selectedCharacter);
         },
         color: Colors.white,
         backgroundColor: Colors.blue,
-        child: Column(
-          children: [
-            
-            Expanded(
-              child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: Padding(
+        child: Consumer<CharacterNotifier>(
+          builder: (context, characterNotifier, child) {
+            if (characterNotifier.selectedCharacter != null) {
+              loadCharacter(characterNotifier.selectedCharacter);
+            }
+
+            return Column(
+              children: [
+
+                Expanded(
+                  child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: [
+
+                          // info items
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              InfoBox(value: '$totalCount', description: 'Total'),
+                              InfoBox(value: '$successCount', description: 'Success'),
+                              InfoBox(value: '$failedCount', description: 'Failed'),
+                            ],
+                          ),
+
+                          const SizedBox(height: 32.0,),
+
+                          //photo and name
+                          CharacterPhoto(
+                            imageSrc: character?.imageSrc,
+                            onTap: () {
+                              openDetailsPage(character);
+                            },
+                          ),
+
+                          const SizedBox(height: 8.0,),
+
+                          Text(character?.name ?? '',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16.0,
+                            ),
+                          ),
+
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+
+                //picker
+                Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
-              
-                      // info items
+
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          InfoBox(value: '$totalCount', description: 'Total'),
-                          InfoBox(value: '$successCount', description: 'Success'),
-                          InfoBox(value: '$failedCount', description: 'Failed'),
+                          PickerItem(
+                            name: 'Gryffindor',
+                            imageSrc: 'assets/house_crests/gryffindor-96.png',
+                            backgroundColor: buttonColors[0],
+                            onTap: () {
+                              onPickerItemTap(0, 'Gryffindor',);
+                            },
+                          ),
+
+                          const SizedBox(width: 8.0,),
+
+                          PickerItem(
+                            name: 'Slytherin',
+                            imageSrc: 'assets/house_crests/slytherin-96.png',
+                            backgroundColor: buttonColors[1],
+                            onTap: () {
+                              onPickerItemTap(1, 'Slytherin');
+                            },
+                          )
                         ],
                       ),
-              
-                      const SizedBox(height: 32.0,),
-              
-                      //photo and name
-                      CharacterPhoto(
-                        imageSrc: character?.imageSrc,
-                        onTap: () {
-                          openDetailsPage(character);
-                        },
-                      ),
-              
+
                       const SizedBox(height: 8.0,),
-              
-                      Text(character?.name ?? '',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16.0,
-                        ),
+
+                      Row(
+                        children: [
+                          PickerItem(
+                            name: 'Ravenclaw',
+                            imageSrc: 'assets/house_crests/ravenclaw-96.png',
+                            backgroundColor: buttonColors[2],
+                            onTap: () {
+                              onPickerItemTap(2, 'Ravenclaw');
+                            },
+                          ),
+
+                          const SizedBox(width: 8.0,),
+
+                          PickerItem(
+                            name: 'Hufflepuff',
+                            imageSrc: 'assets/house_crests/hufflepuff-96.png',
+                            backgroundColor: buttonColors[3],
+                            onTap: () {
+                              onPickerItemTap(3, 'Hufflepuff');
+                            },
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 8.0,),
+
+                      Row(
+                        children: [
+                          PickerItem(
+                            name: 'Not in House',
+                            backgroundColor: buttonColors[4],
+                            onTap: () {
+                              onPickerItemTap(4, '');
+                            },
+                          ),
+                        ],
                       ),
 
                     ],
                   ),
                 ),
-              ),
-            ),
 
+              ],
+            );
 
-            //picker
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-
-                  Row(
-                    children: [
-                      PickerItem(
-                        name: 'Gryffindor',
-                        imageSrc: 'assets/house_crests/gryffindor-96.png',
-                        backgroundColor: buttonColors[0],
-                        onTap: () {
-                          onPickerItemTap(0, 'Gryffindor',);
-                        },
-                      ),
-
-                      const SizedBox(width: 8.0,),
-
-                      PickerItem(
-                        name: 'Slytherin',
-                        imageSrc: 'assets/house_crests/slytherin-96.png',
-                        backgroundColor: buttonColors[1],
-                        onTap: () {
-                          onPickerItemTap(1, 'Slytherin');
-                        },
-                      )
-                    ],
-                  ),
-
-                  const SizedBox(height: 8.0,),
-
-                  Row(
-                    children: [
-                      PickerItem(
-                        name: 'Ravenclaw',
-                        imageSrc: 'assets/house_crests/ravenclaw-96.png',
-                        backgroundColor: buttonColors[2],
-                        onTap: () {
-                          onPickerItemTap(2, 'Ravenclaw');
-                        },
-                      ),
-
-                      const SizedBox(width: 8.0,),
-
-                      PickerItem(
-                        name: 'Hufflepuff',
-                        imageSrc: 'assets/house_crests/hufflepuff-96.png',
-                        backgroundColor: buttonColors[3],
-                        onTap: () {
-                          onPickerItemTap(3, 'Hufflepuff');
-                        },
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 8.0,),
-
-                  Row(
-                    children: [
-                      PickerItem(
-                        name: 'Not in House',
-                        backgroundColor: buttonColors[4],
-                        onTap: () {
-                          onPickerItemTap(4, '');
-                        },
-                      ),
-                    ],
-                  ),
-
-                ],
-              ),
-            ),
-
-          ],
+          },
         ),
       ),
     );
@@ -221,6 +228,9 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   Future<Character> getCharacter(Character? selectedCharacter) async {
     if (selectedCharacter != null) {
+      //clear the selection
+      context.read<CharacterNotifier>().selectCharacter(null);
+
       return selectedCharacter;
     }
     else {

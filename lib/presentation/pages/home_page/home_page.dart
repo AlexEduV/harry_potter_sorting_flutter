@@ -1,8 +1,10 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
+import 'package:harry_potter_sorting_flutter/domain/notifiers/character_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/home_nav_page.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/list_nav_page.dart';
+import 'package:provider/provider.dart';
 
 @RoutePage()
 class HomePage extends StatefulWidget {
@@ -24,7 +26,7 @@ class _HomePageState extends State<HomePage> {
       body: IndexedStack(
         index: _selectedNavigationIndex,
         children: [
-          HomeNavPage(selectedCharacter: selectedCharacter),
+          const HomeNavPage(),
           ListNavPage(onListItemRetryTap: onCharacterRetryTap),
         ],
       ),
@@ -46,11 +48,11 @@ class _HomePageState extends State<HomePage> {
   }
   
   void onCharacterRetryTap(Character character) {
+
     setState(() {
-      selectedCharacter = character;
       _selectedNavigationIndex = 0;
     });
 
-    selectedCharacter = null;
+    context.read<CharacterNotifier>().selectCharacter(character);
   }
 }

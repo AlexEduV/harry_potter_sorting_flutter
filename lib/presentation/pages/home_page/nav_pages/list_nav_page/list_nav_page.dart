@@ -123,6 +123,7 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
                                 icon: Icons.refresh,
                                 backgroundColor: Colors.grey,
                                 onTap: () {
+                                  //todo: use provider here, not propagated function call
                                   widget.onListItemRetryTap(character);
                                 }
                               ),

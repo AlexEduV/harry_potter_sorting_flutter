@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:harry_potter_sorting_flutter/domain/notifiers/character_notifier.dart';
 import 'package:harry_potter_sorting_flutter/router/router.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => CharacterNotifier(),
+      child: MyApp()
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
