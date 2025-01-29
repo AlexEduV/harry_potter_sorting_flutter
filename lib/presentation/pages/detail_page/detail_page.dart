@@ -27,9 +27,9 @@ class _DetailPageState extends State<DetailPage> with WidgetsBindingObserver {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       //load data from the base by name
-
+      await getCharacterByName(widget.name);
 
     });
   }

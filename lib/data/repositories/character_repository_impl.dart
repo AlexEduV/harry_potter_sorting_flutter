@@ -59,7 +59,7 @@ class CharacterRepositoryImpl implements CharacterRepository {
   }
 
   @override
-  Future<Character?> getCharacterByName(String name) async {
+  Future<Character> getCharacterByName(String name) async {
 
     final results = await DatabaseProvider.getDatabase().managers.characters.get();
 
