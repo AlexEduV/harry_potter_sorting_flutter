@@ -276,15 +276,13 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     }
   }
 
-  bool checkCharacterHouse(CharacterDTO? character, String value) {
+  bool isRightHouse(CharacterDTO? character, String value) {
     debugPrint('house value: $value');
     debugPrint('house expected: ${character?.house}');
 
     return value == character?.house;
   }
-
-  Color getBackgroundColor(bool isSuccessful) => isSuccessful ? Colors.green : Colors.red;
-
+  
   void onPickerItemTap(int index, String houseName) async {
 
     final buttonColors = context.read<PickerColorNotifier>().buttonColors;
@@ -297,7 +295,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
     context.read<CharacterStatsNotifier>().incrementTotal();
 
-    if (checkCharacterHouse(character, houseName)) {
+    if (isRightHouse(character, houseName)) {
 
       context.read<CharacterStatsNotifier>().incrementSuccessCount();
       context.read<PickerColorNotifier>().updateColor(index, Colors.green);
