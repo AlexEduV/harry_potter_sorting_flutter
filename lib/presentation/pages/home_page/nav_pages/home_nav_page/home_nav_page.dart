@@ -7,6 +7,7 @@ import 'package:harry_potter_sorting_flutter/data/database/database_provider.dar
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
 import 'package:harry_potter_sorting_flutter/domain/models/character_dto.dart';
 import 'package:harry_potter_sorting_flutter/presentation/common/widgets/reset_button.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_cache_provider.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_stats_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/common/widgets/info_box.dart';
@@ -28,9 +29,6 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   //todo: I have made draggable only part of the screen, which may cause some confusion
 
-  //todo: every time a loadCharacter is called, the request is the same, and it contains a lot of data.
-  // maybe I should just store it somewhere and call GET request only once on load?
-
   //todo: move business logic away from presentation layer
 
   //todo: the repositories should not return DTOs. They usually work with Entity classes
@@ -40,7 +38,10 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _loadCharacters();
+
       await loadCharacter();
+
     });
   }
 
@@ -205,7 +206,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   Future<void> loadCharacter() async {
 
-    Character result = await CharacterRepositoryImpl(DioClient.client).getCharacter();
+    Character result = await CharacterRepositoryImpl(DioClient.client).getCharacter(context);
 
     if (!mounted) return;
 
@@ -270,6 +271,10 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
     context.read<CharacterStatsNotifier>().resetAllCounts(character.name);
     context.read<PickerColorNotifier>().resetColors();
+  }
+
+  Future<void> _loadCharacters() async {
+    await context.read<CharacterCacheProvider>().loadCharacters();
   }
 
 }

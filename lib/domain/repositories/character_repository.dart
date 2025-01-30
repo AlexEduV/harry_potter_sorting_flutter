@@ -5,9 +5,10 @@ import 'package:harry_potter_sorting_flutter/domain/models/character_dto.dart';
 import 'package:harry_potter_sorting_flutter/domain/models/info_stats_entity.dart';
 
 abstract class CharacterRepository {
-  Future<CharacterDTO> loadRandomCharacter();
+  Future<List<CharacterDTO>> loadCharacters();
+  CharacterDTO loadRandomCharacter(BuildContext context);
   Future<Character?> getCharacterByName(String name);
-  Future<Character> getCharacter();
+  Future<Character> getCharacter(BuildContext context);
   void resetCharacterAttemptsStats(String name);
   void mapCharacterToProviders(Character character, BuildContext context);
 

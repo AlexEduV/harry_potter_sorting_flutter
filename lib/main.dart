@@ -3,6 +3,7 @@ import 'package:harry_potter_sorting_flutter/data/network/dio_client.dart';
 import 'package:harry_potter_sorting_flutter/data/repositories/character_repository_impl.dart';
 import 'package:harry_potter_sorting_flutter/domain/usecases/reset_character_stats_usecase.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/detail_page/notifiers/detail_character_notifier.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_cache_provider.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/character_list_notifier.dart';
 import 'package:harry_potter_sorting_flutter/domain/usecases/get_characters_usecase.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/filter_value_notifier.dart';
@@ -32,6 +33,7 @@ void main() {
           ),
         )),
         ChangeNotifierProvider(create: (_) => FilterValueNotifier()),
+        ChangeNotifierProvider(create: (_) => CharacterCacheProvider()),
       ],
       child: MyApp(),
     ),
