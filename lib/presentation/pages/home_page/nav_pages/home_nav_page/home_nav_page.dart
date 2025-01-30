@@ -114,8 +114,8 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                                       height: 180,
                                       child: Center(
                                         child: CircularProgressIndicator(
-                                              valueColor: AlwaysStoppedAnimation<Color>(AppColors.gold),
-                                            ),
+                                          valueColor: AlwaysStoppedAnimation<Color>(AppColors.gold),
+                                        ),
                                       ),
                                     );
                                   }
