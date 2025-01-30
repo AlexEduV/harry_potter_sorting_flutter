@@ -6,6 +6,7 @@ import 'package:harry_potter_sorting_flutter/data/repositories/character_reposit
 import 'package:harry_potter_sorting_flutter/data/database/database_provider.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
 import 'package:harry_potter_sorting_flutter/domain/models/character_dto.dart';
+import 'package:harry_potter_sorting_flutter/presentation/common/widgets/reset_button.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_stats_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/common/widgets/info_box.dart';
@@ -37,6 +38,9 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   //todo: the repositories should not return DTOs. They usually work with Entity classes
 
+  //todo: use a custom font
+  //todo: rework the detail page; it's too simple;
+
   @override
   void initState() {
     super.initState();
@@ -52,6 +56,9 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home Screen'),
+        actions: [
+          ResetButton(onTap: (){}),
+        ],
       ),
       body: RefreshIndicator(
         onRefresh: () async {
