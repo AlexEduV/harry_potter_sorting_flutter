@@ -77,7 +77,7 @@ class CharacterRepositoryImpl implements CharacterRepository {
   Future<Character> getCharacter(Character? selectedCharacter, BuildContext context) async {
     if (selectedCharacter != null) {
       //clear the selection
-      context.read<CharacterNotifier>().selectCharacter(null);
+      context.read<CharacterNotifier>().clearSelection();
 
       return selectedCharacter;
     }
@@ -93,10 +93,6 @@ class CharacterRepositoryImpl implements CharacterRepository {
           .getSingleOrNull();
 
       if (dbResult == null) {
-
-        final totalCount = context.read<CharacterStatsNotifier>().totalCount;
-        final successCount = context.read<CharacterStatsNotifier>().successCount;
-        final failedCount = context.read<CharacterStatsNotifier>().failedCount;
 
         //insert a new character
         await database.into(database.characters).insert(
@@ -121,9 +117,9 @@ class CharacterRepositoryImpl implements CharacterRepository {
           actor: result.actor,
           species: result.species,
           dateOfBirth: result.dateOfBirth ?? '',
-          successCount: successCount,
-          failCount: failedCount,
-          totalCount: totalCount,
+          successCount: 0,
+          failCount: 0,
+          totalCount: 0,
         );
       }
 
