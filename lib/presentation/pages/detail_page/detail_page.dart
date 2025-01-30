@@ -4,6 +4,7 @@ import 'package:harry_potter_sorting_flutter/data/network/dio_client.dart';
 import 'package:harry_potter_sorting_flutter/data/repositories/character_repository_impl.dart';
 import 'package:harry_potter_sorting_flutter/presentation/common/widgets/character_photo.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/detail_page/notifiers/detail_character_notifier.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/detail_page/widgets/detail_list_item.dart';
 import 'package:provider/provider.dart';
 
 @RoutePage()
@@ -60,13 +61,13 @@ class _DetailPageState extends State<DetailPage> with WidgetsBindingObserver {
                     spacing: 12.0,
                     children: [
 
-                      Text('House: ${character.house}'),
+                      DetailListItem(label: 'House:', value: character.house),
 
-                      Text('Date of Birth: ${character.dateOfBirth}'),
+                      DetailListItem(label: 'Date of Birth:', value: character.dateOfBirth),
 
-                      Text('Actor: ${character.actor}'),
+                      DetailListItem(label: 'Actor:', value: character.actor),
 
-                      Text('Species: ${character.species}'),
+                      DetailListItem(label: 'Species:', value: character.species),
 
                     ],
                   ),
