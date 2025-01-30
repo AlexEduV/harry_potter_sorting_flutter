@@ -4,6 +4,7 @@ import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart'
 import 'package:harry_potter_sorting_flutter/presentation/common/widgets/info_box.dart';
 import 'package:harry_potter_sorting_flutter/presentation/common/widgets/reset_button.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/character_list_notifier.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/filter_value_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/notifiers/bottom_nav_index_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/widgets/status_icon.dart';
@@ -86,6 +87,8 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
                 ],
                 keyboardType: TextInputType.name,
                 onChanged: (value) async {
+
+                  context.read<FilterValueNotifier>().update(value);
                   getAllSubmittedCharacters(filter: value);
                 },
               ),
@@ -213,5 +216,8 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
 
   void onResetButtonTapped() {
     context.read<CharacterListNotifier>().resetAllCounts();
+
+    final filterValue = context.read<FilterValueNotifier>().value;
+    context.read<CharacterListNotifier>().fetchCharacters(filter: filterValue);
   }
 }

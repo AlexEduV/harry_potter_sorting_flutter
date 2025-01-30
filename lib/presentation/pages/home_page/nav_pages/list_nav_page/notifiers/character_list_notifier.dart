@@ -38,6 +38,9 @@ class CharacterListNotifier extends ChangeNotifier {
   }
 
   Future<void> fetchCharacters({String filter = ''}) async {
+    debugPrint('fetching list...');
+    debugPrint('filter: $filter');
+
     _entries = await _getCharactersUseCase.execute(filter: filter);
     notifyListeners();
   }
@@ -62,8 +65,6 @@ class CharacterListNotifier extends ChangeNotifier {
     _successAll = 0;
     _failedAll = 0;
     _totalAll = 0;
-
-    //reset list entries
 
     notifyListeners();
 
