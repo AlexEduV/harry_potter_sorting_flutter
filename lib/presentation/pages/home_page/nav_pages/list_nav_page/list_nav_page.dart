@@ -29,7 +29,12 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
 
     //get all entries from the base
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await getAllSubmittedCharacters();
+
+      await Future.wait([
+        getInitCombinedStats(),
+        getAllSubmittedCharacters(),
+      ]);
+
     });
 
   }
@@ -45,13 +50,19 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
           children: [
 
             //row of total info boxes
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                InfoBox(value: '0', description: 'Total'),
-                InfoBox(value: '0', description: 'Success'),
-                InfoBox(value: '0', description: 'Failed'),
-              ],
+            Consumer<CharacterListNotifier>(
+              builder: (context, notifier, child) {
+
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    InfoBox(value: '${notifier.total}', description: 'Total'),
+                    InfoBox(value: '${notifier.success}', description: 'Success'),
+                    InfoBox(value: '${notifier.failed}', description: 'Failed'),
+                  ],
+                );
+
+              }
             ),
 
             const SizedBox(height: 16.0,),
@@ -185,8 +196,10 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
   }
 
   Future<void> getAllSubmittedCharacters({String filter = ''}) async {
-
     context.read<CharacterListNotifier>().fetchCharacters(filter: filter);
+  }
 
+  Future<void> getInitCombinedStats() async {
+    context.read<CharacterListNotifier>().getInitCombinedStats();
   }
 }

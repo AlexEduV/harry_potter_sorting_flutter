@@ -1,5 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
+import 'package:harry_potter_sorting_flutter/data/network/dio_client.dart';
+import 'package:harry_potter_sorting_flutter/data/repositories/character_repository_impl.dart';
 import 'package:harry_potter_sorting_flutter/domain/usecases/get_characters_usecase.dart';
 
 class CharacterListNotifier extends ChangeNotifier {
@@ -38,6 +40,18 @@ class CharacterListNotifier extends ChangeNotifier {
   Future<void> fetchCharacters({String filter = ''}) async {
     _entries = await _getCharactersUseCase.execute(filter: filter);
     notifyListeners();
+  }
+
+  Future<void> getInitCombinedStats() async {
+
+    final result = await CharacterRepositoryImpl(DioClient.client).getTotalStats();
+
+    _successAll = result.successCount;
+    _failedAll = result.failCount;
+    _totalAll = result.totalCount;
+
+    notifyListeners();
+
   }
 
 }

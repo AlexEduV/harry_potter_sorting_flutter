@@ -8,6 +8,7 @@ import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart'
 import 'package:harry_potter_sorting_flutter/data/network/dio_client.dart';
 import 'package:harry_potter_sorting_flutter/data/services/character_api_service.dart';
 import 'package:harry_potter_sorting_flutter/domain/models/character_dto.dart';
+import 'package:harry_potter_sorting_flutter/domain/models/info_stats_entity.dart';
 import 'package:harry_potter_sorting_flutter/domain/repositories/character_repository.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_stats_notifier.dart';
@@ -123,6 +124,31 @@ class CharacterRepositoryImpl implements CharacterRepository {
 
       return dbResult;
     }
+  }
+
+  @override
+  Future<InfoStatsEntity> getTotalStats() async {
+
+    final database = DatabaseProvider.getDatabase();
+
+    final result = await (database.selectOnly(database.characters)
+        ..addColumns([
+          database.characters.totalCount.sum(),
+          database.characters.successCount.sum(),
+          database.characters.failCount.sum(),
+        ]))
+    .map((row) => (
+      totalCount: row.read(database.characters.totalCount.sum()) ?? 0,
+      successCount: row.read(database.characters.successCount.sum()) ?? 0,
+      failCount: row.read(database.characters.failCount.sum()) ?? 0,
+    )).getSingle();
+
+    return InfoStatsEntity(
+      totalCount: result.totalCount,
+      successCount: result.successCount,
+      failCount: result.failCount,
+    );
+
   }
 
 }
