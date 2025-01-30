@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:harry_potter_sorting_flutter/data/network/dio_client.dart';
 import 'package:harry_potter_sorting_flutter/data/repositories/character_repository_impl.dart';
@@ -15,6 +16,10 @@ import 'package:harry_potter_sorting_flutter/router/router.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  if (kReleaseMode || kProfileMode) {
+    debugPrint = (String? message, {int? wrapWidth}) {};
+  }
+
   runApp(
     MultiProvider(
       providers: [
