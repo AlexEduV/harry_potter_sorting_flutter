@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:harry_potter_sorting_flutter/domain/models/info_stats_entity.dart';
 import 'package:harry_potter_sorting_flutter/domain/usecases/reset_character_stats_usecase.dart';
 
 class CharacterStatsNotifier extends ChangeNotifier {
@@ -20,17 +21,8 @@ class CharacterStatsNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateTotal(int newValue) {
-    _totalCount = newValue;
-  }
-
   void incrementSuccessCount() {
     _successCount++;
-    notifyListeners();
-  }
-
-  void updateSuccessCount(int newValue) {
-    _successCount = newValue;
     notifyListeners();
   }
 
@@ -39,8 +31,11 @@ class CharacterStatsNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateFailedCount(int newValue) {
-    _failedCount = newValue;
+  void updateAllCounts(InfoStatsEntity stats) {
+    _failedCount = stats.failCount;
+    _successCount = stats.successCount;
+    _totalCount = stats.totalCount;
+
     notifyListeners();
   }
 

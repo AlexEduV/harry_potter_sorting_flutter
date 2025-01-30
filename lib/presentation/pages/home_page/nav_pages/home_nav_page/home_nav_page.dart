@@ -6,6 +6,7 @@ import 'package:harry_potter_sorting_flutter/data/repositories/character_reposit
 import 'package:harry_potter_sorting_flutter/data/database/database_provider.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
 import 'package:harry_potter_sorting_flutter/domain/models/character_dto.dart';
+import 'package:harry_potter_sorting_flutter/domain/models/info_stats_entity.dart';
 import 'package:harry_potter_sorting_flutter/presentation/common/widgets/reset_button.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_stats_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_notifier.dart';
@@ -230,9 +231,13 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
     context.read<PickerColorNotifier>().resetColors();
 
-    context.read<CharacterStatsNotifier>().updateTotal(result.totalCount);
-    context.read<CharacterStatsNotifier>().updateSuccessCount(result.successCount);
-    context.read<CharacterStatsNotifier>().updateFailedCount(result.failCount);
+    final statsEntity = InfoStatsEntity(
+      totalCount: result.totalCount,
+      successCount: result.successCount,
+      failCount: result.failCount,
+    );
+
+    context.read<CharacterStatsNotifier>().updateAllCounts(statsEntity);
 
   }
 
