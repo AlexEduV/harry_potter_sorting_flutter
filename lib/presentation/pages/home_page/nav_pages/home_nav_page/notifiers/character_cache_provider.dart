@@ -14,6 +14,9 @@ class CharacterCacheProvider extends ChangeNotifier {
   Future<void> loadCharacters() async {
 
     try {
+      _isLoading = true;
+      notifyListeners();
+
       _characters = await CharacterRepositoryImpl(DioClient.client).loadCharacters();
     } catch(e) {
       debugPrint('Error fetching characters: $e');

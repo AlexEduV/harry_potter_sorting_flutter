@@ -14,6 +14,7 @@ import 'package:harry_potter_sorting_flutter/presentation/common/widgets/info_bo
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/widgets/picker_item.dart';
 import 'package:harry_potter_sorting_flutter/presentation/common/widgets/character_photo.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/picker_color_notifier.dart';
+import 'package:harry_potter_sorting_flutter/presentation/style/app_colors.dart';
 import 'package:harry_potter_sorting_flutter/router/router.dart';
 import 'package:provider/provider.dart';
 
@@ -28,12 +29,7 @@ class HomeNavPage extends StatefulWidget {
 class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   //todo: I have made draggable only part of the screen, which may cause some confusion
-
   //todo: move business logic away from presentation layer
-
-  //todo: the repositories should not return DTOs. They usually work with Entity classes
-
-  //todo: show circular progress bar when the first loading;
 
   @override
   void initState() {
@@ -104,9 +100,26 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                             children: [
 
 
-                              CharacterPhoto(
-                                imageSrc: character?.imageSrc,
-                                onTap: () => openDetailsPage(character?.name),
+                              Consumer<CharacterCacheProvider>(
+                                builder: (context, notifier, child) {
+
+                                  if (!notifier.isLoading) {
+                                    return CharacterPhoto(
+                                      imageSrc: character?.imageSrc,
+                                      onTap: () => openDetailsPage(character?.name),
+                                    );
+                                  } else {
+                                    return const SizedBox(
+                                      width: 50,
+                                      height: 180,
+                                      child: Center(
+                                        child: CircularProgressIndicator(
+                                              valueColor: AlwaysStoppedAnimation<Color>(AppColors.gold),
+                                            ),
+                                      ),
+                                    );
+                                  }
+                                }
                               ),
 
                               const SizedBox(height: 8.0,),
