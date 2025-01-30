@@ -56,6 +56,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
         if (characterNotifier.selectedCharacter != null) {
           loadCharacter(selectedCharacter: characterNotifier.selectedCharacter);
+          context.read<CharacterNotifier>().clearSelection();
         }
 
         final CharacterDTO? character = characterNotifier.character;
@@ -206,15 +207,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   Future<void> loadCharacter({Character? selectedCharacter}) async {
 
-    Character? result;
-
-    if (selectedCharacter != null) {
-      result = selectedCharacter;
-      context.read<CharacterNotifier>().clearSelection();
-    }
-    else {
-      result = await CharacterRepositoryImpl(DioClient.client).getCharacter();
-    }
+    Character result = selectedCharacter ?? await CharacterRepositoryImpl(DioClient.client).getCharacter();
 
     if (!mounted) return;
 
@@ -228,7 +221,6 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     );
 
     context.read<CharacterNotifier>().updateCharacter(character);
-
     context.read<PickerColorNotifier>().resetColors();
 
     final statsEntity = InfoStatsEntity(
@@ -236,7 +228,6 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
       successCount: result.successCount,
       failCount: result.failCount,
     );
-
     context.read<CharacterStatsNotifier>().updateAllCounts(statsEntity);
 
   }
