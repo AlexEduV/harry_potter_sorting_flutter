@@ -207,6 +207,10 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   Future<void> loadCharacter(Character? selectedCharacter) async {
 
+    //todo: character stats are not loaded properly
+    // if it's not a first character loaded, the previous value remains
+    // try to fix the issue with provider, maybe that's the root;
+
     final result = await CharacterRepositoryImpl(DioClient.client).getCharacter(selectedCharacter, context);
 
     if (!mounted) return;

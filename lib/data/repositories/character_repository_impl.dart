@@ -85,8 +85,13 @@ class CharacterRepositoryImpl implements CharacterRepository {
 
       final result = await loadRandomCharacter();
 
+      final database = DatabaseProvider.getDatabase();
+
       //load tries from the base or insert a new character
-      Character? dbResult = await DatabaseProvider.getDatabase().managers.characters.filter((table) => table.name.equals(result.name)).getSingleOrNull();
+      Character? dbResult = await database.managers
+          .characters.filter((table) => table.name.equals(result.name))
+          .getSingleOrNull();
+
       if (dbResult == null) {
 
         final totalCount = context.read<CharacterStatsNotifier>().totalCount;
@@ -94,7 +99,7 @@ class CharacterRepositoryImpl implements CharacterRepository {
         final failedCount = context.read<CharacterStatsNotifier>().failedCount;
 
         //insert a new character
-        await DatabaseProvider.getDatabase().into(DatabaseProvider.getDatabase().characters).insert(
+        await database.into(database.characters).insert(
 
             CharactersCompanion.insert(
               longId: result.id,

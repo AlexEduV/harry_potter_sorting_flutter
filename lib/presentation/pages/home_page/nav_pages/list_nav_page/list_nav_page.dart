@@ -218,6 +218,6 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
     context.read<CharacterListNotifier>().resetAllCounts();
 
     final filterValue = context.read<FilterValueNotifier>().value;
-    context.read<CharacterListNotifier>().fetchCharacters(filter: filterValue);
+    getAllSubmittedCharacters(filter: filterValue);
   }
 }
