@@ -19,6 +19,7 @@ class ResetButton extends StatelessWidget {
           'Reset',
           style: TextStyle(
             color: Colors.black87,
+            fontSize: 18.0,
           ),
         ),
       ),

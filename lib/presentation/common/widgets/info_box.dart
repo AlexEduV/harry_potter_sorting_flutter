@@ -31,7 +31,10 @@ class InfoBox extends StatelessWidget {
               style: const TextStyle(fontSize: 20.0),
             ),
 
-            Text(description)
+            Text(
+              description,
+              style: const TextStyle(fontSize: 16.0),
+            ),
           ],
         ),
       ),

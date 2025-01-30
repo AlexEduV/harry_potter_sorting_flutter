@@ -83,6 +83,8 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
               child: SearchBar(
                 padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 16.0)),
                 hintText: 'Filter Characters...',
+                hintStyle: WidgetStateProperty.all(const TextStyle(fontSize: 20)),
+                textStyle:  WidgetStateProperty.all(const TextStyle(fontSize: 20)),
                 trailing: const [
                   Icon(Icons.search),
                 ],
@@ -142,13 +144,14 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
                                     character.name,
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
+                                      fontSize: 18.0,
                                     ),
                                   ),
 
                                   Text(
                                     'Attempts: ${character.totalCount}',
                                     style: const TextStyle(
-                                        fontSize: 12.0
+                                        fontSize: 14.0
                                     ),
                                   ),
 
