@@ -8,6 +8,7 @@ import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart'
 import 'package:harry_potter_sorting_flutter/data/network/dio_client.dart';
 import 'package:harry_potter_sorting_flutter/data/services/character_api_service.dart';
 import 'package:harry_potter_sorting_flutter/domain/models/character_dto.dart';
+import 'package:harry_potter_sorting_flutter/domain/models/character_entity.dart';
 import 'package:harry_potter_sorting_flutter/domain/models/info_stats_entity.dart';
 import 'package:harry_potter_sorting_flutter/domain/repositories/character_repository.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_cache_provider.dart';
@@ -23,7 +24,7 @@ class CharacterRepositoryImpl implements CharacterRepository {
   CharacterRepositoryImpl(this.client);
 
   @override
-  CharacterDTO loadRandomCharacter(BuildContext context) {
+  CharacterEntity loadRandomCharacter(BuildContext context) {
 
     try {
 
@@ -37,8 +38,17 @@ class CharacterRepositoryImpl implements CharacterRepository {
       final random = Random();
       int index = random.nextInt(response.length);
 
-      //todo: use entity here, not dto objects
-      return response[index];
+      final result = response[index];
+
+      return CharacterEntity(
+          id: result.id,
+          name: result.name,
+          imageSrc: result.imageSrc,
+          house: result.house,
+          dateOfBirth: result.dateOfBirth,
+          actor: result.actor,
+          species: result.species,
+      );
 
     } on DioException catch (e) {
       DioClient.handleError(e);
@@ -175,13 +185,14 @@ class CharacterRepositoryImpl implements CharacterRepository {
   @override
   void mapCharacterToProviders(Character result, BuildContext context) {
 
-    final character = CharacterDTO(
+    final character = CharacterEntity(
       id: result.longId,
       name: result.name,
       imageSrc: result.imageSrc,
       house: result.house,
       actor: result.actor,
       species: result.species,
+      dateOfBirth: '',
     );
 
     final statsEntity = InfoStatsEntity(

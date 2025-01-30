@@ -5,7 +5,7 @@ import 'package:harry_potter_sorting_flutter/data/network/dio_client.dart';
 import 'package:harry_potter_sorting_flutter/data/repositories/character_repository_impl.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_provider.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
-import 'package:harry_potter_sorting_flutter/domain/models/character_dto.dart';
+import 'package:harry_potter_sorting_flutter/domain/models/character_entity.dart';
 import 'package:harry_potter_sorting_flutter/presentation/common/widgets/reset_button.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_cache_provider.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_stats_notifier.dart';
@@ -96,7 +96,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                       Consumer<CharacterNotifier>(
                         builder: (context, characterNotifier, child) {
 
-                          final CharacterDTO? character = characterNotifier.character;
+                          final CharacterEntity? character = characterNotifier.character;
 
                           return Column(
                             children: [
@@ -104,7 +104,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
                               CharacterPhoto(
                                 imageSrc: character?.imageSrc,
-                                onTap: () => openDetailsPage(character),
+                                onTap: () => openDetailsPage(character?.name),
                               ),
 
                               const SizedBox(height: 8.0,),
@@ -213,7 +213,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     CharacterRepositoryImpl(DioClient.client).mapCharacterToProviders(result, context);
   }
 
-  bool isRightHouse(CharacterDTO? character, String value) {
+  bool isRightHouse(CharacterEntity? character, String value) {
     debugPrint('house value: $value');
     debugPrint('house expected: ${character?.house}');
 
@@ -258,10 +258,10 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     }
   }
   
-  void openDetailsPage(CharacterDTO? character) {
-    if (character == null) return;
+  void openDetailsPage(String? name) {
+    if (name == null) return;
 
-    context.router.push(DetailRoute(name: character.name));
+    context.router.push(DetailRoute(name: name));
   }
 
   void onResetButtonTapped() {
