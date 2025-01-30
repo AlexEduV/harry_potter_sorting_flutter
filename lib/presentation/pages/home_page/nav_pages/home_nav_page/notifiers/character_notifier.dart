@@ -16,7 +16,6 @@ class CharacterNotifier extends ChangeNotifier {
 
   void clearSelection() {
     _selectedCharacter = null;
-    notifyListeners();
   }
 
   void updateCharacter(CharacterDTO character) {

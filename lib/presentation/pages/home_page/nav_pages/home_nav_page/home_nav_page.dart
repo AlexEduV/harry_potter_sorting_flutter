@@ -44,7 +44,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await loadCharacter(context.read<CharacterNotifier>().selectedCharacter);
+      await loadCharacter();
     });
   }
 
@@ -55,7 +55,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
       builder: (context, characterNotifier, child) {
 
         if (characterNotifier.selectedCharacter != null) {
-          loadCharacter(characterNotifier.selectedCharacter);
+          loadCharacter(selectedCharacter: characterNotifier.selectedCharacter);
         }
 
         final CharacterDTO? character = characterNotifier.character;
@@ -71,7 +71,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
           ),
           body: RefreshIndicator(
             onRefresh: () async {
-              await loadCharacter(context.read<CharacterNotifier>().selectedCharacter);
+              await loadCharacter();
             },
             color: Colors.white,
             backgroundColor: Colors.blue,
@@ -204,7 +204,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     );
   }
 
-  Future<void> loadCharacter(Character? selectedCharacter) async {
+  Future<void> loadCharacter({Character? selectedCharacter}) async {
 
     Character? result;
 
