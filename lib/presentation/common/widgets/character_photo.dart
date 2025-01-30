@@ -15,7 +15,7 @@ class CharacterPhoto extends StatelessWidget {
   const CharacterPhoto({
     required this.imageSrc,
     this.width = 150,
-    this.height = 200,
+    this.height = 185,
     this.borderRadius = 8.0,
     this.smallIconSize = 40,
     this.onTap,
