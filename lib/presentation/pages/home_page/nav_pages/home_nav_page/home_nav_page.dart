@@ -288,6 +288,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     if (character == null) return;
 
     context.read<CharacterStatsNotifier>().resetAllCounts(character.name);
+    context.read<PickerColorNotifier>().resetColors();
   }
 
 }

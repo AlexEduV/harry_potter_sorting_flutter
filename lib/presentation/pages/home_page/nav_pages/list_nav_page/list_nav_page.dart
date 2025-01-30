@@ -47,7 +47,9 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
       appBar: AppBar(
         title: const Text('List Screen'),
         actions: [
-          ResetButton(onTap: (){}),
+          ResetButton(
+            onTap: onResetButtonTapped,
+          ),
         ],
       ),
       body: Padding(
@@ -207,5 +209,9 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
 
   Future<void> getInitCombinedStats() async {
     context.read<CharacterListNotifier>().getInitCombinedStats();
+  }
+
+  void onResetButtonTapped() {
+    context.read<CharacterListNotifier>().resetAllCounts();
   }
 }

@@ -54,4 +54,19 @@ class CharacterListNotifier extends ChangeNotifier {
 
   }
 
+  void resetAllCounts() {
+
+    //reset all attempts
+    CharacterRepositoryImpl(DioClient.client).resetAllCharactersAttemptsStats();
+
+    _successAll = 0;
+    _failedAll = 0;
+    _totalAll = 0;
+
+    //reset list entries
+
+    notifyListeners();
+
+  }
+
 }

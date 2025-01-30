@@ -165,4 +165,18 @@ class CharacterRepositoryImpl implements CharacterRepository {
       ));
   }
 
+  @override
+  void resetAllCharactersAttemptsStats() {
+
+    final database = DatabaseProvider.getDatabase();
+
+    database.update(database.characters)
+      .write(const CharactersCompanion(
+        totalCount: Value(0),
+        failCount: Value(0),
+        successCount: Value(0),
+      ));
+
+  }
+
 }
