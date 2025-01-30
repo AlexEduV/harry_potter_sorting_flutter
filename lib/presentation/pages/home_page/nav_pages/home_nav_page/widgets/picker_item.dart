@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harry_potter_sorting_flutter/presentation/style/app_colors.dart';
 
 class PickerItem extends StatelessWidget {
   final String name;
@@ -49,8 +50,9 @@ class PickerItem extends StatelessWidget {
                 Text(
                   name,
                   style: TextStyle(
+                    fontSize: 22,
                     fontWeight: imageSrc == null ? FontWeight.bold : null,
-                    color: backgroundColor != Colors.grey.shade300 ? Colors.white : null,
+                    color: backgroundColor != Colors.grey.shade300 ? Colors.white : AppColors.deepGold,
                   ),
                 ),
 

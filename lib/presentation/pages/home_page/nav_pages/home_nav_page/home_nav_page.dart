@@ -35,8 +35,6 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   //todo: the repositories should not return DTOs. They usually work with Entity classes
 
-  //todo: use a custom font
-
   @override
   void initState() {
     super.initState();
@@ -113,7 +111,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                               Text(character?.name ?? '',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w600,
-                                  fontSize: 16.0,
+                                  fontSize: 22.0,
                                 ),
                               ),
 
