@@ -2,7 +2,7 @@ name: harry_potter_sorting_flutter
 description: "A Harry Potter Magic Sorting Hat application in Flutter"
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+1
+version: 1.0.0+3
 
 environment:
   sdk: ^3.5.0
