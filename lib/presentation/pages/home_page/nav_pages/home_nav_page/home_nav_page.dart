@@ -28,8 +28,6 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   //todo: I have made draggable only part of the screen, which may cause some confusion
 
-  //todo: reset button
-
   //todo: every time a loadCharacter is called, the request is the same, and it contains a lot of data.
   // maybe I should just store it somewhere and call GET request only once on load?
 
@@ -207,10 +205,6 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   Future<void> loadCharacter(Character? selectedCharacter) async {
 
-    //todo: character stats are not loaded properly
-    // if it's not a first character loaded, the previous value remains
-    // try to fix the issue with provider, maybe that's the root;
-
     Character? result;
 
     if (selectedCharacter != null) {
@@ -255,21 +249,16 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
       return;
     }
 
-    final character = context.read<CharacterNotifier>().character;
-
     context.read<CharacterStatsNotifier>().incrementTotal();
 
+    final character = context.read<CharacterNotifier>().character;
     if (isRightHouse(character, houseName)) {
-
       context.read<CharacterStatsNotifier>().incrementSuccessCount();
       context.read<PickerColorNotifier>().updateColor(index, Colors.green);
-
     }
     else {
-
       context.read<CharacterStatsNotifier>().incrementFailedCount();
       context.read<PickerColorNotifier>().updateColor(index, Colors.red);
-
     }
 
     //update database by name
