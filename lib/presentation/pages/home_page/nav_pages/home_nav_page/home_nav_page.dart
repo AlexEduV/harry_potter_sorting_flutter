@@ -36,7 +36,6 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
   //todo: the repositories should not return DTOs. They usually work with Entity classes
 
   //todo: use a custom font
-  //todo: rework the detail page; it's too simple;
 
   @override
   void initState() {
