@@ -10,6 +10,4 @@ class GetCharactersUseCase {
     return _repository.getAllSubmittedCharacters(filter: filter);
   }
 
-
-
 }

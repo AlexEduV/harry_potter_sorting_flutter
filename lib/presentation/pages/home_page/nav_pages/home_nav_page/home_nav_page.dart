@@ -27,7 +27,6 @@ class HomeNavPage extends StatefulWidget {
 class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   //todo: I have made draggable only part of the screen, which may cause some confusion
-  //todo: loading circular indicator?
 
   //todo: reset button
 
@@ -53,29 +52,31 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home Screen'),
-        actions: [
-          ResetButton(onTap: (){}),
-        ],
-      ),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          await loadCharacter(context.read<CharacterNotifier>().selectedCharacter);
-        },
-        color: Colors.white,
-        backgroundColor: Colors.blue,
-        child: Consumer<CharacterNotifier>(
-          builder: (context, characterNotifier, child) {
+    return Consumer<CharacterNotifier>(
+      builder: (context, characterNotifier, child) {
 
-            if (characterNotifier.selectedCharacter != null) {
-              loadCharacter(characterNotifier.selectedCharacter);
-            }
+        if (characterNotifier.selectedCharacter != null) {
+          loadCharacter(characterNotifier.selectedCharacter);
+        }
 
-            final CharacterDTO? character = characterNotifier.character;
+        final CharacterDTO? character = characterNotifier.character;
 
-            return Column(
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Home Screen'),
+            actions: [
+              ResetButton(
+                onTap: () => onResetButtonTapped(character),
+              ),
+            ],
+          ),
+          body: RefreshIndicator(
+            onRefresh: () async {
+              await loadCharacter(context.read<CharacterNotifier>().selectedCharacter);
+            },
+            color: Colors.white,
+            backgroundColor: Colors.blue,
+            child: Column(
               children: [
 
                 Expanded(
@@ -197,11 +198,10 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                 ),
 
               ],
-            );
-
-          },
-        ),
-      ),
+            ),
+          ),
+        );
+      }
     );
   }
 
@@ -283,4 +283,11 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
     context.router.push(DetailRoute(name: character.name));
   }
+
+  void onResetButtonTapped(CharacterDTO? character) {
+    if (character == null) return;
+
+    context.read<CharacterStatsNotifier>().resetAllCounts(character.name);
+  }
+
 }

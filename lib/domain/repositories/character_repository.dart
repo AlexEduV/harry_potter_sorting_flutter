@@ -9,4 +9,5 @@ abstract class CharacterRepository {
   Future<Character?> getCharacterByName(String name);
   Future<Character> getCharacter(Character? selectedCharacter, BuildContext context);
   Future<InfoStatsEntity> getTotalStats();
+  void resetCharacterAttemptsStats(String name);
 }

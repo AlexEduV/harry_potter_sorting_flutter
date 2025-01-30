@@ -151,4 +151,18 @@ class CharacterRepositoryImpl implements CharacterRepository {
 
   }
 
+  @override
+  void resetCharacterAttemptsStats(String name) {
+    //update database values for the character
+    final database = DatabaseProvider.getDatabase();
+
+    database.update(database.characters)
+      ..where((table) => table.name.equals(name))
+      ..write(const CharactersCompanion(
+        totalCount: Value(0),
+        failCount: Value(0),
+        successCount: Value(0),
+      ));
+  }
+
 }
