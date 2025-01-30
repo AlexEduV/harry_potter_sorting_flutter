@@ -82,7 +82,7 @@ class CharacterRepositoryImpl implements CharacterRepository {
     }
     else {
 
-      final result = await CharacterRepositoryImpl(DioClient.client).loadRandomCharacter();
+      final result = await loadRandomCharacter();
 
       //load tries from the base or insert a new character
       Character? dbResult = await DatabaseProvider.getDatabase().managers.characters.filter((table) => table.name.equals(result.name)).getSingleOrNull();

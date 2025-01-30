@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
+import 'package:harry_potter_sorting_flutter/presentation/common/widgets/info_box.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/character_list_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/notifiers/bottom_nav_index_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_notifier.dart';
@@ -43,6 +44,18 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
         child: Column(
           children: [
 
+            //row of total info boxes
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                InfoBox(value: '0', description: 'Total'),
+                InfoBox(value: '0', description: 'Success'),
+                InfoBox(value: '0', description: 'Failed'),
+              ],
+            ),
+
+            const SizedBox(height: 16.0,),
+
             //search bar
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -52,7 +65,7 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
                 trailing: const [
                   Icon(Icons.search),
                 ],
-                keyboardType: TextInputType.text,
+                keyboardType: TextInputType.name,
                 onChanged: (value) async {
                   getAllSubmittedCharacters(filter: value);
                 },

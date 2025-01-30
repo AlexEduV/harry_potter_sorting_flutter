@@ -11,6 +11,30 @@ class CharacterListNotifier extends ChangeNotifier {
   List<Character> _entries = [];
   List<Character> get entries => _entries;
 
+  int _totalAll = 0;
+  int get total => _totalAll;
+
+  void updateTotal(int newValue) {
+    _totalAll = newValue;
+    notifyListeners();
+  }
+
+  int _successAll = 0;
+  int get success => _successAll;
+
+  void updateSuccess(int newValue) {
+    _successAll = newValue;
+    notifyListeners();
+  }
+
+  int _failedAll = 0;
+  int get failed => _failedAll;
+
+  void updateFailures(int newValue) {
+    _failedAll = newValue;
+    notifyListeners();
+  }
+
   Future<void> fetchCharacters({String filter = ''}) async {
     _entries = await _getCharactersUseCase.execute(filter: filter);
     notifyListeners();
