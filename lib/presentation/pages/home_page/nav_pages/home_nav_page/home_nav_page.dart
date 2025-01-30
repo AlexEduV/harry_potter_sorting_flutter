@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:dio/dio.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
+import 'package:harry_potter_sorting_flutter/core/di/dependency_injection.dart';
 import 'package:harry_potter_sorting_flutter/data/network/dio_client.dart';
 import 'package:harry_potter_sorting_flutter/data/repositories/character_repository_impl.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_provider.dart';
@@ -221,11 +223,11 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   Future<void> loadCharacter() async {
 
-    Character result = await CharacterRepositoryImpl(DioClient.client).getCharacter(context);
+    Character result = await CharacterRepositoryImpl(getIt<Dio>()).getCharacter(context);
 
     if (!mounted) return;
 
-    CharacterRepositoryImpl(DioClient.client).mapCharacterToProviders(result, context);
+    CharacterRepositoryImpl(getIt<Dio>()).mapCharacterToProviders(result, context);
   }
 
   bool isRightHouse(CharacterEntity? character, String value) {

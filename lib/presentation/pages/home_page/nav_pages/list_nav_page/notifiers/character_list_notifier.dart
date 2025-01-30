@@ -1,4 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
+import 'package:harry_potter_sorting_flutter/core/di/dependency_injection.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
 import 'package:harry_potter_sorting_flutter/data/network/dio_client.dart';
 import 'package:harry_potter_sorting_flutter/data/repositories/character_repository_impl.dart';
@@ -47,7 +49,7 @@ class CharacterListNotifier extends ChangeNotifier {
 
   Future<void> getInitCombinedStats() async {
 
-    final result = await CharacterRepositoryImpl(DioClient.client).getTotalStats();
+    final result = await CharacterRepositoryImpl(getIt<Dio>()).getTotalStats();
 
     _successAll = result.successCount;
     _failedAll = result.failCount;
@@ -60,7 +62,7 @@ class CharacterListNotifier extends ChangeNotifier {
   Future<void> resetAllCounts() async {
 
     //reset all attempts
-    await CharacterRepositoryImpl(DioClient.client).resetAllCharactersAttemptsStats();
+    await CharacterRepositoryImpl(getIt<Dio>()).resetAllCharactersAttemptsStats();
 
     _successAll = 0;
     _failedAll = 0;

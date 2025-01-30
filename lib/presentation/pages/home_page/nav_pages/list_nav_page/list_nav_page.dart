@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:harry_potter_sorting_flutter/core/di/dependency_injection.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
 import 'package:harry_potter_sorting_flutter/data/network/dio_client.dart';
 import 'package:harry_potter_sorting_flutter/data/repositories/character_repository_impl.dart';
@@ -179,7 +181,7 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
 
                                         context.read<BottomNavIndexNotifier>().updateIndex(0);
 
-                                        CharacterRepositoryImpl(DioClient.client)
+                                        CharacterRepositoryImpl(getIt<Dio>())
                                             .mapCharacterToProviders(character, context);
                                       }
                                     ),
