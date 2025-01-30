@@ -57,10 +57,10 @@ class CharacterListNotifier extends ChangeNotifier {
 
   }
 
-  void resetAllCounts() {
+  Future<void> resetAllCounts() async {
 
     //reset all attempts
-    CharacterRepositoryImpl(DioClient.client).resetAllCharactersAttemptsStats();
+    await CharacterRepositoryImpl(DioClient.client).resetAllCharactersAttemptsStats();
 
     _successAll = 0;
     _failedAll = 0;

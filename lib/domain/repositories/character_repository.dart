@@ -13,5 +13,5 @@ abstract class CharacterRepository {
 
   Future<List<Character>> getAllSubmittedCharacters({String filter = ''});
   Future<InfoStatsEntity> getTotalStats();
-  void resetAllCharactersAttemptsStats();
+  Future<void> resetAllCharactersAttemptsStats();
 }

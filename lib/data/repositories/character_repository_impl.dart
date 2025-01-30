@@ -161,11 +161,11 @@ class CharacterRepositoryImpl implements CharacterRepository {
   }
 
   @override
-  void resetAllCharactersAttemptsStats() {
+  Future<void> resetAllCharactersAttemptsStats() async {
 
     final database = DatabaseProvider.getDatabase();
 
-    database.update(database.characters)
+    await database.update(database.characters)
       .write(const CharactersCompanion(
         totalCount: Value(0),
         failCount: Value(0),
