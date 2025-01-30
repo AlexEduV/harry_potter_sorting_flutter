@@ -26,7 +26,7 @@ Harry Potter Magic Sorting Hat App
 - Dio, JsonSerializable, Retrofit (Rest API)
 - Auto_Route (Routing)
 - Drift (Database)
-- CachedNetworkImage
+- CachedNetworkImage, get_it (dependency injection)
 
 ## Architecture
 This project follows a **Clean Architecture** structure with the following layers:
