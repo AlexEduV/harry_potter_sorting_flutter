@@ -16,7 +16,7 @@ import 'package:harry_potter_sorting_flutter/router/router.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  if (kReleaseMode || kProfileMode) {
+  if (kReleaseMode) {
     debugPrint = (String? message, {int? wrapWidth}) {};
   }
 
