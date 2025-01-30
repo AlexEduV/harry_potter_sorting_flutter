@@ -51,157 +51,164 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
 
-    return Consumer<CharacterNotifier>(
-      builder: (context, characterNotifier, child) {
-
-        if (characterNotifier.selectedCharacter != null) {
-          loadCharacter(selectedCharacter: characterNotifier.selectedCharacter);
-          context.read<CharacterNotifier>().clearSelection();
-        }
-
-        final CharacterDTO? character = characterNotifier.character;
-
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text('Home Screen'),
-            actions: [
-              ResetButton(
-                onTap: () => onResetButtonTapped(character),
-              ),
-            ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Home Screen'),
+        actions: [
+          ResetButton(
+            onTap: onResetButtonTapped,
           ),
-          body: RefreshIndicator(
-            onRefresh: () async {
-              await loadCharacter();
-            },
-            color: Colors.white,
-            backgroundColor: Colors.blue,
-            child: Column(
-              children: [
+        ],
+      ),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await loadCharacter();
+        },
+        color: Colors.white,
+        backgroundColor: Colors.blue,
+        child: Column(
+          children: [
 
-                Expanded(
-                  child: SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        children: [
+            Expanded(
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
 
-                          // info items
-                          Consumer<CharacterStatsNotifier>(
-                            builder: (context, notifier, child) {
+                      // info items
+                      Consumer<CharacterStatsNotifier>(
+                        builder: (context, notifier, child) {
 
-                              return Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  InfoBox(value: '${notifier.totalCount}', description: 'Total'),
-                                  InfoBox(value: '${notifier.successCount}', description: 'Success'),
-                                  InfoBox(value: '${notifier.failedCount}', description: 'Failed'),
-                                ],
-                              );
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              InfoBox(value: '${notifier.totalCount}', description: 'Total'),
+                              InfoBox(value: '${notifier.successCount}', description: 'Success'),
+                              InfoBox(value: '${notifier.failedCount}', description: 'Failed'),
+                            ],
+                          );
 
-                            },
-                          ),
-
-                          const SizedBox(height: 32.0,),
-
-                          //photo and name
-                          CharacterPhoto(
-                            imageSrc: character?.imageSrc,
-                            onTap: () => openDetailsPage(character),
-                          ),
-
-                          const SizedBox(height: 8.0,),
-
-                          Text(character?.name ?? '',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16.0,
-                            ),
-                          ),
-
-                        ],
+                        },
                       ),
-                    ),
+
+                      const SizedBox(height: 32.0,),
+
+                      //photo and name
+                      Consumer<CharacterNotifier>(
+                        builder: (context, characterNotifier, child) {
+
+                          if (characterNotifier.selectedCharacter != null) {
+                            loadCharacter(selectedCharacter: characterNotifier.selectedCharacter);
+                            context.read<CharacterNotifier>().clearSelection();
+                          }
+
+                          final CharacterDTO? character = characterNotifier.character;
+
+                          return Column(
+                            children: [
+
+
+                              CharacterPhoto(
+                                imageSrc: character?.imageSrc,
+                                onTap: () => openDetailsPage(character),
+                              ),
+
+                              const SizedBox(height: 8.0,),
+
+                              Text(character?.name ?? '',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16.0,
+                                ),
+                              ),
+
+                            ],
+                          );
+                        }
+                      ),
+
+                    ],
                   ),
                 ),
+              ),
+            ),
 
 
-                //picker
-                Consumer<PickerColorNotifier>(
-                  builder: (context, notifier, child) {
+            //picker
+            Consumer<PickerColorNotifier>(
+              builder: (context, notifier, child) {
 
-                    return Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
+                return Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+
+                      Row(
                         children: [
-
-                          Row(
-                            children: [
-                              PickerItem(
-                                name: 'Gryffindor',
-                                imageSrc: 'assets/house_crests/gryffindor-96.png',
-                                backgroundColor: notifier.buttonColors[0],
-                                onTap: () => onPickerItemTap(0, 'Gryffindor',),
-                              ),
-
-                              const SizedBox(width: 8.0,),
-
-                              PickerItem(
-                                name: 'Slytherin',
-                                imageSrc: 'assets/house_crests/slytherin-96.png',
-                                backgroundColor: notifier.buttonColors[1],
-                                onTap: () => onPickerItemTap(1, 'Slytherin'),
-                              ),
-                            ],
+                          PickerItem(
+                            name: 'Gryffindor',
+                            imageSrc: 'assets/house_crests/gryffindor-96.png',
+                            backgroundColor: notifier.buttonColors[0],
+                            onTap: () => onPickerItemTap(0, 'Gryffindor',),
                           ),
 
-                          const SizedBox(height: 8.0,),
+                          const SizedBox(width: 8.0,),
 
-                          Row(
-                            children: [
-                              PickerItem(
-                                name: 'Ravenclaw',
-                                imageSrc: 'assets/house_crests/ravenclaw-96.png',
-                                backgroundColor: notifier.buttonColors[2],
-                                onTap: () => onPickerItemTap(2, 'Ravenclaw'),
-                              ),
-
-                              const SizedBox(width: 8.0,),
-
-                              PickerItem(
-                                name: 'Hufflepuff',
-                                imageSrc: 'assets/house_crests/hufflepuff-96.png',
-                                backgroundColor: notifier.buttonColors[3],
-                                onTap: () => onPickerItemTap(3, 'Hufflepuff'),
-                              ),
-                            ],
+                          PickerItem(
+                            name: 'Slytherin',
+                            imageSrc: 'assets/house_crests/slytherin-96.png',
+                            backgroundColor: notifier.buttonColors[1],
+                            onTap: () => onPickerItemTap(1, 'Slytherin'),
                           ),
-
-                          const SizedBox(height: 8.0,),
-
-                          Row(
-                            children: [
-                              PickerItem(
-                                name: 'Not in House',
-                                backgroundColor: notifier.buttonColors[4],
-                                onTap: () => onPickerItemTap(4, ''),
-                              ),
-                            ],
-                          ),
-
                         ],
                       ),
-                    );
 
-                  },
-                ),
+                      const SizedBox(height: 8.0,),
 
-              ],
+                      Row(
+                        children: [
+                          PickerItem(
+                            name: 'Ravenclaw',
+                            imageSrc: 'assets/house_crests/ravenclaw-96.png',
+                            backgroundColor: notifier.buttonColors[2],
+                            onTap: () => onPickerItemTap(2, 'Ravenclaw'),
+                          ),
+
+                          const SizedBox(width: 8.0,),
+
+                          PickerItem(
+                            name: 'Hufflepuff',
+                            imageSrc: 'assets/house_crests/hufflepuff-96.png',
+                            backgroundColor: notifier.buttonColors[3],
+                            onTap: () => onPickerItemTap(3, 'Hufflepuff'),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 8.0,),
+
+                      Row(
+                        children: [
+                          PickerItem(
+                            name: 'Not in House',
+                            backgroundColor: notifier.buttonColors[4],
+                            onTap: () => onPickerItemTap(4, ''),
+                          ),
+                        ],
+                      ),
+
+                    ],
+                  ),
+                );
+
+              },
             ),
-          ),
-        );
-      }
+
+          ],
+        ),
+      ),
     );
   }
 
@@ -283,7 +290,9 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     context.router.push(DetailRoute(name: character.name));
   }
 
-  void onResetButtonTapped(CharacterDTO? character) {
+  void onResetButtonTapped() {
+
+    final character = context.read<CharacterNotifier>().character;
     if (character == null) return;
 
     context.read<CharacterStatsNotifier>().resetAllCounts(character.name);
