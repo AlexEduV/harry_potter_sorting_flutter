@@ -43,6 +43,8 @@ harry_potter_sorting_flutter/
 |── fonts/                  # project fonts
 |── ios/                    # iOS configuration
 ├── lib/                    # main project folder
+│   ├── core/                
+│   │   └── di/             # dependency injection (get_it)
 │   ├── data/               
 │   │   ├── database/       # drift schema and access point
 │   │   ├── network/        # dio client handler   
