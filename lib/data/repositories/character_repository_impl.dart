@@ -12,6 +12,7 @@ import 'package:harry_potter_sorting_flutter/domain/models/info_stats_entity.dar
 import 'package:harry_potter_sorting_flutter/domain/repositories/character_repository.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_stats_notifier.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/picker_color_notifier.dart';
 import 'package:provider/provider.dart';
 
 class CharacterRepositoryImpl implements CharacterRepository {
@@ -170,6 +171,30 @@ class CharacterRepositoryImpl implements CharacterRepository {
         failCount: Value(0),
         successCount: Value(0),
       ));
+
+  }
+
+  @override
+  void mapCharacterToProviders(Character result, BuildContext context) {
+
+    final character = CharacterDTO(
+      id: result.longId,
+      name: result.name,
+      imageSrc: result.imageSrc,
+      house: result.house,
+      actor: result.actor,
+      species: result.species,
+    );
+
+    final statsEntity = InfoStatsEntity(
+      totalCount: result.totalCount,
+      successCount: result.successCount,
+      failCount: result.failCount,
+    );
+
+    context.read<CharacterNotifier>().updateCharacter(character);
+    context.read<PickerColorNotifier>().resetColors();
+    context.read<CharacterStatsNotifier>().updateAllCounts(statsEntity);
 
   }
 

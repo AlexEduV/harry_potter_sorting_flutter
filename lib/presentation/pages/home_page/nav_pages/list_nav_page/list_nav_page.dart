@@ -1,6 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
+import 'package:harry_potter_sorting_flutter/data/network/dio_client.dart';
+import 'package:harry_potter_sorting_flutter/data/repositories/character_repository_impl.dart';
+import 'package:harry_potter_sorting_flutter/domain/models/character_dto.dart';
+import 'package:harry_potter_sorting_flutter/domain/models/info_stats_entity.dart';
 import 'package:harry_potter_sorting_flutter/presentation/common/widgets/info_box.dart';
 import 'package:harry_potter_sorting_flutter/presentation/common/widgets/reset_button.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/character_list_notifier.dart';
@@ -11,6 +15,9 @@ import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pa
 import 'package:harry_potter_sorting_flutter/presentation/common/widgets/character_photo.dart';
 import 'package:harry_potter_sorting_flutter/router/router.dart';
 import 'package:provider/provider.dart';
+
+import '../home_nav_page/notifiers/character_stats_notifier.dart';
+import '../home_nav_page/notifiers/picker_color_notifier.dart';
 
 class ListNavPage extends StatefulWidget {
 
@@ -170,12 +177,13 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
                                       icon: Icons.refresh,
                                       backgroundColor: Colors.grey,
                                       onTap: () {
-
                                         //hide keyboard
                                         FocusScope.of(context).unfocus();
 
                                         context.read<BottomNavIndexNotifier>().updateIndex(0);
-                                        context.read<CharacterNotifier>().selectCharacter(character);
+
+                                        CharacterRepositoryImpl(DioClient.client)
+                                            .mapCharacterToProviders(character, context);
                                       }
                                     ),
 

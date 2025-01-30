@@ -99,11 +99,6 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                       Consumer<CharacterNotifier>(
                         builder: (context, characterNotifier, child) {
 
-                          if (characterNotifier.selectedCharacter != null) {
-                            loadCharacter(selectedCharacter: characterNotifier.selectedCharacter);
-                            context.read<CharacterNotifier>().clearSelection();
-                          }
-
                           final CharacterDTO? character = characterNotifier.character;
 
                           return Column(
@@ -212,31 +207,13 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     );
   }
 
-  Future<void> loadCharacter({Character? selectedCharacter}) async {
+  Future<void> loadCharacter() async {
 
-    Character result = selectedCharacter ?? await CharacterRepositoryImpl(DioClient.client).getCharacter();
+    Character result = await CharacterRepositoryImpl(DioClient.client).getCharacter();
 
     if (!mounted) return;
 
-    final character = CharacterDTO(
-      id: result.longId,
-      name: result.name,
-      imageSrc: result.imageSrc,
-      house: result.house,
-      actor: result.actor,
-      species: result.species,
-    );
-
-    context.read<CharacterNotifier>().updateCharacter(character);
-    context.read<PickerColorNotifier>().resetColors();
-
-    final statsEntity = InfoStatsEntity(
-      totalCount: result.totalCount,
-      successCount: result.successCount,
-      failCount: result.failCount,
-    );
-    context.read<CharacterStatsNotifier>().updateAllCounts(statsEntity);
-
+    CharacterRepositoryImpl(DioClient.client).mapCharacterToProviders(result, context);
   }
 
   bool isRightHouse(CharacterDTO? character, String value) {
