@@ -211,7 +211,15 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     // if it's not a first character loaded, the previous value remains
     // try to fix the issue with provider, maybe that's the root;
 
-    final result = await CharacterRepositoryImpl(DioClient.client).getCharacter(selectedCharacter, context);
+    Character? result;
+
+    if (selectedCharacter != null) {
+      result = selectedCharacter;
+      context.read<CharacterNotifier>().clearSelection();
+    }
+    else {
+      result = await CharacterRepositoryImpl(DioClient.client).getCharacter();
+    }
 
     if (!mounted) return;
 
@@ -271,7 +279,9 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
       final failedCount = context.read<CharacterStatsNotifier>().failedCount;
       final successCount = context.read<CharacterStatsNotifier>().successCount;
 
-      DatabaseProvider.getDatabase().update(DatabaseProvider.getDatabase().characters)
+      final database = DatabaseProvider.getDatabase();
+
+      database.update(database.characters)
         ..where((table) => table.name.equals(character!.name))
         ..write(CharactersCompanion(
           totalCount: drift.Value(totalCount),

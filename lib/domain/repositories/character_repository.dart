@@ -6,7 +6,7 @@ import 'package:harry_potter_sorting_flutter/domain/models/info_stats_entity.dar
 abstract class CharacterRepository {
   Future<CharacterDTO> loadRandomCharacter();
   Future<Character?> getCharacterByName(String name);
-  Future<Character> getCharacter(Character? selectedCharacter, BuildContext context);
+  Future<Character> getCharacter();
   void resetCharacterAttemptsStats(String name);
 
   Future<List<Character>> getAllSubmittedCharacters({String filter = ''});

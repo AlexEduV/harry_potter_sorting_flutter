@@ -74,57 +74,50 @@ class CharacterRepositoryImpl implements CharacterRepository {
   }
 
   @override
-  Future<Character> getCharacter(Character? selectedCharacter, BuildContext context) async {
-    if (selectedCharacter != null) {
-      //clear the selection
-      context.read<CharacterNotifier>().clearSelection();
+  Future<Character> getCharacter() async {
 
-      return selectedCharacter;
+    final result = await loadRandomCharacter();
+
+    final database = DatabaseProvider.getDatabase();
+
+    //load tries from the base or insert a new character
+    Character? dbResult = await database.managers
+        .characters.filter((table) => table.name.equals(result.name))
+        .getSingleOrNull();
+
+    if (dbResult == null) {
+
+      //insert a new character
+      await database.into(database.characters).insert(
+
+          CharactersCompanion.insert(
+            longId: result.id,
+            name: result.name,
+            imageSrc: result.imageSrc,
+            house: result.house,
+            actor: result.actor,
+            species: result.species,
+            dateOfBirth: result.dateOfBirth ?? '',
+          )
+      );
+
+      dbResult = Character(
+        id: 0,
+        longId: result.id,
+        name: result.name,
+        imageSrc: result.imageSrc,
+        house: result.house,
+        actor: result.actor,
+        species: result.species,
+        dateOfBirth: result.dateOfBirth ?? '',
+        successCount: 0,
+        failCount: 0,
+        totalCount: 0,
+      );
     }
-    else {
 
-      final result = await loadRandomCharacter();
+    return dbResult;
 
-      final database = DatabaseProvider.getDatabase();
-
-      //load tries from the base or insert a new character
-      Character? dbResult = await database.managers
-          .characters.filter((table) => table.name.equals(result.name))
-          .getSingleOrNull();
-
-      if (dbResult == null) {
-
-        //insert a new character
-        await database.into(database.characters).insert(
-
-            CharactersCompanion.insert(
-              longId: result.id,
-              name: result.name,
-              imageSrc: result.imageSrc,
-              house: result.house,
-              actor: result.actor,
-              species: result.species,
-              dateOfBirth: result.dateOfBirth ?? '',
-            )
-        );
-
-        dbResult = Character(
-          id: 0,
-          longId: result.id,
-          name: result.name,
-          imageSrc: result.imageSrc,
-          house: result.house,
-          actor: result.actor,
-          species: result.species,
-          dateOfBirth: result.dateOfBirth ?? '',
-          successCount: 0,
-          failCount: 0,
-          totalCount: 0,
-        );
-      }
-
-      return dbResult;
-    }
   }
 
   @override
