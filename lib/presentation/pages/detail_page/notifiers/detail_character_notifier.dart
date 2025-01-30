@@ -17,5 +17,4 @@ class DetailCharacterNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-
 }
