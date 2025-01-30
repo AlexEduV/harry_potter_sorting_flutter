@@ -51,8 +51,15 @@ class PickerItem extends StatelessWidget {
                   name,
                   style: TextStyle(
                     fontSize: 22,
-                    fontWeight: imageSrc == null ? FontWeight.bold : null,
-                    color: backgroundColor != Colors.grey.shade300 ? Colors.white : AppColors.deepGold,
+                    fontWeight: FontWeight.bold,
+                    color: backgroundColor != AppColors.pickerDefaultButtonColor ? Colors.white : Colors.amber,
+                    shadows: const [
+                      Shadow(
+                        blurRadius: 2.0,
+                        color: Colors.black54,
+                        offset: Offset(1.5, 1.5),
+                      ),
+                    ],
                   ),
                 ),
 
