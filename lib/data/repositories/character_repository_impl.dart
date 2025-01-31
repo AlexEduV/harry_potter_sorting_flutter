@@ -5,7 +5,6 @@ import 'package:drift/drift.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_provider.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
-import 'package:harry_potter_sorting_flutter/data/network/dio_client.dart';
 import 'package:harry_potter_sorting_flutter/data/services/character_api_service.dart';
 import 'package:harry_potter_sorting_flutter/domain/models/character_dto.dart';
 import 'package:harry_potter_sorting_flutter/domain/models/character_entity.dart';
@@ -28,17 +27,17 @@ class CharacterRepositoryImpl implements CharacterRepository {
 
     try {
 
-      final response = context.read<CharacterCacheProvider>().characters;
+      final characters = context.read<CharacterCacheProvider>().characters;
 
       //get random character
-      if (response.isEmpty) {
+      if (characters.isEmpty) {
         throw Exception('List is empty!');
       }
 
       final random = Random();
-      int index = random.nextInt(response.length);
+      int index = random.nextInt(characters.length);
 
-      final result = response[index];
+      final result = characters[index];
 
       return CharacterEntity(
           id: result.id,
@@ -50,8 +49,7 @@ class CharacterRepositoryImpl implements CharacterRepository {
           species: result.species,
       );
 
-    } on DioException catch (e) {
-      DioClient.handleError(e);
+    } catch (e) {
       throw Exception('Error while loading new character');
     }
 

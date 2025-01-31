@@ -31,7 +31,6 @@ class HomeNavPage extends StatefulWidget {
 class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   //todo: I have made draggable only part of the screen, which may cause some confusion
-  //todo: move business logic away from presentation layer
 
   @override
   void initState() {
@@ -223,6 +222,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   Future<void> loadCharacter() async {
 
+    //todo: move this from presentation layer
     Character result = await CharacterRepositoryImpl(getIt<Dio>()).getCharacter(context);
 
     if (!mounted) return;
@@ -239,28 +239,33 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
   
   void onPickerItemTap(int index, String houseName) async {
 
-    if (context.read<PickerColorNotifier>().containsActiveColor) {
+    final pickerColorNotifier = context.read<PickerColorNotifier>();
+    final characterStatsNotifier = context.read<CharacterStatsNotifier>();
+    final characterNotifier = context.read<CharacterNotifier>();
+
+    if (pickerColorNotifier.containsActiveColor) {
       return;
     }
 
-    context.read<CharacterStatsNotifier>().incrementTotal();
+    characterStatsNotifier.incrementTotal();
 
-    final character = context.read<CharacterNotifier>().character;
+    final character = characterNotifier.character;
     if (isRightHouse(character, houseName)) {
-      context.read<CharacterStatsNotifier>().incrementSuccessCount();
-      context.read<PickerColorNotifier>().updateColor(index, Colors.green);
+      characterStatsNotifier.incrementSuccessCount();
+      pickerColorNotifier.updateColor(index, Colors.green);
     }
     else {
-      context.read<CharacterStatsNotifier>().incrementFailedCount();
-      context.read<PickerColorNotifier>().updateColor(index, Colors.red);
+      characterStatsNotifier.incrementFailedCount();
+      pickerColorNotifier.updateColor(index, Colors.red);
     }
 
     //update database by name
+    //todo: move this code to domain layer;
     if (character?.name != null) {
 
-      final totalCount = context.read<CharacterStatsNotifier>().totalCount;
-      final failedCount = context.read<CharacterStatsNotifier>().failedCount;
-      final successCount = context.read<CharacterStatsNotifier>().successCount;
+      final totalCount = characterStatsNotifier.totalCount;
+      final failedCount = characterStatsNotifier.failedCount;
+      final successCount = characterStatsNotifier.successCount;
 
       final database = DatabaseProvider.getDatabase();
 
