@@ -26,7 +26,7 @@ Harry Potter Magic Sorting Hat App
 - Dio, JsonSerializable, Retrofit (Rest API)
 - Auto_Route (Routing)
 - Drift (Database)
-- CachedNetworkImage
+- CachedNetworkImage, get_it (dependency injection)
 
 ## Architecture
 This project follows a **Clean Architecture** structure with the following layers:
@@ -43,6 +43,8 @@ harry_potter_sorting_flutter/
 |── fonts/                  # project fonts
 |── ios/                    # iOS configuration
 ├── lib/                    # main project folder
+│   ├── core/                
+│   │   └── di/             # dependency injection (get_it)
 │   ├── data/               
 │   │   ├── database/       # drift schema and access point
 │   │   ├── network/        # dio client handler   

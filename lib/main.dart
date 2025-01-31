@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:harry_potter_sorting_flutter/data/network/dio_client.dart';
-import 'package:harry_potter_sorting_flutter/data/repositories/character_repository_impl.dart';
+import 'package:harry_potter_sorting_flutter/core/di/dependency_injection.dart';
 import 'package:harry_potter_sorting_flutter/domain/usecases/reset_character_stats_usecase.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/detail_page/notifiers/detail_character_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_cache_provider.dart';
@@ -20,23 +19,17 @@ void main() {
     debugPrint = (String? message, {int? wrapWidth}) {};
   }
 
+  setupDependencies();
+
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => CharacterNotifier()),
         ChangeNotifierProvider(create: (_) => BottomNavIndexNotifier()),
-        ChangeNotifierProvider(create: (_) => CharacterStatsNotifier(
-          ResetCharacterStatsUseCase(
-            CharacterRepositoryImpl(DioClient.client),
-          ),
-        )),
+        ChangeNotifierProvider(create: (_) => CharacterStatsNotifier(getIt<ResetCharacterStatsUseCase>())),
         ChangeNotifierProvider(create: (_) => PickerColorNotifier()),
         ChangeNotifierProvider(create: (_) => DetailCharacterNotifier()),
-        ChangeNotifierProvider(create: (_) => CharacterListNotifier(
-          GetCharactersUseCase(
-              CharacterRepositoryImpl(DioClient.client),
-          ),
-        )),
+        ChangeNotifierProvider(create: (_) => CharacterListNotifier(getIt<GetCharactersUseCase>())),
         ChangeNotifierProvider(create: (_) => FilterValueNotifier()),
         ChangeNotifierProvider(create: (_) => CharacterCacheProvider()),
       ],
