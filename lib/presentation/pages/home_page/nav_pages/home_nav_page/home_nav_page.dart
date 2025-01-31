@@ -3,7 +3,6 @@ import 'package:dio/dio.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:harry_potter_sorting_flutter/core/di/dependency_injection.dart';
-import 'package:harry_potter_sorting_flutter/data/network/dio_client.dart';
 import 'package:harry_potter_sorting_flutter/data/repositories/character_repository_impl.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_provider.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';

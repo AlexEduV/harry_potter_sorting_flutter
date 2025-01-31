@@ -3,7 +3,7 @@ import 'package:harry_potter_sorting_flutter/presentation/style/app_colors.dart'
 
 class PickerColorNotifier extends ChangeNotifier {
 
-  static final Color defaultColor = AppColors.pickerDefaultButtonColor;
+  static const Color defaultColor = AppColors.pickerDefaultButtonColor;
 
   List<Color> _buttonColors = List.filled(5, defaultColor);
   List<Color> get buttonColors => _buttonColors;
