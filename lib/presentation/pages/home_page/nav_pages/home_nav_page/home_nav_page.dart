@@ -31,7 +31,6 @@ class HomeNavPage extends StatefulWidget {
 class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   //todo: I have made draggable only part of the screen, which may cause some confusion
-  //todo: move business logic away from presentation layer
 
   @override
   void initState() {
@@ -223,6 +222,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   Future<void> loadCharacter() async {
 
+    //todo: move this from presentation layer
     Character result = await CharacterRepositoryImpl(getIt<Dio>()).getCharacter(context);
 
     if (!mounted) return;
@@ -256,6 +256,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     }
 
     //update database by name
+    //todo: move this code to domain layer;
     if (character?.name != null) {
 
       final totalCount = context.read<CharacterStatsNotifier>().totalCount;
