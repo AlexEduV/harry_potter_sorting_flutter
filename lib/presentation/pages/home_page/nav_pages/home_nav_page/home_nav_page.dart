@@ -99,7 +99,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                           return Column(
                             children: [
 
-
+                              //todo: apply shimmer effect to both photo and text while the first time loading
                               Consumer<CharacterCacheProvider>(
                                 builder: (context, cacheNotifier, child) {
 
