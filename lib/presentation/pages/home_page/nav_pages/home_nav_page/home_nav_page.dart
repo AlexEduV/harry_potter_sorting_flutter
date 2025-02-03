@@ -101,9 +101,9 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
 
                               Consumer<CharacterCacheProvider>(
-                                builder: (context, notifier, child) {
+                                builder: (context, cacheNotifier, child) {
 
-                                  if (!notifier.isLoading) {
+                                  if (!cacheNotifier.isLoading) {
                                     return CharacterPhoto(
                                       imageSrc: character?.imageSrc,
                                       onTap: () => openDetailsPage(character?.name),
