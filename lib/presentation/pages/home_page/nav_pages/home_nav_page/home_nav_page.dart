@@ -31,6 +31,8 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   //todo: I have made draggable only part of the screen, which may cause some confusion
 
+  //todo: apply shimmer effect to both photo and text while the first time loading
+
   @override
   void initState() {
     super.initState();
@@ -99,16 +101,12 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                           return Column(
                             children: [
 
-                              //todo: apply shimmer effect to both photo and text while the first time loading
+                              //todo: the animation is horrible, even in profile mode
+                              // but the key does not help, for both loader sizedBox and progress bar
                               Consumer<CharacterCacheProvider>(
                                 builder: (context, cacheNotifier, child) {
 
-                                  if (!cacheNotifier.isLoading) {
-                                    return CharacterPhoto(
-                                      imageSrc: character?.imageSrc,
-                                      onTap: () => openDetailsPage(character?.name),
-                                    );
-                                  } else {
+                                  if (cacheNotifier.isLoading || cacheNotifier.characters.isEmpty) {
                                     return const SizedBox(
                                       width: 50,
                                       height: 180,
@@ -117,6 +115,11 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                                           valueColor: AlwaysStoppedAnimation<Color>(AppColors.gold),
                                         ),
                                       ),
+                                    );
+                                  } else {
+                                    return CharacterPhoto(
+                                      imageSrc: character?.imageSrc,
+                                      onTap: () => openDetailsPage(character?.name),
                                     );
                                   }
                                 }
