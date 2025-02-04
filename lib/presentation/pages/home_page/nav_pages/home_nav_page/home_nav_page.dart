@@ -1,9 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:drift/drift.dart' as drift;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:harry_potter_sorting_flutter/core/di/dependency_injection.dart';
-import 'package:harry_potter_sorting_flutter/data/network/dio_client.dart';
 import 'package:harry_potter_sorting_flutter/data/repositories/character_repository_impl.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_provider.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
@@ -32,14 +32,15 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   //todo: I have made draggable only part of the screen, which may cause some confusion
 
+  //todo: apply shimmer effect to both photo and text while the first time loading
+
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _loadCharacters();
-
-      await loadCharacter();
+      await Future.microtask(() => _loadCharacters());
+      await Future.microtask(() => loadCharacter());
 
     });
   }
@@ -100,27 +101,29 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                           return Column(
                             children: [
 
-
                               Consumer<CharacterCacheProvider>(
-                                builder: (context, notifier, child) {
+                                builder: (context, cacheNotifier, child) {
 
-                                  if (!notifier.isLoading) {
+                                  if (cacheNotifier.isLoading || cacheNotifier.characters.isEmpty) {
+                                    return child!;
+                                  } else {
                                     return CharacterPhoto(
                                       imageSrc: character?.imageSrc,
                                       onTap: () => openDetailsPage(character?.name),
                                     );
-                                  } else {
-                                    return const SizedBox(
-                                      width: 50,
-                                      height: 180,
-                                      child: Center(
-                                        child: CircularProgressIndicator(
-                                          valueColor: AlwaysStoppedAnimation<Color>(AppColors.gold),
-                                        ),
-                                      ),
-                                    );
                                   }
-                                }
+                                },
+                                child: const SizedBox(
+                                  width: 50,
+                                  height: 180,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      color: AppColors.gold,
+                                      strokeWidth: 2.0,
+                                      backgroundColor: Colors.transparent,
+                                    ),
+                                  ),
+                                ),
                               ),
 
                               const SizedBox(height: 8.0,),
