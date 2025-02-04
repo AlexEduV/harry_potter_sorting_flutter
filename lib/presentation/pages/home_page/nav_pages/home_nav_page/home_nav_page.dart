@@ -101,8 +101,6 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                           return Column(
                             children: [
 
-                              //todo: the animation is horrible, even in profile mode
-                              // but the key does not help, for both loader sizedBox and progress bar
                               Consumer<CharacterCacheProvider>(
                                 builder: (context, cacheNotifier, child) {
 
