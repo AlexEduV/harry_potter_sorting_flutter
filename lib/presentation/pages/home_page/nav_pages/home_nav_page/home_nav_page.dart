@@ -107,22 +107,23 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                                 builder: (context, cacheNotifier, child) {
 
                                   if (cacheNotifier.isLoading || cacheNotifier.characters.isEmpty) {
-                                    return const SizedBox(
-                                      width: 50,
-                                      height: 180,
-                                      child: Center(
-                                        child: CircularProgressIndicator(
-                                          valueColor: AlwaysStoppedAnimation<Color>(AppColors.gold),
-                                        ),
-                                      ),
-                                    );
+                                    return child!;
                                   } else {
                                     return CharacterPhoto(
                                       imageSrc: character?.imageSrc,
                                       onTap: () => openDetailsPage(character?.name),
                                     );
                                   }
-                                }
+                                },
+                                child: const SizedBox(
+                                  width: 50,
+                                  height: 180,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(AppColors.gold),
+                                    ),
+                                  ),
+                                ),
                               ),
 
                               const SizedBox(height: 8.0,),
