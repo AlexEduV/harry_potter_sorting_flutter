@@ -1,5 +1,6 @@
 # harry_potter_sorting_flutter
-Harry Potter Magic Sorting Hat App
+
+A quiz game, set in the Harry Potter universe, that let's you guess random character's house, implemented in Flutter.
 
 ## Table of Contents
 - [Features](#features)
