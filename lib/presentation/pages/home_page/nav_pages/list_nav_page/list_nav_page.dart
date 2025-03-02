@@ -89,6 +89,25 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
                 trailing: const [
                   Icon(Icons.search),
                 ],
+                backgroundColor: const WidgetStatePropertyAll(Colors.white),
+                elevation: const WidgetStatePropertyAll(0.0),
+                shape: WidgetStateProperty.resolveWith<RoundedRectangleBorder>(
+                  (Set<WidgetState> states) {
+                    if (states.contains(WidgetState.focused)) {
+
+                      return RoundedRectangleBorder(
+                        side: const BorderSide(color: Colors.black54, width: 2.0), // Highlighted border
+                        borderRadius: BorderRadius.circular(32.0),
+                      );
+                    }
+
+                    //default value
+                    return  RoundedRectangleBorder(
+                      side: BorderSide(color: Colors.grey.shade200, width: 2.0),
+                      borderRadius: BorderRadius.circular(32.0),
+                    );
+                  }
+                ),
                 keyboardType: TextInputType.name,
                 onChanged: (value) async {
 

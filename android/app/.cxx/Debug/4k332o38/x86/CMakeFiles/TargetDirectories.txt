@@ -1,0 +1,2 @@
+/Users/alex/Development/Repositories/harry_potter_sorting_flutter/android/app/.cxx/Debug/4k332o38/x86/CMakeFiles/edit_cache.dir
+/Users/alex/Development/Repositories/harry_potter_sorting_flutter/android/app/.cxx/Debug/4k332o38/x86/CMakeFiles/rebuild_cache.dir
