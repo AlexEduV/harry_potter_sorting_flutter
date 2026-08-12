@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:harry_potter_sorting_flutter/domain/models/character_dto.dart';
+import 'package:harry_potter_sorting_flutter/data/dto/character_dto.dart';
 import 'package:retrofit/error_logger.dart';
 import 'package:retrofit/http.dart';
 
@@ -13,5 +13,4 @@ abstract class CharacterApiService {
 
   @GET('/characters')
   Future<List<CharacterDTO>> getAllCharacters();
-
 }

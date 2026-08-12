@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:harry_potter_sorting_flutter/domain/models/info_stats_entity.dart';
+import 'package:harry_potter_sorting_flutter/domain/entities/info_stats_entity.dart';
 
 void main() {
   group('InfoStatsEntity', () {

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:harry_potter_sorting_flutter/domain/models/character_entity.dart';
+import 'package:harry_potter_sorting_flutter/domain/entities/character_entity.dart';
 
 void main() {
   group('CharacterEntity', () {
