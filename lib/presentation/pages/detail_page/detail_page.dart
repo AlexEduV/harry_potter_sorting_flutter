@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 
 @RoutePage()
 class DetailPage extends StatefulWidget {
-
   final String name;
 
   const DetailPage({
@@ -20,28 +19,24 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> with WidgetsBindingObserver {
-
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       //load data from the base by name
-      await getCharacterByName(widget.name);
-
+      initCharacterByName(widget.name);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.name),
       ),
       body: Consumer<DetailCharacterNotifier>(
         builder: (context, notifier, child) {
-
           final character = notifier.character;
 
           return Padding(
@@ -50,47 +45,33 @@ class _DetailPageState extends State<DetailPage> with WidgetsBindingObserver {
               crossAxisAlignment: CrossAxisAlignment.start,
               spacing: 32.0,
               children: [
-
                 CharacterPhoto(imageSrc: character?.imageSrc ?? ''),
-
                 if (character?.successCount != null && character!.successCount > 0)
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     spacing: 12.0,
                     children: [
-
                       DetailListItem(label: 'House:', value: character.house),
-
                       DetailListItem(label: 'Date of Birth:', value: character.dateOfBirth),
-
                       DetailListItem(label: 'Actor:', value: character.actor),
-
                       DetailListItem(label: 'Species:', value: character.species),
-
                     ],
                   ),
-
                 if (character?.successCount == 0)
                   Expanded(
                     child: SizedBox(
-                      child: ClipRRect(
-                          child: Image.asset('assets/access-denied-badge.png')
-                      ),
+                      child: ClipRRect(child: Image.asset('assets/access-denied-badge.png')),
                     ),
                   ),
-
               ],
             ),
           );
-
         },
       ),
     );
-
   }
 
-  Future<void> getCharacterByName(String name) async {
+  void initCharacterByName(String name) {
     context.read<DetailCharacterNotifier>().setCharacter(name);
   }
-
 }
