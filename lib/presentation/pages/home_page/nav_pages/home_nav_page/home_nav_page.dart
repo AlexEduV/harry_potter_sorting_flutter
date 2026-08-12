@@ -1,12 +1,11 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:dio/dio.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:harry_potter_sorting_flutter/core/di/dependency_injection.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_provider.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
-import 'package:harry_potter_sorting_flutter/data/repositories/character_repository_impl.dart';
 import 'package:harry_potter_sorting_flutter/domain/entities/character_entity.dart';
+import 'package:harry_potter_sorting_flutter/domain/repositories/character_repository.dart';
 import 'package:harry_potter_sorting_flutter/presentation/common/widgets/character_photo.dart';
 import 'package:harry_potter_sorting_flutter/presentation/common/widgets/info_box.dart';
 import 'package:harry_potter_sorting_flutter/presentation/common/widgets/reset_button.dart';
@@ -211,11 +210,11 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   Future<void> loadCharacter() async {
     //todo: move this from presentation layer
-    Character result = await CharacterRepositoryImpl(getIt<Dio>()).getCharacter(context);
+    Character result = await getIt<CharacterRepository>().getCharacter(context);
 
     if (!mounted) return;
 
-    CharacterRepositoryImpl(getIt<Dio>()).mapCharacterToProviders(result, context);
+    getIt<CharacterRepository>().mapCharacterToProviders(result, context);
   }
 
   bool isRightHouse(CharacterEntity? character, String value) {

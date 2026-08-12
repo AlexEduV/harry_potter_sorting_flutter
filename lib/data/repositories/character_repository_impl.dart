@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:harry_potter_sorting_flutter/data/database/database_provider.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
 import 'package:harry_potter_sorting_flutter/data/dto/character_dto.dart';
 import 'package:harry_potter_sorting_flutter/data/services/character_api_service.dart';
@@ -18,8 +17,9 @@ import 'package:provider/provider.dart';
 
 class CharacterRepositoryImpl implements CharacterRepository {
   final Dio client;
+  final AppDatabase _database;
 
-  CharacterRepositoryImpl(this.client);
+  CharacterRepositoryImpl(this.client, this._database);
 
   @override
   CharacterEntity loadRandomCharacter(BuildContext context) {
@@ -52,7 +52,7 @@ class CharacterRepositoryImpl implements CharacterRepository {
 
   @override
   Future<List<Character>> getAllSubmittedCharacters({String filter = ''}) async {
-    final result = await DatabaseProvider.getDatabase().managers.characters.get();
+    final result = await _database.managers.characters.get();
 
     final filteredResult = filter.isNotEmpty
         ? result
@@ -65,7 +65,7 @@ class CharacterRepositoryImpl implements CharacterRepository {
 
   @override
   Future<Character> getCharacterByName(String name) async {
-    final results = await DatabaseProvider.getDatabase().managers.characters.get();
+    final results = await _database.managers.characters.get();
 
     final result = results.firstWhere((character) => character.name == name);
 
@@ -76,16 +76,14 @@ class CharacterRepositoryImpl implements CharacterRepository {
   Future<Character> getCharacter(BuildContext context) async {
     final result = loadRandomCharacter(context);
 
-    final database = DatabaseProvider.getDatabase();
-
     //load tries from the base or insert a new character
-    Character? dbResult = await database.managers.characters
+    Character? dbResult = await _database.managers.characters
         .filter((table) => table.name.equals(result.name))
         .getSingleOrNull();
 
     if (dbResult == null) {
       //insert a new character
-      await database.into(database.characters).insert(CharactersCompanion.insert(
+      await _database.into(_database.characters).insert(CharactersCompanion.insert(
             longId: result.id,
             name: result.name,
             imageSrc: result.imageSrc,
@@ -115,18 +113,16 @@ class CharacterRepositoryImpl implements CharacterRepository {
 
   @override
   Future<InfoStatsEntity> getTotalStats() async {
-    final database = DatabaseProvider.getDatabase();
-
-    final result = await (database.selectOnly(database.characters)
+    final result = await (_database.selectOnly(_database.characters)
           ..addColumns([
-            database.characters.totalCount.sum(),
-            database.characters.successCount.sum(),
-            database.characters.failCount.sum(),
+            _database.characters.totalCount.sum(),
+            _database.characters.successCount.sum(),
+            _database.characters.failCount.sum(),
           ]))
         .map((row) => (
-              totalCount: row.read(database.characters.totalCount.sum()) ?? 0,
-              successCount: row.read(database.characters.successCount.sum()) ?? 0,
-              failCount: row.read(database.characters.failCount.sum()) ?? 0,
+              totalCount: row.read(_database.characters.totalCount.sum()) ?? 0,
+              successCount: row.read(_database.characters.successCount.sum()) ?? 0,
+              failCount: row.read(_database.characters.failCount.sum()) ?? 0,
             ))
         .getSingle();
 
@@ -139,10 +135,7 @@ class CharacterRepositoryImpl implements CharacterRepository {
 
   @override
   void resetCharacterAttemptsStats(String name) {
-    //update database values for the character
-    final database = DatabaseProvider.getDatabase();
-
-    database.update(database.characters)
+    _database.update(_database.characters)
       ..where((table) => table.name.equals(name))
       ..write(const CharactersCompanion(
         totalCount: Value(0),
@@ -153,9 +146,7 @@ class CharacterRepositoryImpl implements CharacterRepository {
 
   @override
   Future<void> resetAllCharactersAttemptsStats() async {
-    final database = DatabaseProvider.getDatabase();
-
-    await database.update(database.characters).write(const CharactersCompanion(
+    await _database.update(_database.characters).write(const CharactersCompanion(
           totalCount: Value(0),
           failCount: Value(0),
           successCount: Value(0),

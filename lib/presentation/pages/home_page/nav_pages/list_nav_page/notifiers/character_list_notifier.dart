@@ -1,12 +1,11 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:harry_potter_sorting_flutter/core/di/dependency_injection.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
-import 'package:harry_potter_sorting_flutter/data/repositories/character_repository_impl.dart';
 import 'package:harry_potter_sorting_flutter/domain/usecases/get_characters_usecase.dart';
 
-class CharacterListNotifier extends ChangeNotifier {
+import '../../../../../../domain/repositories/character_repository.dart';
 
+class CharacterListNotifier extends ChangeNotifier {
   final GetCharactersUseCase _getCharactersUseCase;
 
   CharacterListNotifier(this._getCharactersUseCase);
@@ -47,28 +46,23 @@ class CharacterListNotifier extends ChangeNotifier {
   }
 
   Future<void> getInitCombinedStats() async {
-
-    final result = await CharacterRepositoryImpl(getIt<Dio>()).getTotalStats();
+    final result = await getIt<CharacterRepository>().getTotalStats();
 
     _successAll = result.successCount;
     _failedAll = result.failCount;
     _totalAll = result.totalCount;
 
     notifyListeners();
-
   }
 
   Future<void> resetAllCounts() async {
-
     //reset all attempts
-    await CharacterRepositoryImpl(getIt<Dio>()).resetAllCharactersAttemptsStats();
+    await getIt<CharacterRepository>().resetAllCharactersAttemptsStats();
 
     _successAll = 0;
     _failedAll = 0;
     _totalAll = 0;
 
     notifyListeners();
-
   }
-
 }
