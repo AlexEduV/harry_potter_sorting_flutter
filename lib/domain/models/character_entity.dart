@@ -21,4 +21,20 @@ class CharacterEntity {
     required this.species,
   });
 
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CharacterEntity &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name &&
+          imageSrc == other.imageSrc &&
+          house == other.house &&
+          dateOfBirth == other.dateOfBirth &&
+          actor == other.actor &&
+          species == other.species;
+
+  @override
+  int get hashCode => Object.hash(id, name, imageSrc, house, dateOfBirth, actor, species);
+
 }
