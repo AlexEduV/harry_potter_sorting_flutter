@@ -1,35 +1,34 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:drift/drift.dart' as drift;
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:harry_potter_sorting_flutter/core/di/dependency_injection.dart';
-import 'package:harry_potter_sorting_flutter/data/repositories/character_repository_impl.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_provider.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
+import 'package:harry_potter_sorting_flutter/data/repositories/character_repository_impl.dart';
 import 'package:harry_potter_sorting_flutter/domain/models/character_entity.dart';
+import 'package:harry_potter_sorting_flutter/presentation/common/widgets/character_photo.dart';
+import 'package:harry_potter_sorting_flutter/presentation/common/widgets/info_box.dart';
 import 'package:harry_potter_sorting_flutter/presentation/common/widgets/reset_button.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_cache_provider.dart';
-import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_stats_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_notifier.dart';
-import 'package:harry_potter_sorting_flutter/presentation/common/widgets/info_box.dart';
-import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/widgets/picker_item.dart';
-import 'package:harry_potter_sorting_flutter/presentation/common/widgets/character_photo.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_stats_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/picker_color_notifier.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/widgets/picker_item.dart';
 import 'package:harry_potter_sorting_flutter/presentation/style/app_colors.dart';
 import 'package:harry_potter_sorting_flutter/router/router.dart';
 import 'package:provider/provider.dart';
 
 class HomeNavPage extends StatefulWidget {
-
-  const HomeNavPage({super.key,});
+  const HomeNavPage({
+    super.key,
+  });
 
   @override
   State<HomeNavPage> createState() => _HomeNavPageState();
 }
 
 class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
-
   //todo: I have made draggable only part of the screen, which may cause some confusion
 
   //todo: apply shimmer effect to both photo and text while the first time loading
@@ -41,13 +40,11 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Future.microtask(() => _loadCharacters());
       await Future.microtask(() => loadCharacter());
-
     });
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home Screen'),
@@ -65,7 +62,6 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
         backgroundColor: Colors.blue,
         child: Column(
           children: [
-
             Expanded(
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
@@ -73,11 +69,9 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
-
                       // info items
                       Consumer<CharacterStatsNotifier>(
                         builder: (context, notifier, child) {
-
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
@@ -86,87 +80,82 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                               InfoBox(value: '${notifier.failedCount}', description: 'Failed'),
                             ],
                           );
-
                         },
                       ),
 
-                      const SizedBox(height: 32.0,),
+                      const SizedBox(
+                        height: 32.0,
+                      ),
 
                       //photo and name
-                      Consumer<CharacterNotifier>(
-                        builder: (context, characterNotifier, child) {
+                      Consumer<CharacterNotifier>(builder: (context, characterNotifier, child) {
+                        final CharacterEntity? character = characterNotifier.character;
 
-                          final CharacterEntity? character = characterNotifier.character;
-
-                          return Column(
-                            children: [
-
-                              Consumer<CharacterCacheProvider>(
-                                builder: (context, cacheNotifier, child) {
-
-                                  if (cacheNotifier.isLoading || cacheNotifier.characters.isEmpty) {
-                                    return child!;
-                                  } else {
-                                    return CharacterPhoto(
-                                      imageSrc: character?.imageSrc,
-                                      onTap: () => openDetailsPage(character?.name),
-                                    );
-                                  }
-                                },
-                                child: const SizedBox(
-                                  width: 50,
-                                  height: 180,
-                                  child: Center(
-                                    child: CircularProgressIndicator(
-                                      color: AppColors.gold,
-                                      strokeWidth: 2.0,
-                                      backgroundColor: Colors.transparent,
-                                    ),
+                        return Column(
+                          children: [
+                            Consumer<CharacterCacheProvider>(
+                              builder: (context, cacheNotifier, child) {
+                                if (cacheNotifier.isLoading || cacheNotifier.characters.isEmpty) {
+                                  return child!;
+                                } else {
+                                  return CharacterPhoto(
+                                    imageSrc: character?.imageSrc,
+                                    onTap: () => openDetailsPage(character?.name),
+                                  );
+                                }
+                              },
+                              child: const SizedBox(
+                                width: 50,
+                                height: 180,
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    color: AppColors.gold,
+                                    strokeWidth: 2.0,
+                                    backgroundColor: Colors.transparent,
                                   ),
                                 ),
                               ),
-
-                              const SizedBox(height: 8.0,),
-
-                              Text(character?.name ?? '',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 22.0,
-                                ),
+                            ),
+                            const SizedBox(
+                              height: 8.0,
+                            ),
+                            Text(
+                              character?.name ?? '',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 22.0,
                               ),
-
-                            ],
-                          );
-                        }
-                      ),
-
+                            ),
+                          ],
+                        );
+                      }),
                     ],
                   ),
                 ),
               ),
             ),
 
-
             //picker
             Consumer<PickerColorNotifier>(
               builder: (context, notifier, child) {
-
                 return Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
-
                       Row(
                         children: [
                           PickerItem(
                             name: 'Gryffindor',
                             imageSrc: 'assets/house_crests/gryffindor-96.png',
                             backgroundColor: notifier.buttonColors[0],
-                            onTap: () => onPickerItemTap(0, 'Gryffindor',),
+                            onTap: () => onPickerItemTap(
+                              0,
+                              'Gryffindor',
+                            ),
                           ),
-
-                          const SizedBox(width: 8.0,),
-
+                          const SizedBox(
+                            width: 8.0,
+                          ),
                           PickerItem(
                             name: 'Slytherin',
                             imageSrc: 'assets/house_crests/slytherin-96.png',
@@ -175,9 +164,9 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                           ),
                         ],
                       ),
-
-                      const SizedBox(height: 8.0,),
-
+                      const SizedBox(
+                        height: 8.0,
+                      ),
                       Row(
                         children: [
                           PickerItem(
@@ -186,9 +175,9 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                             backgroundColor: notifier.buttonColors[2],
                             onTap: () => onPickerItemTap(2, 'Ravenclaw'),
                           ),
-
-                          const SizedBox(width: 8.0,),
-
+                          const SizedBox(
+                            width: 8.0,
+                          ),
                           PickerItem(
                             name: 'Hufflepuff',
                             imageSrc: 'assets/house_crests/hufflepuff-96.png',
@@ -197,9 +186,9 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                           ),
                         ],
                       ),
-
-                      const SizedBox(height: 8.0,),
-
+                      const SizedBox(
+                        height: 8.0,
+                      ),
                       Row(
                         children: [
                           PickerItem(
@@ -209,14 +198,11 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                           ),
                         ],
                       ),
-
                     ],
                   ),
                 );
-
               },
             ),
-
           ],
         ),
       ),
@@ -224,7 +210,6 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
   }
 
   Future<void> loadCharacter() async {
-
     //todo: move this from presentation layer
     Character result = await CharacterRepositoryImpl(getIt<Dio>()).getCharacter(context);
 
@@ -239,9 +224,8 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
     return value == character?.house;
   }
-  
-  void onPickerItemTap(int index, String houseName) async {
 
+  void onPickerItemTap(int index, String houseName) async {
     final pickerColorNotifier = context.read<PickerColorNotifier>();
     final characterStatsNotifier = context.read<CharacterStatsNotifier>();
     final characterNotifier = context.read<CharacterNotifier>();
@@ -256,8 +240,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     if (isRightHouse(character, houseName)) {
       characterStatsNotifier.incrementSuccessCount();
       pickerColorNotifier.updateColor(index, Colors.green);
-    }
-    else {
+    } else {
       characterStatsNotifier.incrementFailedCount();
       pickerColorNotifier.updateColor(index, Colors.red);
     }
@@ -265,7 +248,6 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     //update database by name
     //todo: move this code to domain layer;
     if (character?.name != null) {
-
       final totalCount = characterStatsNotifier.totalCount;
       final failedCount = characterStatsNotifier.failedCount;
       final successCount = characterStatsNotifier.successCount;
@@ -279,10 +261,9 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
           failCount: drift.Value(failedCount),
           successCount: drift.Value(successCount),
         ));
-
     }
   }
-  
+
   void openDetailsPage(String? name) {
     if (name == null) return;
 
@@ -290,7 +271,6 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
   }
 
   void onResetButtonTapped() {
-
     final character = context.read<CharacterNotifier>().character;
     if (character == null) return;
 
@@ -301,5 +281,4 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
   Future<void> _loadCharacters() async {
     await context.read<CharacterCacheProvider>().loadCharacters();
   }
-
 }

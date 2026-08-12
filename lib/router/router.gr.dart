@@ -13,13 +13,19 @@ part of 'router.dart';
 /// generated route for
 /// [DetailPage]
 class DetailRoute extends PageRouteInfo<DetailRouteArgs> {
-  DetailRoute({required String name, Key? key, List<PageRouteInfo>? children})
-    : super(
-        DetailRoute.name,
-        args: DetailRouteArgs(name: name, key: key),
-        rawPathParams: {'name': name},
-        initialChildren: children,
-      );
+  DetailRoute({
+    required String name,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          DetailRoute.name,
+          args: DetailRouteArgs(
+            name: name,
+            key: key,
+          ),
+          rawPathParams: {'name': name},
+          initialChildren: children,
+        );
 
   static const String name = 'DetailRoute';
 
@@ -28,15 +34,20 @@ class DetailRoute extends PageRouteInfo<DetailRouteArgs> {
     builder: (data) {
       final pathParams = data.inheritedPathParams;
       final args = data.argsAs<DetailRouteArgs>(
-        orElse: () => DetailRouteArgs(name: pathParams.getString('name')),
+          orElse: () => DetailRouteArgs(name: pathParams.getString('name')));
+      return DetailPage(
+        name: args.name,
+        key: args.key,
       );
-      return DetailPage(name: args.name, key: args.key);
     },
   );
 }
 
 class DetailRouteArgs {
-  const DetailRouteArgs({required this.name, this.key});
+  const DetailRouteArgs({
+    required this.name,
+    this.key,
+  });
 
   final String name;
 
@@ -52,7 +63,10 @@ class DetailRouteArgs {
 /// [HomePage]
 class HomeRoute extends PageRouteInfo<void> {
   const HomeRoute({List<PageRouteInfo>? children})
-    : super(HomeRoute.name, initialChildren: children);
+      : super(
+          HomeRoute.name,
+          initialChildren: children,
+        );
 
   static const String name = 'HomeRoute';
 
