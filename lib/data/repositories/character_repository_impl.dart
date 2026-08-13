@@ -21,7 +21,7 @@ class CharacterRepositoryImpl implements CharacterRepository {
   CharacterRepositoryImpl(this._characterApiService, this._database);
 
   @override
-  Future<List<CharacterDTO>> loadCharacters() async {
+  Future<List<CharacterDto>> loadCharacters() async {
     return await _characterApiService.getAllCharacters();
   }
 
@@ -99,15 +99,7 @@ class CharacterRepositoryImpl implements CharacterRepository {
 
       final result = characters[index];
 
-      return CharacterEntity(
-        id: result.id,
-        name: result.name,
-        imageSrc: result.imageSrc,
-        house: result.house,
-        dateOfBirth: result.dateOfBirth,
-        actor: result.actor,
-        species: result.species,
-      );
+      return CharacterEntity.fromDto(result);
     } catch (e) {
       debugPrint('Error while loading new character: $e');
       return null;
@@ -129,15 +121,11 @@ class CharacterRepositoryImpl implements CharacterRepository {
             ))
         .getSingle();
 
-    return InfoStatsEntity(
-      totalCount: result.totalCount,
-      successCount: result.successCount,
-      failCount: result.failCount,
-    );
+    return InfoStatsEntity.fromSchemaResult(result);
   }
 
   @override
-  void resetCharacterAttemptsStats(String name) {
+  void resetCharacterAttemptsStatsByName(String name) {
     _database.update(_database.characters)
       ..where((table) => table.name.equals(name))
       ..write(const CharactersCompanion(
@@ -158,21 +146,8 @@ class CharacterRepositoryImpl implements CharacterRepository {
 
   @override
   void mapCharacterToProviders(Character result, BuildContext context) {
-    final character = CharacterEntity(
-      id: result.longId,
-      name: result.name,
-      imageSrc: result.imageSrc,
-      house: result.house,
-      actor: result.actor,
-      species: result.species,
-      dateOfBirth: '',
-    );
-
-    final statsEntity = InfoStatsEntity(
-      totalCount: result.totalCount,
-      successCount: result.successCount,
-      failCount: result.failCount,
-    );
+    final character = CharacterEntity.fromSchema(result);
+    final statsEntity = InfoStatsEntity.fromSchema(result);
 
     context.read<CharacterNotifier>().updateCharacter(character);
     context.read<PickerColorNotifier>().resetColors();

@@ -12,5 +12,5 @@ abstract class CharacterApiService {
   factory CharacterApiService(Dio dio, {String baseUrl}) = _CharacterApiService;
 
   @GET('/characters')
-  Future<List<CharacterDTO>> getAllCharacters();
+  Future<List<CharacterDto>> getAllCharacters();
 }

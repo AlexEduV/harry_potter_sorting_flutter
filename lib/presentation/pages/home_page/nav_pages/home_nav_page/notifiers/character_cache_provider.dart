@@ -8,10 +8,10 @@ class CharacterCacheProvider extends ChangeNotifier {
   CharacterCacheProvider(this._characterRepository);
 
   //todo: dto in provider;
-  List<CharacterDTO> _characters = [];
+  List<CharacterDto> _characters = [];
   bool _isLoading = false;
 
-  List<CharacterDTO> get characters => _characters;
+  List<CharacterDto> get characters => _characters;
   bool get isLoading => _isLoading;
 
   Future<void> loadCharacters() async {

@@ -24,7 +24,7 @@ void main() {
 
   group('CharacterDTO.fromJson', () {
     test('maps all fields correctly', () {
-      final dto = CharacterDTO.fromJson(fullJson);
+      final dto = CharacterDto.fromJson(fullJson);
 
       expect(dto.id, 'abc-123');
       expect(dto.name, 'Harry Potter');
@@ -36,19 +36,19 @@ void main() {
     });
 
     test('maps image key to imageSrc', () {
-      final dto = CharacterDTO.fromJson(fullJson);
+      final dto = CharacterDto.fromJson(fullJson);
       expect(dto.imageSrc, fullJson['image']);
     });
 
     test('accepts null dateOfBirth', () {
-      final dto = CharacterDTO.fromJson(noDateJson);
+      final dto = CharacterDto.fromJson(noDateJson);
       expect(dto.dateOfBirth, isNull);
     });
   });
 
   group('CharacterDTO constructor', () {
     test('stores all required fields', () {
-      const dto = CharacterDTO(
+      const dto = CharacterDto(
         id: 'xyz',
         name: 'Hermione Granger',
         imageSrc: 'https://example.com/hermione.jpg',

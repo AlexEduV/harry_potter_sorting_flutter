@@ -8,6 +8,6 @@ class ResetCharacterStatsUseCase extends UseCaseWithParams<String, void> {
 
   @override
   void call(String params) {
-    return _repository.resetCharacterAttemptsStats(params);
+    return _repository.resetCharacterAttemptsStatsByName(params);
   }
 }

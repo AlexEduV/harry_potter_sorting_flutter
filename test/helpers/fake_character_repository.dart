@@ -19,13 +19,13 @@ class FakeCharacterRepository implements CharacterRepository {
   }
 
   @override
-  void resetCharacterAttemptsStats(String name) {
+  void resetCharacterAttemptsStatsByName(String name) {
     lastResetName = name;
   }
 
   // Unused by tested use cases — minimal stubs
   @override
-  Future<List<CharacterDTO>> loadCharacters() => Future.value([]);
+  Future<List<CharacterDto>> loadCharacters() => Future.value([]);
 
   @override
   Future<Character?> getCharacterByName(String name) => Future.value(null);

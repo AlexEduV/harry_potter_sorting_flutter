@@ -4,10 +4,10 @@ import 'package:harry_potter_sorting_flutter/data/dto/character_dto.dart';
 import 'package:harry_potter_sorting_flutter/domain/entities/info_stats_entity.dart';
 
 abstract class CharacterRepository {
-  Future<List<CharacterDTO>> loadCharacters();
+  Future<List<CharacterDto>> loadCharacters();
   Future<Character?> getCharacterByName(String name);
   Future<Character?> getCharacter(BuildContext context);
-  void resetCharacterAttemptsStats(String name);
+  void resetCharacterAttemptsStatsByName(String name);
   void mapCharacterToProviders(Character character, BuildContext context);
 
   Future<List<Character>> getAllSubmittedCharacters({String filter = ''});

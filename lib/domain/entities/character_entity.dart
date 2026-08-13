@@ -1,5 +1,7 @@
-class CharacterEntity {
+import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
+import 'package:harry_potter_sorting_flutter/data/dto/character_dto.dart';
 
+class CharacterEntity {
   final String id;
   final String name;
   final String imageSrc;
@@ -21,6 +23,29 @@ class CharacterEntity {
     required this.species,
   });
 
+  factory CharacterEntity.fromSchema(Character character) {
+    return CharacterEntity(
+        id: character.longId,
+        name: character.name,
+        imageSrc: character.imageSrc,
+        house: character.house,
+        dateOfBirth: character.dateOfBirth,
+        actor: character.actor,
+        species: character.species);
+  }
+
+  factory CharacterEntity.fromDto(CharacterDto dto) {
+    return CharacterEntity(
+      id: dto.id,
+      name: dto.name,
+      imageSrc: dto.imageSrc,
+      house: dto.house,
+      dateOfBirth: dto.dateOfBirth,
+      actor: dto.actor,
+      species: dto.species,
+    );
+  }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -36,5 +61,4 @@ class CharacterEntity {
 
   @override
   int get hashCode => Object.hash(id, name, imageSrc, house, dateOfBirth, actor, species);
-
 }
