@@ -19,9 +19,7 @@ import 'package:harry_potter_sorting_flutter/router/router.dart';
 import 'package:provider/provider.dart';
 
 class HomeNavPage extends StatefulWidget {
-  const HomeNavPage({
-    super.key,
-  });
+  const HomeNavPage({super.key});
 
   @override
   State<HomeNavPage> createState() => _HomeNavPageState();
@@ -37,8 +35,8 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Future.microtask(() => _loadCharacters());
-      await Future.microtask(() => loadCharacter());
+      await _loadCharacters();
+      await loadCharacter();
     });
   }
 
@@ -54,9 +52,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
         ],
       ),
       body: RefreshIndicator(
-        onRefresh: () async {
-          await loadCharacter();
-        },
+        onRefresh: () => loadCharacter(),
         color: Colors.white,
         backgroundColor: Colors.blue,
         child: Column(
@@ -82,9 +78,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                         },
                       ),
 
-                      const SizedBox(
-                        height: 32.0,
-                      ),
+                      const SizedBox(height: 32.0),
 
                       //photo and name
                       Consumer<CharacterNotifier>(builder: (context, characterNotifier, child) {
@@ -115,9 +109,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                                 ),
                               ),
                             ),
-                            const SizedBox(
-                              height: 8.0,
-                            ),
+                            const SizedBox(height: 8.0),
                             Text(
                               character?.name ?? '',
                               style: const TextStyle(
@@ -152,9 +144,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                               'Gryffindor',
                             ),
                           ),
-                          const SizedBox(
-                            width: 8.0,
-                          ),
+                          const SizedBox(width: 8.0),
                           PickerItem(
                             name: 'Slytherin',
                             imageSrc: 'assets/house_crests/slytherin-96.png',
@@ -163,9 +153,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 8.0,
-                      ),
+                      const SizedBox(height: 8.0),
                       Row(
                         children: [
                           PickerItem(
@@ -174,9 +162,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                             backgroundColor: notifier.buttonColors[2],
                             onTap: () => onPickerItemTap(2, 'Ravenclaw'),
                           ),
-                          const SizedBox(
-                            width: 8.0,
-                          ),
+                          const SizedBox(width: 8.0),
                           PickerItem(
                             name: 'Hufflepuff',
                             imageSrc: 'assets/house_crests/hufflepuff-96.png',
@@ -185,9 +171,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 8.0,
-                      ),
+                      const SizedBox(height: 8.0),
                       Row(
                         children: [
                           PickerItem(

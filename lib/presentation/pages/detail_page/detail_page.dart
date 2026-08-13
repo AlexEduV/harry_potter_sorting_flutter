@@ -9,10 +9,7 @@ import 'package:provider/provider.dart';
 class DetailPage extends StatefulWidget {
   final String name;
 
-  const DetailPage({
-    @PathParam('name') required this.name,
-    super.key,
-  });
+  const DetailPage({@PathParam('name') required this.name, super.key});
 
   @override
   State<DetailPage> createState() => _DetailPageState();
@@ -23,7 +20,7 @@ class _DetailPageState extends State<DetailPage> with WidgetsBindingObserver {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       //load data from the base by name
       initCharacterByName(widget.name);
     });

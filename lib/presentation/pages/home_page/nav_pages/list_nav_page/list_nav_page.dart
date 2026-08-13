@@ -15,9 +15,7 @@ import 'package:provider/provider.dart';
 import '../../../../../domain/repositories/character_repository.dart';
 
 class ListNavPage extends StatefulWidget {
-  const ListNavPage({
-    super.key,
-  });
+  const ListNavPage({super.key});
 
   @override
   State<ListNavPage> createState() => _ListNavPageState();
@@ -46,15 +44,11 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
       appBar: AppBar(
         title: const Text('List Screen'),
         actions: [
-          ResetButton(
-            onTap: onResetButtonTapped,
-          ),
+          ResetButton(onTap: onResetButtonTapped),
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.only(
-          top: 16.0,
-        ),
+        padding: const EdgeInsets.only(top: 16.0),
         child: Column(
           children: [
             //row of total info boxes
@@ -69,9 +63,7 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
               );
             }),
 
-            const SizedBox(
-              height: 16.0,
-            ),
+            const SizedBox(height: 16.0),
 
             //search bar
             Padding(
@@ -85,16 +77,14 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
                   Icon(Icons.search),
                 ],
                 keyboardType: TextInputType.name,
-                onChanged: (value) async {
+                onChanged: (value) {
                   context.read<FilterValueNotifier>().update(value);
                   getAllSubmittedCharacters(filter: value);
                 },
               ),
             ),
 
-            const SizedBox(
-              height: 16.0,
-            ),
+            const SizedBox(height: 16.0),
 
             //list view
             Expanded(
@@ -128,9 +118,7 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
                                   smallIconSize: 20,
                                 ),
 
-                                const SizedBox(
-                                  width: 12.0,
-                                ),
+                                const SizedBox(width: 12.0),
 
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,9 +140,10 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
                                 const Spacer(),
 
                                 //show success icon if there is 1 successful attempt
-                                if (character.successCount > 0)
+                                if (character.successCount > 0) ...[
                                   const StatusIcon(
                                       icon: Icons.check, backgroundColor: Colors.green),
+                                ],
 
                                 Row(
                                   spacing: 12.0,
