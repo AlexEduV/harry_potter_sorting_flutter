@@ -13,14 +13,8 @@ void main() {
   });
 
   group('GetCharactersUseCase', () {
-    test('delegates to repository with empty filter by default', () async {
-      await useCase.execute();
-
-      expect(repository.lastGetAllFilter, '');
-    });
-
     test('delegates to repository with provided filter', () async {
-      await useCase.execute(filter: 'Harry');
+      await useCase.call('Harry');
 
       expect(repository.lastGetAllFilter, 'Harry');
     });
@@ -32,13 +26,13 @@ void main() {
       ];
       repository.submittedCharacters = characters;
 
-      final result = await useCase.execute();
+      final result = await useCase.call('');
 
       expect(result, equals(characters));
     });
 
     test('returns empty list when repository has no characters', () async {
-      final result = await useCase.execute();
+      final result = await useCase.call('');
 
       expect(result, isEmpty);
     });
@@ -47,7 +41,7 @@ void main() {
       final harry = makeCharacter(id: 1, name: 'Harry Potter');
       repository.submittedCharacters = [harry];
 
-      final result = await useCase.execute(filter: 'Harry');
+      final result = await useCase.call('Harry');
 
       expect(result, [harry]);
       expect(repository.lastGetAllFilter, 'Harry');

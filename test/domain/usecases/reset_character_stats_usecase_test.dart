@@ -14,13 +14,13 @@ void main() {
 
   group('ResetCharacterStatsUseCase', () {
     test('delegates to repository with the given name', () {
-      useCase.execute('Harry Potter');
+      useCase.call('Harry Potter');
 
       expect(repository.lastResetName, 'Harry Potter');
     });
 
     test('passes the exact name string to repository', () {
-      useCase.execute('Draco Malfoy');
+      useCase.call('Draco Malfoy');
 
       expect(repository.lastResetName, 'Draco Malfoy');
     });

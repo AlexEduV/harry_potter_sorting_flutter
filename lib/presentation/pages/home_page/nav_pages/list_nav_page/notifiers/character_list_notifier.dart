@@ -41,7 +41,7 @@ class CharacterListNotifier extends ChangeNotifier {
     debugPrint('fetching list...');
     debugPrint('filter: $filter');
 
-    _entries = await _getCharactersUseCase.execute(filter: filter);
+    _entries = await _getCharactersUseCase.call(filter);
     notifyListeners();
   }
 

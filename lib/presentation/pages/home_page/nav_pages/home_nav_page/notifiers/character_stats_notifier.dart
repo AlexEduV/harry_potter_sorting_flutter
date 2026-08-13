@@ -39,7 +39,7 @@ class CharacterStatsNotifier extends ChangeNotifier {
   }
 
   void resetAllCounts(String name) {
-    _resetCharacterStatsUseCase.execute(name);
+    _resetCharacterStatsUseCase.call(name);
 
     _totalCount = 0;
     _failedCount = 0;
