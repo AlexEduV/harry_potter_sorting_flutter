@@ -14,10 +14,18 @@ class CharacterRepositoryImpl implements CharacterRepository {
 
   CharacterRepositoryImpl(this._characterApiService, this._database);
 
+  List<CharacterEntity> _characters = [];
+
   @override
   Future<List<CharacterEntity>> loadCharacters() async {
-    final results = await _characterApiService.getAllCharacters();
-    return results.map((element) => CharacterEntity.fromDto(element)).toList();
+    try {
+      final results = await _characterApiService.getAllCharacters();
+      _characters = results.map((element) => CharacterEntity.fromDto(element)).toList();
+    } catch (e) {
+      debugPrint('error loading characters: $e');
+      return [];
+    }
+    return _characters;
   }
 
   @override
@@ -39,9 +47,7 @@ class CharacterRepositoryImpl implements CharacterRepository {
 
   @override
   Future<Character?> getCharacter() async {
-    final results = await _database.managers.characters.get();
-    final result = _loadRandomCharacter(
-        results.map((element) => CharacterEntity.fromSchema(element)).toList());
+    final result = _loadRandomCharacter(_characters);
 
     if (result == null) return null;
     //todo: add error state to provider;
