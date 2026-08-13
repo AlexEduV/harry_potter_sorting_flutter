@@ -22,6 +22,12 @@ class CharacterRepositoryImpl implements CharacterRepository {
   CharacterRepositoryImpl(this.client, this._database);
 
   @override
+  Future<List<CharacterDTO>> loadCharacters() async {
+    final service = CharacterApiService(client);
+    return await service.getAllCharacters();
+  }
+
+  @override
   CharacterEntity loadRandomCharacter(BuildContext context) {
     try {
       final characters = context.read<CharacterCacheProvider>().characters;
@@ -174,11 +180,5 @@ class CharacterRepositoryImpl implements CharacterRepository {
     context.read<CharacterNotifier>().updateCharacter(character);
     context.read<PickerColorNotifier>().resetColors();
     context.read<CharacterStatsNotifier>().updateAllCounts(statsEntity);
-  }
-
-  @override
-  Future<List<CharacterDTO>> loadCharacters() async {
-    final service = CharacterApiService(client);
-    return await service.getAllCharacters();
   }
 }
