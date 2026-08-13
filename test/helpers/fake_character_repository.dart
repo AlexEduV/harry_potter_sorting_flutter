@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
-import 'package:harry_potter_sorting_flutter/data/dto/character_dto.dart';
+import 'package:harry_potter_sorting_flutter/domain/entities/character_entity.dart';
 import 'package:harry_potter_sorting_flutter/domain/entities/info_stats_entity.dart';
 import 'package:harry_potter_sorting_flutter/domain/repositories/character_repository.dart';
 
@@ -25,7 +25,7 @@ class FakeCharacterRepository implements CharacterRepository {
 
   // Unused by tested use cases — minimal stubs
   @override
-  Future<List<CharacterDto>> loadCharacters() => Future.value([]);
+  Future<List<CharacterEntity>> loadCharacters() => Future.value([]);
 
   @override
   Future<Character?> getCharacterByName(String name) => Future.value(null);
