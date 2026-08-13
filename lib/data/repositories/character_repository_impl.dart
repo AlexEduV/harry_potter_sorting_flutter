@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:drift/drift.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
-import 'package:harry_potter_sorting_flutter/data/dto/character_dto.dart';
 import 'package:harry_potter_sorting_flutter/data/services/character_api_service.dart';
 import 'package:harry_potter_sorting_flutter/domain/entities/character_entity.dart';
 import 'package:harry_potter_sorting_flutter/domain/entities/info_stats_entity.dart';
@@ -21,8 +20,9 @@ class CharacterRepositoryImpl implements CharacterRepository {
   CharacterRepositoryImpl(this._characterApiService, this._database);
 
   @override
-  Future<List<CharacterDto>> loadCharacters() async {
-    return await _characterApiService.getAllCharacters();
+  Future<List<CharacterEntity>> loadCharacters() async {
+    final results = await _characterApiService.getAllCharacters();
+    return results.map((element) => CharacterEntity.fromDto(element)).toList();
   }
 
   @override
@@ -54,34 +54,32 @@ class CharacterRepositoryImpl implements CharacterRepository {
         .filter((table) => table.name.equals(result.name))
         .getSingleOrNull();
 
-    if (dbResult == null) {
-      //insert a new character
-      await _database.into(_database.characters).insert(CharactersCompanion.insert(
-            longId: result.id,
-            name: result.name,
-            imageSrc: result.imageSrc,
-            house: result.house,
-            actor: result.actor,
-            species: result.species,
-            dateOfBirth: result.dateOfBirth ?? '',
-          ));
+    if (dbResult != null) return dbResult;
 
-      dbResult = Character(
-        id: 0,
-        longId: result.id,
-        name: result.name,
-        imageSrc: result.imageSrc,
-        house: result.house,
-        actor: result.actor,
-        species: result.species,
-        dateOfBirth: result.dateOfBirth ?? '',
-        successCount: 0,
-        failCount: 0,
-        totalCount: 0,
-      );
-    }
+    //insert a new character
+    await _database.into(_database.characters).insert(CharactersCompanion.insert(
+          longId: result.id,
+          name: result.name,
+          imageSrc: result.imageSrc,
+          house: result.house,
+          actor: result.actor,
+          species: result.species,
+          dateOfBirth: result.dateOfBirth ?? '',
+        ));
 
-    return dbResult;
+    return Character(
+      id: 0,
+      longId: result.id,
+      name: result.name,
+      imageSrc: result.imageSrc,
+      house: result.house,
+      actor: result.actor,
+      species: result.species,
+      dateOfBirth: result.dateOfBirth ?? '',
+      successCount: 0,
+      failCount: 0,
+      totalCount: 0,
+    );
   }
 
   CharacterEntity? _loadRandomCharacter(BuildContext context) {
@@ -95,11 +93,8 @@ class CharacterRepositoryImpl implements CharacterRepository {
       }
 
       final random = Random();
-      int index = random.nextInt(characters.length);
-
-      final result = characters[index];
-
-      return CharacterEntity.fromDto(result);
+      final index = random.nextInt(characters.length);
+      return characters[index];
     } catch (e) {
       debugPrint('Error while loading new character: $e');
       return null;

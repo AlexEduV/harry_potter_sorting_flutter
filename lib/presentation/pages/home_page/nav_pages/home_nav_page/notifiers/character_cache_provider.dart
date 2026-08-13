@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harry_potter_sorting_flutter/data/dto/character_dto.dart';
+import 'package:harry_potter_sorting_flutter/domain/entities/character_entity.dart';
 import 'package:harry_potter_sorting_flutter/domain/repositories/character_repository.dart';
 
 class CharacterCacheProvider extends ChangeNotifier {
@@ -8,10 +8,10 @@ class CharacterCacheProvider extends ChangeNotifier {
   CharacterCacheProvider(this._characterRepository);
 
   //todo: dto in provider;
-  List<CharacterDto> _characters = [];
+  List<CharacterEntity> _characters = [];
   bool _isLoading = false;
 
-  List<CharacterDto> get characters => _characters;
+  List<CharacterEntity> get characters => _characters;
   bool get isLoading => _isLoading;
 
   Future<void> loadCharacters() async {
