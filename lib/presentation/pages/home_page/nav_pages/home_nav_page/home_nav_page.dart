@@ -6,15 +6,15 @@ import 'package:harry_potter_sorting_flutter/data/database/database_provider.dar
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
 import 'package:harry_potter_sorting_flutter/domain/entities/character_entity.dart';
 import 'package:harry_potter_sorting_flutter/domain/repositories/character_repository.dart';
-import 'package:harry_potter_sorting_flutter/presentation/common/widgets/character_photo.dart';
-import 'package:harry_potter_sorting_flutter/presentation/common/widgets/info_box.dart';
-import 'package:harry_potter_sorting_flutter/presentation/common/widgets/reset_button.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_cache_provider.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_stats_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/picker_color_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/widgets/picker_item.dart';
 import 'package:harry_potter_sorting_flutter/presentation/style/app_colors.dart';
+import 'package:harry_potter_sorting_flutter/presentation/widgets/character_photo.dart';
+import 'package:harry_potter_sorting_flutter/presentation/widgets/info_box.dart';
+import 'package:harry_potter_sorting_flutter/presentation/widgets/reset_button.dart';
 import 'package:harry_potter_sorting_flutter/router/router.dart';
 import 'package:provider/provider.dart';
 

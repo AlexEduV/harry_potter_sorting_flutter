@@ -1,8 +1,8 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
-import 'package:harry_potter_sorting_flutter/presentation/common/widgets/character_photo.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/detail_page/notifiers/detail_character_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/detail_page/widgets/detail_list_item.dart';
+import 'package:harry_potter_sorting_flutter/presentation/widgets/character_photo.dart';
 import 'package:provider/provider.dart';
 
 @RoutePage()
