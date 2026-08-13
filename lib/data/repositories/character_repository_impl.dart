@@ -80,20 +80,15 @@ class CharacterRepositoryImpl implements CharacterRepository {
   }
 
   CharacterEntity? _loadRandomCharacter(List<CharacterEntity> characters) {
-    try {
-      //get random character
-      if (characters.isEmpty) {
-        debugPrint('List is empty!');
-        return null;
-      }
-
-      final random = Random();
-      final index = random.nextInt(characters.length);
-      return characters[index];
-    } catch (e) {
-      debugPrint('Error while loading new character: $e');
+    //get random character
+    if (characters.isEmpty) {
+      debugPrint('List is empty!');
       return null;
     }
+
+    final random = Random();
+    final index = random.nextInt(characters.length);
+    return characters[index];
   }
 
   @override
