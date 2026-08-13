@@ -5,6 +5,7 @@ import 'package:harry_potter_sorting_flutter/core/di/dependency_injection.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_provider.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
 import 'package:harry_potter_sorting_flutter/domain/entities/character_entity.dart';
+import 'package:harry_potter_sorting_flutter/domain/mappers/character_to_providers_mapper.dart';
 import 'package:harry_potter_sorting_flutter/domain/repositories/character_repository.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_cache_provider.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_notifier.dart';
@@ -194,11 +195,11 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   Future<void> loadCharacter() async {
     //todo: move this from presentation layer
-    final result = await getIt<CharacterRepository>().getCharacter(context);
+    final result = await getIt<CharacterRepository>().getCharacter();
 
     if (!mounted || result == null) return;
 
-    getIt<CharacterRepository>().mapCharacterToProviders(result, context);
+    getIt<CharacterToProvidersMapper>().map(result, context);
   }
 
   bool isRightHouse(CharacterEntity? character, String value) {

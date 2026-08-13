@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
 import 'package:harry_potter_sorting_flutter/domain/entities/character_entity.dart';
 import 'package:harry_potter_sorting_flutter/domain/entities/info_stats_entity.dart';
@@ -31,10 +30,7 @@ class FakeCharacterRepository implements CharacterRepository {
   Future<Character?> getCharacterByName(String name) => Future.value(null);
 
   @override
-  Future<Character> getCharacter(BuildContext context) => throw UnimplementedError();
-
-  @override
-  void mapCharacterToProviders(Character character, BuildContext context) {}
+  Future<Character> getCharacter() => throw UnimplementedError();
 
   @override
   Future<InfoStatsEntity> getTotalStats() =>

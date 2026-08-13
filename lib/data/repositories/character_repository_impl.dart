@@ -7,11 +7,6 @@ import 'package:harry_potter_sorting_flutter/data/services/character_api_service
 import 'package:harry_potter_sorting_flutter/domain/entities/character_entity.dart';
 import 'package:harry_potter_sorting_flutter/domain/entities/info_stats_entity.dart';
 import 'package:harry_potter_sorting_flutter/domain/repositories/character_repository.dart';
-import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_cache_provider.dart';
-import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_notifier.dart';
-import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_stats_notifier.dart';
-import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/picker_color_notifier.dart';
-import 'package:provider/provider.dart';
 
 class CharacterRepositoryImpl implements CharacterRepository {
   final CharacterApiService _characterApiService;
@@ -43,8 +38,10 @@ class CharacterRepositoryImpl implements CharacterRepository {
   }
 
   @override
-  Future<Character?> getCharacter(BuildContext context) async {
-    final result = _loadRandomCharacter(context);
+  Future<Character?> getCharacter() async {
+    final results = await _database.managers.characters.get();
+    final result = _loadRandomCharacter(
+        results.map((element) => CharacterEntity.fromSchema(element)).toList());
 
     if (result == null) return null;
     //todo: add error state to provider;
@@ -82,10 +79,8 @@ class CharacterRepositoryImpl implements CharacterRepository {
     );
   }
 
-  CharacterEntity? _loadRandomCharacter(BuildContext context) {
+  CharacterEntity? _loadRandomCharacter(List<CharacterEntity> characters) {
     try {
-      final characters = context.read<CharacterCacheProvider>().characters;
-
       //get random character
       if (characters.isEmpty) {
         debugPrint('List is empty!');
@@ -137,15 +132,5 @@ class CharacterRepositoryImpl implements CharacterRepository {
           failCount: Value(0),
           successCount: Value(0),
         ));
-  }
-
-  @override
-  void mapCharacterToProviders(Character result, BuildContext context) {
-    final character = CharacterEntity.fromSchema(result);
-    final statsEntity = InfoStatsEntity.fromSchema(result);
-
-    context.read<CharacterNotifier>().updateCharacter(character);
-    context.read<PickerColorNotifier>().resetColors();
-    context.read<CharacterStatsNotifier>().updateAllCounts(statsEntity);
   }
 }

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
 import 'package:harry_potter_sorting_flutter/domain/entities/character_entity.dart';
 import 'package:harry_potter_sorting_flutter/domain/entities/info_stats_entity.dart';
@@ -6,9 +5,8 @@ import 'package:harry_potter_sorting_flutter/domain/entities/info_stats_entity.d
 abstract class CharacterRepository {
   Future<List<CharacterEntity>> loadCharacters();
   Future<Character?> getCharacterByName(String name);
-  Future<Character?> getCharacter(BuildContext context);
+  Future<Character?> getCharacter();
   void resetCharacterAttemptsStatsByName(String name);
-  void mapCharacterToProviders(Character character, BuildContext context);
 
   Future<List<Character>> getAllSubmittedCharacters({String filter = ''});
   Future<InfoStatsEntity> getTotalStats();
