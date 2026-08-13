@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:dio/dio.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
@@ -16,15 +15,14 @@ import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pa
 import 'package:provider/provider.dart';
 
 class CharacterRepositoryImpl implements CharacterRepository {
-  final Dio client;
+  final CharacterApiService _characterApiService;
   final AppDatabase _database;
 
-  CharacterRepositoryImpl(this.client, this._database);
+  CharacterRepositoryImpl(this._characterApiService, this._database);
 
   @override
   Future<List<CharacterDTO>> loadCharacters() async {
-    final service = CharacterApiService(client);
-    return await service.getAllCharacters();
+    return await _characterApiService.getAllCharacters();
   }
 
   @override
@@ -54,6 +52,7 @@ class CharacterRepositoryImpl implements CharacterRepository {
     final result = _loadRandomCharacter(context);
 
     if (result == null) return null;
+    //todo: add error state to provider;
 
     //load tries from the base or insert a new character
     Character? dbResult = await _database.managers.characters
