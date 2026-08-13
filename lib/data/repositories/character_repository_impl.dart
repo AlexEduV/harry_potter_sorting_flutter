@@ -29,22 +29,17 @@ class CharacterRepositoryImpl implements CharacterRepository {
   Future<List<Character>> getAllSubmittedCharacters({String filter = ''}) async {
     final result = await _database.managers.characters.get();
 
-    final filteredResult = filter.isNotEmpty
-        ? result
-            .where((character) => character.name.toLowerCase().contains(filter.toLowerCase()))
-            .toList()
-        : result;
+    if (filter.isEmpty) return result;
 
-    return filteredResult;
+    return result
+        .where((character) => character.name.toLowerCase().contains(filter.toLowerCase()))
+        .toList();
   }
 
   @override
-  Future<Character> getCharacterByName(String name) async {
+  Future<Character?> getCharacterByName(String name) async {
     final results = await _database.managers.characters.get();
-
-    final result = results.firstWhere((character) => character.name == name);
-
-    return result;
+    return results.where((character) => character.name == name).firstOrNull;
   }
 
   @override
