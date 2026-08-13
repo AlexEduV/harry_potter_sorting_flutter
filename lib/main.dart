@@ -29,7 +29,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => DetailCharacterNotifier(getIt())),
         ChangeNotifierProvider(create: (_) => CharacterListNotifier(getIt())),
         ChangeNotifierProvider(create: (_) => FilterValueNotifier()),
-        ChangeNotifierProvider(create: (_) => CharacterCacheProvider()),
+        ChangeNotifierProvider(create: (_) => CharacterCacheProvider(getIt())),
       ],
       child: MyApp(),
     ),

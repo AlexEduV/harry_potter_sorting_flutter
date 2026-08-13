@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:harry_potter_sorting_flutter/core/di/dependency_injection.dart';
 import 'package:harry_potter_sorting_flutter/data/dto/character_dto.dart';
 import 'package:harry_potter_sorting_flutter/domain/repositories/character_repository.dart';
 
 class CharacterCacheProvider extends ChangeNotifier {
+  final CharacterRepository _characterRepository;
+
+  CharacterCacheProvider(this._characterRepository);
+
+  //todo: dto in provider;
   List<CharacterDTO> _characters = [];
   bool _isLoading = false;
 
@@ -15,7 +19,7 @@ class CharacterCacheProvider extends ChangeNotifier {
       _isLoading = true;
       notifyListeners();
 
-      _characters = await getIt<CharacterRepository>().loadCharacters();
+      _characters = await _characterRepository.loadCharacters();
     } catch (e) {
       debugPrint('Error fetching characters: $e');
     } finally {
