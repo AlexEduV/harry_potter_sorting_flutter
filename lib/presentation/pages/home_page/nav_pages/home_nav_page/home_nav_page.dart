@@ -194,9 +194,9 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   Future<void> loadCharacter() async {
     //todo: move this from presentation layer
-    Character result = await getIt<CharacterRepository>().getCharacter(context);
+    final result = await getIt<CharacterRepository>().getCharacter(context);
 
-    if (!mounted) return;
+    if (!mounted || result == null) return;
 
     getIt<CharacterRepository>().mapCharacterToProviders(result, context);
   }

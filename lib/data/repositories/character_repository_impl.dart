@@ -28,35 +28,6 @@ class CharacterRepositoryImpl implements CharacterRepository {
   }
 
   @override
-  CharacterEntity loadRandomCharacter(BuildContext context) {
-    try {
-      final characters = context.read<CharacterCacheProvider>().characters;
-
-      //get random character
-      if (characters.isEmpty) {
-        throw Exception('List is empty!');
-      }
-
-      final random = Random();
-      int index = random.nextInt(characters.length);
-
-      final result = characters[index];
-
-      return CharacterEntity(
-        id: result.id,
-        name: result.name,
-        imageSrc: result.imageSrc,
-        house: result.house,
-        dateOfBirth: result.dateOfBirth,
-        actor: result.actor,
-        species: result.species,
-      );
-    } catch (e) {
-      throw Exception('Error while loading new character');
-    }
-  }
-
-  @override
   Future<List<Character>> getAllSubmittedCharacters({String filter = ''}) async {
     final result = await _database.managers.characters.get();
 
@@ -79,8 +50,10 @@ class CharacterRepositoryImpl implements CharacterRepository {
   }
 
   @override
-  Future<Character> getCharacter(BuildContext context) async {
-    final result = loadRandomCharacter(context);
+  Future<Character?> getCharacter(BuildContext context) async {
+    final result = _loadRandomCharacter(context);
+
+    if (result == null) return null;
 
     //load tries from the base or insert a new character
     Character? dbResult = await _database.managers.characters
@@ -115,6 +88,36 @@ class CharacterRepositoryImpl implements CharacterRepository {
     }
 
     return dbResult;
+  }
+
+  CharacterEntity? _loadRandomCharacter(BuildContext context) {
+    try {
+      final characters = context.read<CharacterCacheProvider>().characters;
+
+      //get random character
+      if (characters.isEmpty) {
+        debugPrint('List is empty!');
+        return null;
+      }
+
+      final random = Random();
+      int index = random.nextInt(characters.length);
+
+      final result = characters[index];
+
+      return CharacterEntity(
+        id: result.id,
+        name: result.name,
+        imageSrc: result.imageSrc,
+        house: result.house,
+        dateOfBirth: result.dateOfBirth,
+        actor: result.actor,
+        species: result.species,
+      );
+    } catch (e) {
+      debugPrint('Error while loading new character: $e');
+      return null;
+    }
   }
 
   @override

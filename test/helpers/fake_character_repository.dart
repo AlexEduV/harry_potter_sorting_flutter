@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
 import 'package:harry_potter_sorting_flutter/data/dto/character_dto.dart';
-import 'package:harry_potter_sorting_flutter/domain/entities/character_entity.dart';
 import 'package:harry_potter_sorting_flutter/domain/entities/info_stats_entity.dart';
 import 'package:harry_potter_sorting_flutter/domain/repositories/character_repository.dart';
 
@@ -29,15 +28,10 @@ class FakeCharacterRepository implements CharacterRepository {
   Future<List<CharacterDTO>> loadCharacters() => Future.value([]);
 
   @override
-  CharacterEntity loadRandomCharacter(BuildContext context) =>
-      throw UnimplementedError();
-
-  @override
   Future<Character?> getCharacterByName(String name) => Future.value(null);
 
   @override
-  Future<Character> getCharacter(BuildContext context) =>
-      throw UnimplementedError();
+  Future<Character> getCharacter(BuildContext context) => throw UnimplementedError();
 
   @override
   void mapCharacterToProviders(Character character, BuildContext context) {}
