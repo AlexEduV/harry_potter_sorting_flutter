@@ -39,7 +39,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _loadCharacters();
-      await loadCharacter();
+      await _loadCharacter();
     });
   }
 
@@ -55,7 +55,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
         ],
       ),
       body: RefreshIndicator(
-        onRefresh: () => loadCharacter(),
+        onRefresh: () => _loadCharacter(),
         color: Colors.white,
         backgroundColor: Colors.blue,
         child: Column(
@@ -193,7 +193,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     );
   }
 
-  Future<void> loadCharacter() async {
+  Future<void> _loadCharacter() async {
     //todo: move this from presentation layer
     final result = await getIt<CharacterRepository>().getCharacter();
 
