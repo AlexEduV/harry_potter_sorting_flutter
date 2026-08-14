@@ -50,9 +50,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
       appBar: AppBar(
         title: const Text('Home Screen'),
         actions: [
-          ResetButton(
-            onTap: _onResetButtonTapped,
-          ),
+          ResetButton(onTap: _onResetButtonTapped),
         ],
       ),
       body: RefreshIndicator(
@@ -191,6 +189,10 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     );
   }
 
+  Future<void> _loadCharacters() async {
+    await context.read<CharacterCacheProvider>().loadCharacters();
+  }
+
   Future<void> _loadCharacter() async {
     //todo: move this from presentation layer
     final result = await getIt<CharacterRepository>().getCharacter();
@@ -255,9 +257,5 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
     context.read<CharacterStatsNotifier>().resetAllCounts(character.name);
     context.read<PickerColorNotifier>().resetColors();
-  }
-
-  Future<void> _loadCharacters() async {
-    await context.read<CharacterCacheProvider>().loadCharacters();
   }
 }
