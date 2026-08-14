@@ -9,14 +9,9 @@ import 'package:harry_potter_sorting_flutter/presentation/style/app_colors.dart'
 import 'package:provider/provider.dart';
 
 @RoutePage()
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Consumer<BottomNavIndexNotifier>(
@@ -35,7 +30,7 @@ class _HomePageState extends State<HomePage> {
             unselectedItemColor: Colors.grey,
             selectedFontSize: 18,
             unselectedFontSize: 16,
-            onTap: _onItemTapped,
+            onTap: (index) => _onItemTapped(context, index),
             items: const [
               BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
               BottomNavigationBarItem(icon: Icon(Icons.list), label: 'List'),
@@ -46,7 +41,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _onItemTapped(int newIndex) {
+  void _onItemTapped(BuildContext context, int newIndex) {
     context.read<BottomNavIndexNotifier>().updateIndex(newIndex);
 
     //if in list
