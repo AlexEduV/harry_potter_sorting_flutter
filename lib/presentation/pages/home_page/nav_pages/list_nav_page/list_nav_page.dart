@@ -13,6 +13,8 @@ import 'package:harry_potter_sorting_flutter/presentation/widgets/reset_button.d
 import 'package:harry_potter_sorting_flutter/router/router.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../style/app_colors.dart';
+
 class ListNavPage extends StatefulWidget {
   const ListNavPage({super.key});
 
@@ -101,10 +103,7 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
                         final character = entries[index];
 
                         return InkWell(
-                          onTap: () {
-                            //open details page
-                            context.router.push(DetailRoute(name: entries[index].name));
-                          },
+                          onTap: () => context.router.push(DetailRoute(name: entries[index].name)),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
                             child: Row(
@@ -125,13 +124,13 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
                                     Text(
                                       character.name,
                                       style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18.0,
-                                      ),
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 24.0,
+                                          color: AppColors.gold),
                                     ),
                                     Text(
                                       'Attempts: ${character.totalCount}',
-                                      style: const TextStyle(fontSize: 14.0),
+                                      style: const TextStyle(fontSize: 18.0),
                                     ),
                                   ],
                                 ),
