@@ -12,7 +12,9 @@ class CharacterStatsNotifier extends ChangeNotifier {
   int _failedCount = 0;
 
   int get totalCount => _totalCount;
+
   int get successCount => _successCount;
+
   int get failedCount => _failedCount;
 
   void incrementTotal() {
@@ -46,5 +48,10 @@ class CharacterStatsNotifier extends ChangeNotifier {
     _successCount = 0;
 
     notifyListeners();
+  }
+
+  InfoStatsEntity getCurrentData() {
+    return InfoStatsEntity(
+        totalCount: totalCount, successCount: successCount, failCount: failedCount);
   }
 }

@@ -90,4 +90,15 @@ class CharacterLocalStorageImpl implements CharacterLocalStorage {
 
     return InfoStatsEntity.fromSchemaResult(result);
   }
+
+  @override
+  void updateStatsByName(String name, InfoStatsEntity stats) {
+    _database.update(_database.characters)
+      ..where((table) => table.name.equals(name))
+      ..write(CharactersCompanion(
+        totalCount: Value(stats.totalCount),
+        failCount: Value(stats.failCount),
+        successCount: Value(stats.successCount),
+      ));
+  }
 }

@@ -1,10 +1,8 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:harry_potter_sorting_flutter/common/enums/house.dart';
 import 'package:harry_potter_sorting_flutter/core/di/dependency_injection.dart';
-import 'package:harry_potter_sorting_flutter/data/database/database_provider.dart';
-import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
+import 'package:harry_potter_sorting_flutter/domain/data_sources/local/character_local_storage.dart';
 import 'package:harry_potter_sorting_flutter/domain/mappers/character_to_providers_mapper.dart';
 import 'package:harry_potter_sorting_flutter/domain/repositories/character_repository.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_cache_provider.dart';
@@ -226,19 +224,8 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
       return;
     }
 
-    final totalCount = characterStatsNotifier.totalCount;
-    final failedCount = characterStatsNotifier.failedCount;
-    final successCount = characterStatsNotifier.successCount;
-
-    final database = DatabaseProvider.getDatabase();
-
-    database.update(database.characters)
-      ..where((table) => table.name.equals(characterName))
-      ..write(CharactersCompanion(
-        totalCount: drift.Value(totalCount),
-        failCount: drift.Value(failedCount),
-        successCount: drift.Value(successCount),
-      ));
+    final statsEntity = characterStatsNotifier.getCurrentData();
+    getIt<CharacterLocalStorage>().updateStatsByName(characterName, statsEntity);
   }
 
   Future<void> _openDetailsPage(String? name) async {
