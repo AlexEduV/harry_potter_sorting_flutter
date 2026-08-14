@@ -83,7 +83,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
                       //photo and name
                       Consumer<CharacterNotifier>(builder: (context, characterNotifier, child) {
-                        final CharacterEntity? character = characterNotifier.character;
+                        final character = characterNotifier.character;
 
                         return Column(
                           children: [
@@ -203,9 +203,6 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
   }
 
   bool isRightHouse(CharacterEntity? character, String value) {
-    debugPrint('house value: $value');
-    debugPrint('house expected: ${character?.house}');
-
     return value == character?.house;
   }
 
