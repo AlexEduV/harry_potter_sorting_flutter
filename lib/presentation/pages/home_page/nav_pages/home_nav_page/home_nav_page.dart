@@ -89,7 +89,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                           children: [
                             Consumer<CharacterCacheProvider>(
                               builder: (context, cacheNotifier, child) {
-                                if (cacheNotifier.isLoading || cacheNotifier.characters.isEmpty) {
+                                if (cacheNotifier.isLoading) {
                                   return child!;
                                 } else {
                                   return CharacterPhoto(

@@ -20,6 +20,22 @@ class CharacterLocalStorageImpl implements CharacterLocalStorage {
       _database.managers.characters.filter((f) => f.name.equals(name)).getSingleOrNull();
 
   @override
+  Future<void> saveAll(List<CharacterEntity> entities) =>
+      _database.batch((batch) => batch.insertAll(
+            _database.characters,
+            entities.map((e) => CharactersCompanion.insert(
+                  longId: e.id,
+                  name: e.name,
+                  imageSrc: e.imageSrc,
+                  house: e.house,
+                  actor: e.actor,
+                  species: e.species,
+                  dateOfBirth: e.dateOfBirth ?? '',
+                )),
+            mode: InsertMode.insertOrIgnore,
+          ));
+
+  @override
   Future<void> insert(CharacterEntity entity) =>
       _database.into(_database.characters).insert(CharactersCompanion.insert(
             longId: entity.id,

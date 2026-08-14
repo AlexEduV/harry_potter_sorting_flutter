@@ -14,18 +14,17 @@ class CharacterRepositoryImpl implements CharacterRepository {
 
   CharacterRepositoryImpl(this._characterApiService, this._localStorage);
 
-  List<CharacterEntity> _characters = [];
-
   @override
   Future<List<CharacterEntity>> loadCharacters() async {
     try {
       final results = await _characterApiService.getAllCharacters();
-      _characters = results.map((element) => CharacterEntity.fromDto(element)).toList();
+      final characters = results.map((e) => CharacterEntity.fromDto(e)).toList();
+      await _localStorage.saveAll(characters);
+      return characters;
     } catch (e) {
       debugPrint('error loading characters: $e');
       return [];
     }
-    return _characters;
   }
 
   @override
@@ -44,27 +43,9 @@ class CharacterRepositoryImpl implements CharacterRepository {
 
   @override
   Future<Character?> getCharacter() async {
-    final result = _loadRandomCharacter(_characters);
-    if (result == null) return null;
-
-    final existing = await _localStorage.findByName(result.name);
-    if (existing != null) return existing;
-
-    await _localStorage.insert(result);
-
-    return Character(
-      id: 0,
-      longId: result.id,
-      name: result.name,
-      imageSrc: result.imageSrc,
-      house: result.house,
-      actor: result.actor,
-      species: result.species,
-      dateOfBirth: result.dateOfBirth ?? '',
-      successCount: 0,
-      failCount: 0,
-      totalCount: 0,
-    );
+    final all = await _localStorage.getAll();
+    if (all.isEmpty) return null;
+    return all[Random().nextInt(all.length)];
   }
 
   @override
@@ -75,13 +56,4 @@ class CharacterRepositoryImpl implements CharacterRepository {
 
   @override
   Future<void> resetAllCharactersAttemptsStats() => _localStorage.resetAllStats();
-
-  CharacterEntity? _loadRandomCharacter(List<CharacterEntity> characters) {
-    if (characters.isEmpty) {
-      debugPrint('List is empty!');
-      return null;
-    }
-
-    return characters[Random().nextInt(characters.length)];
-  }
 }
