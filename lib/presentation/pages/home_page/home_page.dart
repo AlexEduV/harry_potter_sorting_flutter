@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
             unselectedItemColor: Colors.grey,
             selectedFontSize: 18,
             unselectedFontSize: 16,
-            onTap: onItemTapped,
+            onTap: _onItemTapped,
             items: const [
               BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
               BottomNavigationBarItem(icon: Icon(Icons.list), label: 'List'),
@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void onItemTapped(int newIndex) {
+  void _onItemTapped(int newIndex) {
     context.read<BottomNavIndexNotifier>().updateIndex(newIndex);
 
     //if in list
