@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:harry_potter_sorting_flutter/domain/models/character_entity.dart';
+import 'package:harry_potter_sorting_flutter/domain/entities/character_entity.dart';
 
 class CharacterNotifier extends ChangeNotifier {
-
   CharacterEntity? _character;
   CharacterEntity? get character => _character;
 
@@ -10,5 +9,4 @@ class CharacterNotifier extends ChangeNotifier {
     _character = character;
     notifyListeners();
   }
-
 }

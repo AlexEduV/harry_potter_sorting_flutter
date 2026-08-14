@@ -24,12 +24,12 @@ class _CharacterApiService implements CharacterApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<List<CharacterDTO>> getAllCharacters() async {
+  Future<List<CharacterDto>> getAllCharacters() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<CharacterDTO>>(Options(
+    final _options = _setStreamType<List<CharacterDto>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -46,10 +46,10 @@ class _CharacterApiService implements CharacterApiService {
           baseUrl,
         )));
     final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<CharacterDTO> _value;
+    late List<CharacterDto> _value;
     try {
       _value = _result.data!
-          .map((dynamic i) => CharacterDTO.fromJson(i as Map<String, dynamic>))
+          .map((dynamic i) => CharacterDto.fromJson(i as Map<String, dynamic>))
           .toList();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);

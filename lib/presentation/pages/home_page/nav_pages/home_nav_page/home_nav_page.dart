@@ -1,28 +1,26 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:dio/dio.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:harry_potter_sorting_flutter/core/di/dependency_injection.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_provider.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
-import 'package:harry_potter_sorting_flutter/data/repositories/character_repository_impl.dart';
-import 'package:harry_potter_sorting_flutter/domain/models/character_entity.dart';
-import 'package:harry_potter_sorting_flutter/presentation/common/widgets/character_photo.dart';
-import 'package:harry_potter_sorting_flutter/presentation/common/widgets/info_box.dart';
-import 'package:harry_potter_sorting_flutter/presentation/common/widgets/reset_button.dart';
+import 'package:harry_potter_sorting_flutter/domain/entities/character_entity.dart';
+import 'package:harry_potter_sorting_flutter/domain/mappers/character_to_providers_mapper.dart';
+import 'package:harry_potter_sorting_flutter/domain/repositories/character_repository.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_cache_provider.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_stats_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/picker_color_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/widgets/picker_item.dart';
 import 'package:harry_potter_sorting_flutter/presentation/style/app_colors.dart';
+import 'package:harry_potter_sorting_flutter/presentation/widgets/character_photo.dart';
+import 'package:harry_potter_sorting_flutter/presentation/widgets/info_box.dart';
+import 'package:harry_potter_sorting_flutter/presentation/widgets/reset_button.dart';
 import 'package:harry_potter_sorting_flutter/router/router.dart';
 import 'package:provider/provider.dart';
 
 class HomeNavPage extends StatefulWidget {
-  const HomeNavPage({
-    super.key,
-  });
+  const HomeNavPage({super.key});
 
   @override
   State<HomeNavPage> createState() => _HomeNavPageState();
@@ -38,8 +36,8 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Future.microtask(() => _loadCharacters());
-      await Future.microtask(() => loadCharacter());
+      await _loadCharacters();
+      await loadCharacter();
     });
   }
 
@@ -55,9 +53,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
         ],
       ),
       body: RefreshIndicator(
-        onRefresh: () async {
-          await loadCharacter();
-        },
+        onRefresh: () => loadCharacter(),
         color: Colors.white,
         backgroundColor: Colors.blue,
         child: Column(
@@ -83,19 +79,17 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                         },
                       ),
 
-                      const SizedBox(
-                        height: 32.0,
-                      ),
+                      const SizedBox(height: 32.0),
 
                       //photo and name
                       Consumer<CharacterNotifier>(builder: (context, characterNotifier, child) {
-                        final CharacterEntity? character = characterNotifier.character;
+                        final character = characterNotifier.character;
 
                         return Column(
                           children: [
                             Consumer<CharacterCacheProvider>(
                               builder: (context, cacheNotifier, child) {
-                                if (cacheNotifier.isLoading || cacheNotifier.characters.isEmpty) {
+                                if (cacheNotifier.isLoading) {
                                   return child!;
                                 } else {
                                   return CharacterPhoto(
@@ -116,9 +110,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                                 ),
                               ),
                             ),
-                            const SizedBox(
-                              height: 8.0,
-                            ),
+                            const SizedBox(height: 8.0),
                             Text(
                               character?.name ?? '',
                               style: const TextStyle(
@@ -153,9 +145,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                               'Gryffindor',
                             ),
                           ),
-                          const SizedBox(
-                            width: 8.0,
-                          ),
+                          const SizedBox(width: 8.0),
                           PickerItem(
                             name: 'Slytherin',
                             imageSrc: 'assets/house_crests/slytherin-96.png',
@@ -164,9 +154,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 8.0,
-                      ),
+                      const SizedBox(height: 8.0),
                       Row(
                         children: [
                           PickerItem(
@@ -175,9 +163,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                             backgroundColor: notifier.buttonColors[2],
                             onTap: () => onPickerItemTap(2, 'Ravenclaw'),
                           ),
-                          const SizedBox(
-                            width: 8.0,
-                          ),
+                          const SizedBox(width: 8.0),
                           PickerItem(
                             name: 'Hufflepuff',
                             imageSrc: 'assets/house_crests/hufflepuff-96.png',
@@ -186,9 +172,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 8.0,
-                      ),
+                      const SizedBox(height: 8.0),
                       Row(
                         children: [
                           PickerItem(
@@ -211,17 +195,14 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
   Future<void> loadCharacter() async {
     //todo: move this from presentation layer
-    Character result = await CharacterRepositoryImpl(getIt<Dio>()).getCharacter(context);
+    final result = await getIt<CharacterRepository>().getCharacter();
 
-    if (!mounted) return;
+    if (!mounted || result == null) return;
 
-    CharacterRepositoryImpl(getIt<Dio>()).mapCharacterToProviders(result, context);
+    getIt<CharacterToProvidersMapper>().map(result, context);
   }
 
   bool isRightHouse(CharacterEntity? character, String value) {
-    debugPrint('house value: $value');
-    debugPrint('house expected: ${character?.house}');
-
     return value == character?.house;
   }
 

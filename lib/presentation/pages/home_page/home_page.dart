@@ -1,10 +1,11 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/home_nav_page.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/list_nav_page.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/character_list_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/filter_value_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/notifiers/bottom_nav_index_notifier.dart';
-import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/home_nav_page.dart';
-import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/list_nav_page.dart';
+import 'package:harry_potter_sorting_flutter/presentation/style/app_colors.dart';
 import 'package:provider/provider.dart';
 
 @RoutePage()
@@ -16,13 +17,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   @override
   Widget build(BuildContext context) {
-
     return Consumer<BottomNavIndexNotifier>(
       builder: (context, notifier, child) {
-
         return Scaffold(
           body: IndexedStack(
             index: notifier.selectedIndex,
@@ -33,6 +31,10 @@ class _HomePageState extends State<HomePage> {
           ),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: notifier.selectedIndex,
+            selectedItemColor: AppColors.gold,
+            unselectedItemColor: Colors.grey,
+            selectedFontSize: 18,
+            unselectedFontSize: 16,
             onTap: onItemTapped,
             items: const [
               BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
@@ -40,7 +42,6 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         );
-
       },
     );
   }
@@ -54,7 +55,6 @@ class _HomePageState extends State<HomePage> {
 
       final filterValue = context.read<FilterValueNotifier>().value;
       context.read<CharacterListNotifier>().fetchCharacters(filter: filterValue);
-
     }
   }
 }

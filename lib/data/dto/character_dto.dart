@@ -3,8 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'character_dto.g.dart';
 
 @JsonSerializable()
-class CharacterDTO {
-
+class CharacterDto {
   final String id;
   final String name;
 
@@ -18,7 +17,7 @@ class CharacterDTO {
   final String actor;
   final String species;
 
-  const CharacterDTO({
+  const CharacterDto({
     required this.id,
     required this.name,
     required this.imageSrc,
@@ -28,6 +27,5 @@ class CharacterDTO {
     required this.species,
   });
 
-  factory CharacterDTO.fromJson(Map<String, dynamic> json) => _$CharacterDTOFromJson(json);
-
+  factory CharacterDto.fromJson(Map<String, dynamic> json) => _$CharacterDTOFromJson(json);
 }

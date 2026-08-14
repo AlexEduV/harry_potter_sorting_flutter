@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
 class StatusIcon extends StatelessWidget {
-  
   final IconData icon;
   final Color backgroundColor;
   final Function()? onTap;
-  
+
   const StatusIcon({
     required this.icon,
     required this.backgroundColor,
@@ -15,11 +14,10 @@ class StatusIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(50.0),
-      child: Container(
+      child: Ink(
         padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
           color: backgroundColor,

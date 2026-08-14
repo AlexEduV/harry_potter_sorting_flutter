@@ -6,7 +6,7 @@ part of 'character_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-CharacterDTO _$CharacterDTOFromJson(Map<String, dynamic> json) => CharacterDTO(
+CharacterDto _$CharacterDTOFromJson(Map<String, dynamic> json) => CharacterDto(
       id: json['id'] as String,
       name: json['name'] as String,
       imageSrc: json['image'] as String,
@@ -16,8 +16,7 @@ CharacterDTO _$CharacterDTOFromJson(Map<String, dynamic> json) => CharacterDTO(
       species: json['species'] as String,
     );
 
-Map<String, dynamic> _$CharacterDTOToJson(CharacterDTO instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$CharacterDTOToJson(CharacterDto instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'image': instance.imageSrc,

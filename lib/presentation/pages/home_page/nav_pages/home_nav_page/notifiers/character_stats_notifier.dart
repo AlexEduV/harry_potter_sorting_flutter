@@ -1,9 +1,8 @@
 import 'package:flutter/widgets.dart';
-import 'package:harry_potter_sorting_flutter/domain/models/info_stats_entity.dart';
+import 'package:harry_potter_sorting_flutter/domain/entities/info_stats_entity.dart';
 import 'package:harry_potter_sorting_flutter/domain/usecases/reset_character_stats_usecase.dart';
 
 class CharacterStatsNotifier extends ChangeNotifier {
-
   final ResetCharacterStatsUseCase _resetCharacterStatsUseCase;
 
   CharacterStatsNotifier(this._resetCharacterStatsUseCase);
@@ -40,8 +39,7 @@ class CharacterStatsNotifier extends ChangeNotifier {
   }
 
   void resetAllCounts(String name) {
-
-    _resetCharacterStatsUseCase.execute(name);
+    _resetCharacterStatsUseCase.call(name);
 
     _totalCount = 0;
     _failedCount = 0;

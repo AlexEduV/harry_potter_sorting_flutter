@@ -17,7 +17,6 @@ class PickerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Expanded(
       child: Material(
         color: backgroundColor,
@@ -36,15 +35,16 @@ class PickerItem extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-
                 //image
-                if (imageSrc != null) Container(
-                  height: 40,
-                  width: 40,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(image: AssetImage(imageSrc!)),
+                if (imageSrc != null)
+                  SizedBox(
+                    height: 40,
+                    width: 40,
+                    child: DecoratedBox(
+                        decoration: BoxDecoration(
+                      image: DecorationImage(image: AssetImage(imageSrc!)),
+                    )),
                   ),
-                ),
 
                 //name
                 Text(
@@ -52,7 +52,9 @@ class PickerItem extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
-                    color: backgroundColor != AppColors.pickerDefaultButtonColor ? Colors.white : Colors.amber,
+                    color: backgroundColor != AppColors.pickerDefaultButtonColor
+                        ? Colors.white
+                        : Colors.amber,
                     shadows: const [
                       Shadow(
                         blurRadius: 2.0,
@@ -62,7 +64,6 @@ class PickerItem extends StatelessWidget {
                     ],
                   ),
                 ),
-
               ],
             ),
           ),
@@ -70,5 +71,4 @@ class PickerItem extends StatelessWidget {
       ),
     );
   }
-
 }
