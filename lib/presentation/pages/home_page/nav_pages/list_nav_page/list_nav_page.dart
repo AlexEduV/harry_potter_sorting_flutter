@@ -23,8 +23,13 @@ class ListNavPage extends StatefulWidget {
 }
 
 class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
-  //todo: when selecting item through retry button, and then going to home page -> details,
-  // on return the keyboard shows again;
+  final _searchFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _searchFocusNode.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -72,6 +77,7 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: SearchBar(
+                focusNode: _searchFocusNode,
                 padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 16.0)),
                 backgroundColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
                   if (states.contains(WidgetState.focused)) {
@@ -125,7 +131,12 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
 
                         return CharacterListItem(
                             character: character,
-                            onTap: () => context.router.push(DetailRoute(name: character.name)),
+                            onTap: () async {
+                              _searchFocusNode.unfocus();
+                              _searchFocusNode.canRequestFocus = false;
+                              await context.router.push(DetailRoute(name: character.name));
+                              _searchFocusNode.canRequestFocus = true;
+                            },
                             onRetry: () {
                               //hide keyboard
                               FocusScope.of(context).unfocus();
