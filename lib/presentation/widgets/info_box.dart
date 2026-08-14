@@ -66,17 +66,36 @@ class _GradientBorderPainter extends CustomPainter {
       startAngle: -pi / 4, // start at top-right corner
       endAngle: -pi / 4 + pi * 2,
       colors: [
-        Color(0xFF4A90D9), // blue
-        Color(0x884A90D9), // blue semi-transparent
-        Color(0x004A90D9), // transparent (blue hue, avoids grey corridor)
-        Color(0x00795548), // transparent (brown hue)
-        Color(0xFF795548), // brown – bottom-left
-        Color(0x00795548), // transparent (brown hue)
-        Color(0x004A90D9), // transparent (blue hue)
-        Color(0x884A90D9), // blue semi-transparent
-        Color(0xFF4A90D9), // blue – back to top-right
+        Color(0xFF4A90D9), // solid blue – top-right
+        Color(0xF24A90D9), // gentle first step
+        Color(0xCC4A90D9),
+        Color(0x884A90D9),
+        Color(0x444A90D9),
+        Color(0x14607080), // faint neutral bridge – hue gap between blue and brown
+        Color(0x44795548),
+        Color(0x88795548),
+        Color(0xCC795548),
+        Color(0xFF795548), // solid brown – bottom-left
+        Color(0xCC795548),
+        Color(0x88795548),
+        Color(0x44795548),
+        Color(0x14607080), // faint neutral bridge – hue gap between brown and blue
+        Color(0x444A90D9),
+        Color(0x884A90D9),
+        Color(0xCC4A90D9),
+        Color(0xF24A90D9), // gentle last step
+        Color(0xFF4A90D9), // solid blue – back to top-right
       ],
-      stops: [0.0, 0.1, 0.25, 0.38, 0.5, 0.62, 0.75, 0.9, 1.0],
+      stops: [
+        0.0, 0.03, 0.0725, 0.145, 0.22,
+        0.25,
+        0.28, 0.355, 0.4275,
+        0.5,
+        0.5725, 0.645, 0.72,
+        0.75,
+        0.78, 0.855, 0.9275, 0.97,
+        1.0,
+      ],
     );
 
     final paint = Paint()
