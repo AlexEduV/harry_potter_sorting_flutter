@@ -47,6 +47,7 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
         actions: [
           ResetButton(onTap: onResetButtonTapped),
         ],
+        scrolledUnderElevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 16.0),
