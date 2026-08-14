@@ -81,6 +81,10 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                       Consumer<CharacterNotifier>(builder: (context, characterNotifier, child) {
                         final character = characterNotifier.character;
 
+                        if (character == null) {
+                          return const SizedBox.shrink();
+                        }
+
                         return Column(
                           children: [
                             Consumer<CharacterCacheProvider>(
@@ -89,8 +93,8 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                                   return child!;
                                 } else {
                                   return CharacterPhoto(
-                                    imageSrc: character?.imageSrc,
-                                    onTap: () => _openDetailsPage(character?.name),
+                                    imageSrc: character.imageSrc,
+                                    onTap: () => _openDetailsPage(character.name),
                                   );
                                 }
                               },
@@ -108,7 +112,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                             ),
                             const SizedBox(height: 8.0),
                             Text(
-                              character?.name ?? '',
+                              character.name,
                               style: const TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 22.0,
