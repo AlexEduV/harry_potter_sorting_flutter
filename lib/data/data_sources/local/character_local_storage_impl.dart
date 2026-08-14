@@ -16,24 +16,31 @@ class CharacterLocalStorageImpl implements CharacterLocalStorage {
   Future<void> delete(int id) => _database.managers.characters.filter((f) => f.id(id)).delete();
 
   @override
-  Future<Character?> findByName(String name) =>
-      _database.managers.characters.filter((f) => f.name.equals(name)).getSingleOrNull();
+  Future<Character?> findByName(String name) async {
+    final results = await _database.managers.characters.filter((f) => f.name.equals(name)).get();
+    return results.firstOrNull;
+  }
 
   @override
-  Future<void> saveAll(List<CharacterEntity> entities) =>
-      _database.batch((batch) => batch.insertAll(
-            _database.characters,
-            entities.map((e) => CharactersCompanion.insert(
-                  longId: e.id,
-                  name: e.name,
-                  imageSrc: e.imageSrc,
-                  house: e.house,
-                  actor: e.actor,
-                  species: e.species,
-                  dateOfBirth: e.dateOfBirth ?? '',
-                )),
-            mode: InsertMode.insertOrIgnore,
-          ));
+  Future<void> saveAll(List<CharacterEntity> entities) async {
+    final existing = (await getAll()).map((c) => c.longId).toSet();
+    final newEntities = entities.where((e) => !existing.contains(e.id)).toList();
+
+    if (newEntities.isEmpty) return;
+
+    await _database.batch((batch) => batch.insertAll(
+          _database.characters,
+          newEntities.map((e) => CharactersCompanion.insert(
+                longId: e.id,
+                name: e.name,
+                imageSrc: e.imageSrc,
+                house: e.house,
+                actor: e.actor,
+                species: e.species,
+                dateOfBirth: e.dateOfBirth ?? '',
+              )),
+        ));
+  }
 
   @override
   Future<void> insert(CharacterEntity entity) =>

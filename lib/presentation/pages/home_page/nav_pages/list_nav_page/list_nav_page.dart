@@ -132,7 +132,7 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
     context.read<CharacterListNotifier>().getInitCombinedStats();
   }
 
-  void onResetButtonTapped() async {
+  Future<void> onResetButtonTapped() async {
     final filterValue = context.read<FilterValueNotifier>().value;
 
     await context.read<CharacterListNotifier>().resetAllCounts();
