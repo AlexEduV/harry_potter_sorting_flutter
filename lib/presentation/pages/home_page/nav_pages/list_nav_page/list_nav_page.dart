@@ -73,7 +73,7 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
                 shadowColor: const WidgetStatePropertyAll(Colors.white),
                 elevation: const WidgetStatePropertyAll(0),
                 side: const WidgetStatePropertyAll(BorderSide(color: Colors.grey, width: 2.0)),
-                hintText: 'Filter Characters...',
+                hintText: 'Filter Characters',
                 hintStyle: WidgetStateProperty.all(const TextStyle(fontSize: 24)),
                 textStyle: WidgetStateProperty.all(const TextStyle(fontSize: 24)),
                 leading: const Icon(Icons.search),
