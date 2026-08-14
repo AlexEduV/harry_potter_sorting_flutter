@@ -71,12 +71,14 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: SearchBar(
                 padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 16.0)),
+                backgroundColor: const WidgetStatePropertyAll(Colors.white),
+                shadowColor: const WidgetStatePropertyAll(Colors.white),
+                elevation: const WidgetStatePropertyAll(0),
+                side: const WidgetStatePropertyAll(BorderSide(color: Colors.grey, width: 2.0)),
                 hintText: 'Filter Characters...',
                 hintStyle: WidgetStateProperty.all(const TextStyle(fontSize: 24)),
                 textStyle: WidgetStateProperty.all(const TextStyle(fontSize: 24)),
-                trailing: const [
-                  Icon(Icons.search),
-                ],
+                leading: const Icon(Icons.search),
                 keyboardType: TextInputType.name,
                 onChanged: (value) {
                   context.read<FilterValueNotifier>().update(value);
