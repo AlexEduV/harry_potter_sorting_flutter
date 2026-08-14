@@ -170,6 +170,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                         children: [
                           PickerItem(
                             name: House.none.displayName,
+                            imageSrc: House.none.imageSrc,
                             backgroundColor: notifier.buttonColors[4],
                             onTap: () => _onPickerItemTap(4, House.none),
                           ),
