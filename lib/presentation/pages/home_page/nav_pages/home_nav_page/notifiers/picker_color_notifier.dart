@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:harry_potter_sorting_flutter/presentation/style/app_colors.dart';
 
 class PickerColorNotifier extends ChangeNotifier {
-
   static const Color defaultColor = AppColors.pickerDefaultButtonColor;
 
   List<Color> _buttonColors = List.filled(5, defaultColor);
+
   List<Color> get buttonColors => _buttonColors;
 
   void updateColor(int index, Color color) {
@@ -18,7 +18,6 @@ class PickerColorNotifier extends ChangeNotifier {
         resetColor(index);
       });
     }
-
   }
 
   void resetColors() {
@@ -31,6 +30,6 @@ class PickerColorNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool get containsActiveColor => _buttonColors.contains(Colors.green) || _buttonColors.contains(Colors.red);
-
+  bool get containsSelectedItem =>
+      _buttonColors.contains(Colors.green) || _buttonColors.contains(Colors.red);
 }

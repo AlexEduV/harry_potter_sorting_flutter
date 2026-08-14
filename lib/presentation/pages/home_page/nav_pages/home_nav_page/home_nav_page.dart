@@ -5,7 +5,6 @@ import 'package:harry_potter_sorting_flutter/common/enums/house.dart';
 import 'package:harry_potter_sorting_flutter/core/di/dependency_injection.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_provider.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
-import 'package:harry_potter_sorting_flutter/domain/entities/character_entity.dart';
 import 'package:harry_potter_sorting_flutter/domain/mappers/character_to_providers_mapper.dart';
 import 'package:harry_potter_sorting_flutter/domain/repositories/character_repository.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_cache_provider.dart';
@@ -202,23 +201,17 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     getIt<CharacterToProvidersMapper>().map(result, context);
   }
 
-  bool _isRightHouse(CharacterEntity? character, House house) {
-    return house == character?.house;
-  }
-
   Future<void> _onPickerItemTap(int index, House house) async {
     final pickerColorNotifier = context.read<PickerColorNotifier>();
     final characterStatsNotifier = context.read<CharacterStatsNotifier>();
     final characterNotifier = context.read<CharacterNotifier>();
 
-    if (pickerColorNotifier.containsActiveColor) {
-      return;
-    }
+    if (pickerColorNotifier.containsSelectedItem) return;
 
     characterStatsNotifier.incrementTotal();
 
     final character = characterNotifier.character;
-    if (_isRightHouse(character, house)) {
+    if (house == character?.house) {
       characterStatsNotifier.incrementSuccessCount();
       pickerColorNotifier.updateColor(index, Colors.green);
     } else {
@@ -228,21 +221,24 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
     //update database by name
     //todo: move this code to domain layer;
-    if (character?.name != null) {
-      final totalCount = characterStatsNotifier.totalCount;
-      final failedCount = characterStatsNotifier.failedCount;
-      final successCount = characterStatsNotifier.successCount;
-
-      final database = DatabaseProvider.getDatabase();
-
-      database.update(database.characters)
-        ..where((table) => table.name.equals(character!.name))
-        ..write(CharactersCompanion(
-          totalCount: drift.Value(totalCount),
-          failCount: drift.Value(failedCount),
-          successCount: drift.Value(successCount),
-        ));
+    final characterName = character?.name;
+    if (characterName == null) {
+      return;
     }
+
+    final totalCount = characterStatsNotifier.totalCount;
+    final failedCount = characterStatsNotifier.failedCount;
+    final successCount = characterStatsNotifier.successCount;
+
+    final database = DatabaseProvider.getDatabase();
+
+    database.update(database.characters)
+      ..where((table) => table.name.equals(characterName))
+      ..write(CharactersCompanion(
+        totalCount: drift.Value(totalCount),
+        failCount: drift.Value(failedCount),
+        successCount: drift.Value(successCount),
+      ));
   }
 
   Future<void> _openDetailsPage(String? name) async {
