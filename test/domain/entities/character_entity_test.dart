@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:harry_potter_sorting_flutter/common/enums/house.dart';
 import 'package:harry_potter_sorting_flutter/domain/entities/character_entity.dart';
 
 void main() {
@@ -8,7 +9,7 @@ void main() {
         id: 'abc-123',
         name: 'Harry Potter',
         imageSrc: 'https://example.com/harry.jpg',
-        house: 'Gryffindor',
+        house: House.gryffindor,
         dateOfBirth: '31-07-1980',
         actor: 'Daniel Radcliffe',
         species: 'human',
@@ -17,7 +18,7 @@ void main() {
       expect(entity.id, 'abc-123');
       expect(entity.name, 'Harry Potter');
       expect(entity.imageSrc, 'https://example.com/harry.jpg');
-      expect(entity.house, 'Gryffindor');
+      expect(entity.house, House.gryffindor);
       expect(entity.dateOfBirth, '31-07-1980');
       expect(entity.actor, 'Daniel Radcliffe');
       expect(entity.species, 'human');
@@ -28,7 +29,7 @@ void main() {
         id: 'abc-123',
         name: 'Unknown',
         imageSrc: '',
-        house: '',
+        house: House.none,
         dateOfBirth: null,
         actor: '',
         species: '',
@@ -43,7 +44,7 @@ void main() {
       id: '1',
       name: 'Ron Weasley',
       imageSrc: 'https://example.com/ron.jpg',
-      house: 'Gryffindor',
+      house: House.gryffindor,
       dateOfBirth: '01-03-1980',
       actor: 'Rupert Grint',
       species: 'human',
@@ -54,7 +55,7 @@ void main() {
         id: '1',
         name: 'Ron Weasley',
         imageSrc: 'https://example.com/ron.jpg',
-        house: 'Gryffindor',
+        house: House.gryffindor,
         dateOfBirth: '01-03-1980',
         actor: 'Rupert Grint',
         species: 'human',
@@ -68,7 +69,7 @@ void main() {
         id: '2',
         name: 'Ron Weasley',
         imageSrc: 'https://example.com/ron.jpg',
-        house: 'Gryffindor',
+        house: House.gryffindor,
         dateOfBirth: '01-03-1980',
         actor: 'Rupert Grint',
         species: 'human',
@@ -82,7 +83,7 @@ void main() {
         id: '1',
         name: 'Ginny Weasley',
         imageSrc: 'https://example.com/ron.jpg',
-        house: 'Gryffindor',
+        house: House.gryffindor,
         dateOfBirth: '01-03-1980',
         actor: 'Rupert Grint',
         species: 'human',
@@ -96,7 +97,7 @@ void main() {
         id: '1',
         name: 'Ron Weasley',
         imageSrc: 'https://example.com/ron.jpg',
-        house: 'Gryffindor',
+        house: House.gryffindor,
         dateOfBirth: null,
         actor: 'Rupert Grint',
         species: 'human',
@@ -110,7 +111,7 @@ void main() {
         id: '1',
         name: 'Ron Weasley',
         imageSrc: 'https://example.com/ron.jpg',
-        house: 'Gryffindor',
+        house: House.gryffindor,
         dateOfBirth: '01-03-1980',
         actor: 'Rupert Grint',
         species: 'human',
@@ -124,7 +125,7 @@ void main() {
         id: '2',
         name: 'Hermione Granger',
         imageSrc: 'https://example.com/hermione.jpg',
-        house: 'Gryffindor',
+        house: House.gryffindor,
         dateOfBirth: '19-09-1979',
         actor: 'Emma Watson',
         species: 'human',
