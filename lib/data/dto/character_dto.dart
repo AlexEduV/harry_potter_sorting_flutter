@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'character_dto.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class CharacterDto {
   final String id;
   final String name;
@@ -27,5 +27,5 @@ class CharacterDto {
     required this.species,
   });
 
-  factory CharacterDto.fromJson(Map<String, dynamic> json) => _$CharacterDTOFromJson(json);
+  factory CharacterDto.fromJson(Map<String, dynamic> json) => _$CharacterDtoFromJson(json);
 }
