@@ -2,15 +2,18 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:harry_potter_sorting_flutter/core/di/dependency_injection.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
+import 'package:harry_potter_sorting_flutter/domain/entities/info_stats_entity.dart';
 import 'package:harry_potter_sorting_flutter/domain/mappers/character_to_providers_mapper.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/character_list_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/filter_value_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/widgets/character_list_item.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/notifiers/bottom_nav_index_notifier.dart';
-import 'package:harry_potter_sorting_flutter/presentation/widgets/info_box.dart';
+import 'package:harry_potter_sorting_flutter/presentation/style/app_colors.dart';
 import 'package:harry_potter_sorting_flutter/presentation/widgets/reset_button.dart';
 import 'package:harry_potter_sorting_flutter/router/router.dart';
 import 'package:provider/provider.dart';
+
+import '../../../../widgets/info_row.dart';
 
 class ListNavPage extends StatefulWidget {
   const ListNavPage({super.key});
@@ -46,19 +49,20 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
         ],
         scrolledUnderElevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 16.0),
-        child: Column(
+      body: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 16.0),
+          child: Column(
           children: [
             //row of total info boxes
             Consumer<CharacterListNotifier>(builder: (context, notifier, child) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  InfoBox(value: '${notifier.total}', description: 'Total'),
-                  InfoBox(value: '${notifier.success}', description: 'Success'),
-                  InfoBox(value: '${notifier.failed}', description: 'Failed'),
-                ],
+              return InfoRow(
+                infoStats: InfoStatsEntity(
+                    totalCount: notifier.total,
+                    successCount: notifier.success,
+                    failCount: notifier.failed),
               );
             }),
 
@@ -69,10 +73,22 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: SearchBar(
                 padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 16.0)),
-                backgroundColor: const WidgetStatePropertyAll(Colors.white),
+                backgroundColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+                  if (states.contains(WidgetState.focused)) {
+                    return Colors.white; // Color when pressed/tapped
+                  }
+                  return AppColors.lightGrey; // Default color
+                }),
+                side: WidgetStateProperty.resolveWith<BorderSide?>((Set<WidgetState> states) {
+                  if (states.contains(WidgetState.focused)) {
+                    return const BorderSide(
+                        color: AppColors.lightGrey, width: 3.0); // Color when pressed/tapped
+                  }
+                  return null; // Default color
+                }),
+                //const WidgetStatePropertyAll(BorderSide(color: Colors.grey, width: 2.0)),
                 shadowColor: const WidgetStatePropertyAll(Colors.white),
                 elevation: const WidgetStatePropertyAll(0),
-                side: const WidgetStatePropertyAll(BorderSide(color: Colors.grey, width: 2.0)),
                 hintText: 'Filter Characters',
                 hintStyle: WidgetStateProperty.all(const TextStyle(fontSize: 24)),
                 textStyle: WidgetStateProperty.all(const TextStyle(fontSize: 24)),
@@ -96,7 +112,12 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
                       return const Center(child: Text('No characters found'));
                     }
 
-                    return ListView.builder(
+                    return NotificationListener<ScrollStartNotification>(
+                      onNotification: (_) {
+                        FocusScope.of(context).unfocus();
+                        return false;
+                      },
+                      child: ListView.builder(
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       cacheExtent: 500,
                       itemBuilder: (context, index) {
@@ -115,10 +136,12 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
                             });
                       },
                       itemCount: entries.length,
+                    ),
                     );
                   }),
             ),
           ],
+        ),
         ),
       ),
     );
