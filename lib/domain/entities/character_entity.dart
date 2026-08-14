@@ -1,6 +1,6 @@
+import 'package:harry_potter_sorting_flutter/common/enums/house.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
 import 'package:harry_potter_sorting_flutter/data/dto/character_dto.dart';
-import 'package:harry_potter_sorting_flutter/domain/entities/house.dart';
 
 class CharacterEntity {
   final String id;

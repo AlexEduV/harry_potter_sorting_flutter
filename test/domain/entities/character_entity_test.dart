@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:harry_potter_sorting_flutter/common/enums/house.dart';
 import 'package:harry_potter_sorting_flutter/domain/entities/character_entity.dart';
-import 'package:harry_potter_sorting_flutter/domain/entities/house.dart';
 
 void main() {
   group('CharacterEntity', () {
