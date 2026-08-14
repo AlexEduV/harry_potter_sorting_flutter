@@ -21,8 +21,7 @@ class _DetailPageState extends State<DetailPage> with WidgetsBindingObserver {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      //load data from the base by name
-      initCharacterByName(widget.name);
+      context.read<DetailCharacterNotifier>().setCharacter(widget.name);
     });
   }
 
@@ -36,14 +35,18 @@ class _DetailPageState extends State<DetailPage> with WidgetsBindingObserver {
         builder: (context, notifier, child) {
           final character = notifier.character;
 
+          if (character == null) {
+            return const SizedBox.shrink();
+          }
+
           return Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               spacing: 32.0,
               children: [
-                CharacterPhoto(imageSrc: character?.imageSrc ?? ''),
-                if (character?.successCount != null && character!.successCount > 0)
+                CharacterPhoto(imageSrc: character.imageSrc),
+                if (character.successCount > 0)
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     spacing: 12.0,
@@ -54,7 +57,7 @@ class _DetailPageState extends State<DetailPage> with WidgetsBindingObserver {
                       DetailListItem(label: 'Species:', value: character.species),
                     ],
                   ),
-                if (character?.successCount == 0)
+                if (character.successCount == 0)
                   Expanded(
                     child: SizedBox(
                       child: ClipRRect(child: Image.asset('assets/access-denied-badge.png')),
@@ -66,9 +69,5 @@ class _DetailPageState extends State<DetailPage> with WidgetsBindingObserver {
         },
       ),
     );
-  }
-
-  void initCharacterByName(String name) {
-    context.read<DetailCharacterNotifier>().setCharacter(name);
   }
 }
