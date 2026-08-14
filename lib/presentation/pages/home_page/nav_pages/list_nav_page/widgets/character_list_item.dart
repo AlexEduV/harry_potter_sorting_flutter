@@ -15,60 +15,63 @@ class CharacterListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
-        child: Row(
-          children: [
-            CharacterPhoto(
-              width: 35,
-              height: 50,
-              borderRadius: 2.0,
-              imageSrc: character.imageSrc,
-              smallIconSize: 20,
-            ),
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+          child: Row(
+            children: [
+              CharacterPhoto(
+                width: 35,
+                height: 50,
+                borderRadius: 2.0,
+                imageSrc: character.imageSrc,
+                smallIconSize: 20,
+              ),
 
-            const SizedBox(width: 12.0),
+              const SizedBox(width: 12.0),
 
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  character.name,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 24.0, color: AppColors.gold),
-                ),
-                Text(
-                  'Attempts: ${character.totalCount}',
-                  style: const TextStyle(fontSize: 18.0),
-                ),
-              ],
-            ),
-
-            const Spacer(),
-
-            //show success icon if there is 1 successful attempt
-            if (character.successCount > 0) ...[
-              const StatusIcon(icon: Icons.check, backgroundColor: Colors.green),
-            ],
-
-            Row(
-              spacing: 12.0,
-              children: [
-                //show retry button if no success recorded
-                if (character.successCount == 0)
-                  StatusIcon(icon: Icons.refresh, backgroundColor: Colors.grey, onTap: onRetry),
-
-                //show failure icon if attempts were made, but 0 successful;
-                if (character.totalCount > 0 && character.successCount == 0)
-                  const StatusIcon(
-                    icon: Icons.close,
-                    backgroundColor: Colors.red,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    character.name,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 24.0, color: AppColors.gold),
                   ),
+                  Text(
+                    'Attempts: ${character.totalCount}',
+                    style: const TextStyle(fontSize: 18.0),
+                  ),
+                ],
+              ),
+
+              const Spacer(),
+
+              //show success icon if there is 1 successful attempt
+              if (character.successCount > 0) ...[
+                const StatusIcon(icon: Icons.check, backgroundColor: Colors.green),
               ],
-            ),
-          ],
+
+              Row(
+                spacing: 12.0,
+                children: [
+                  //show retry button if no success recorded
+                  if (character.successCount == 0)
+                    StatusIcon(icon: Icons.refresh, backgroundColor: Colors.grey, onTap: onRetry),
+
+                  //show failure icon if attempts were made, but 0 successful;
+                  if (character.totalCount > 0 && character.successCount == 0)
+                    const StatusIcon(
+                      icon: Icons.close,
+                      backgroundColor: Colors.red,
+                    ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
