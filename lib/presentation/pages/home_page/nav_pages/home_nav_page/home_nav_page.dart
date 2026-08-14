@@ -14,10 +14,12 @@ import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pa
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/widgets/picker_item.dart';
 import 'package:harry_potter_sorting_flutter/presentation/style/app_colors.dart';
 import 'package:harry_potter_sorting_flutter/presentation/widgets/character_photo.dart';
-import 'package:harry_potter_sorting_flutter/presentation/widgets/info_box.dart';
 import 'package:harry_potter_sorting_flutter/presentation/widgets/reset_button.dart';
 import 'package:harry_potter_sorting_flutter/router/router.dart';
 import 'package:provider/provider.dart';
+
+import '../../../../../domain/entities/info_stats_entity.dart';
+import '../../../../widgets/info_row.dart';
 
 class HomeNavPage extends StatefulWidget {
   const HomeNavPage({super.key});
@@ -68,13 +70,11 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                       // info items
                       Consumer<CharacterStatsNotifier>(
                         builder: (context, notifier, child) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              InfoBox(value: '${notifier.totalCount}', description: 'Total'),
-                              InfoBox(value: '${notifier.successCount}', description: 'Success'),
-                              InfoBox(value: '${notifier.failedCount}', description: 'Failed'),
-                            ],
+                          return InfoRow(
+                            infoStats: InfoStatsEntity(
+                                totalCount: notifier.totalCount,
+                                successCount: notifier.successCount,
+                                failCount: notifier.failedCount),
                           );
                         },
                       ),

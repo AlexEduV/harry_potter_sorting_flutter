@@ -2,15 +2,17 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:harry_potter_sorting_flutter/core/di/dependency_injection.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
+import 'package:harry_potter_sorting_flutter/domain/entities/info_stats_entity.dart';
 import 'package:harry_potter_sorting_flutter/domain/mappers/character_to_providers_mapper.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/character_list_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/filter_value_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/widgets/character_list_item.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/notifiers/bottom_nav_index_notifier.dart';
-import 'package:harry_potter_sorting_flutter/presentation/widgets/info_box.dart';
 import 'package:harry_potter_sorting_flutter/presentation/widgets/reset_button.dart';
 import 'package:harry_potter_sorting_flutter/router/router.dart';
 import 'package:provider/provider.dart';
+
+import '../../../../widgets/info_row.dart';
 
 class ListNavPage extends StatefulWidget {
   const ListNavPage({super.key});
@@ -52,13 +54,11 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
           children: [
             //row of total info boxes
             Consumer<CharacterListNotifier>(builder: (context, notifier, child) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  InfoBox(value: '${notifier.total}', description: 'Total'),
-                  InfoBox(value: '${notifier.success}', description: 'Success'),
-                  InfoBox(value: '${notifier.failed}', description: 'Failed'),
-                ],
+              return InfoRow(
+                infoStats: InfoStatsEntity(
+                    totalCount: notifier.total,
+                    successCount: notifier.success,
+                    failCount: notifier.failed),
               );
             }),
 
