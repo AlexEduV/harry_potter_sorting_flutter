@@ -1,7 +1,7 @@
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:harry_potter_sorting_flutter/common/extensions/double_extensions.dart';
 
 class InfoBox extends StatelessWidget {
   final String value;
@@ -63,7 +63,8 @@ class _GradientBorderPainter extends CustomPainter {
 
     const gradient = SweepGradient(
       center: Alignment.center,
-      startAngle: -pi / 4, // start at top-right corner
+      startAngle: -pi / 4,
+      // start at top-right corner
       endAngle: -pi / 4 + pi * 2,
       colors: [
         Color(0xFF4A90D9), // solid blue – top-right
@@ -87,13 +88,24 @@ class _GradientBorderPainter extends CustomPainter {
         Color(0xFF4A90D9), // solid blue – back to top-right
       ],
       stops: [
-        0.0, 0.03, 0.0725, 0.145, 0.22,
+        0.0,
+        0.03,
+        0.0725,
+        0.145,
+        0.22,
         0.25,
-        0.28, 0.355, 0.4275,
+        0.28,
+        0.355,
+        0.4275,
         0.5,
-        0.5725, 0.645, 0.72,
+        0.5725,
+        0.645,
+        0.72,
         0.75,
-        0.78, 0.855, 0.9275, 0.97,
+        0.78,
+        0.855,
+        0.9275,
+        0.97,
         1.0,
       ],
     );
@@ -152,8 +164,8 @@ class _GlassPainter extends CustomPainter {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Colors.white.withOpacity(0.78),
-            Colors.white.withOpacity(0.0),
+            Colors.white.withAlpha(200),
+            Colors.white.withAlpha(0),
           ],
         ).createShader(glossRect),
     );
@@ -167,8 +179,8 @@ class _GlassPainter extends CustomPainter {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Colors.white.withOpacity(0.0),
-            Colors.white.withOpacity(0.22),
+            Colors.white.withAlpha(0),
+            Colors.white.withAlpha(50),
           ],
         ).createShader(reflectRect),
     );
@@ -186,7 +198,7 @@ class _GlassPainter extends CustomPainter {
       final angle = random.nextDouble() * pi;
       final opacity = random.nextDouble() * 0.1 + 0.03;
 
-      strokePaint.color = Colors.white.withOpacity(opacity);
+      strokePaint.color = Colors.white.withAlpha(opacity.alpha);
       canvas.drawLine(
         Offset(x, y),
         Offset(x + cos(angle) * length, y + sin(angle) * length),
