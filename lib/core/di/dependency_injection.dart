@@ -8,6 +8,7 @@ import 'package:harry_potter_sorting_flutter/data/repositories/character_reposit
 import 'package:harry_potter_sorting_flutter/data/services/character_api_service.dart';
 import 'package:harry_potter_sorting_flutter/domain/data_sources/local/character_local_storage.dart';
 import 'package:harry_potter_sorting_flutter/domain/mappers/character_to_providers_mapper.dart';
+import 'package:harry_potter_sorting_flutter/domain/repositories/character_repository.dart';
 import 'package:harry_potter_sorting_flutter/domain/usecases/get_characters_usecase.dart';
 import 'package:harry_potter_sorting_flutter/domain/usecases/reset_character_stats_usecase.dart';
 
@@ -22,7 +23,7 @@ void setupDependencies() {
     getIt.registerLazySingleton<CharacterLocalStorage>(
         () => CharacterLocalStorageImpl(getIt<AppDatabase>()));
 
-    getIt.registerLazySingleton(() =>
+    getIt.registerLazySingleton<CharacterRepository>(() =>
         CharacterRepositoryImpl(getIt<CharacterApiService>(), getIt<CharacterLocalStorage>()));
 
     getIt.registerLazySingleton(() => CharacterToProvidersMapper());
