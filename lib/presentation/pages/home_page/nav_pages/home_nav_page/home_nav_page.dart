@@ -62,7 +62,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0).copyWith(bottom: 0),
                   child: Column(
                     children: [
                       // info items
