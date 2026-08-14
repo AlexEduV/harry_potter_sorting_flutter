@@ -5,15 +5,12 @@ import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart'
 import 'package:harry_potter_sorting_flutter/domain/mappers/character_to_providers_mapper.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/character_list_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/filter_value_notifier.dart';
-import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/widgets/status_icon.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/widgets/character_list_item.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/notifiers/bottom_nav_index_notifier.dart';
-import 'package:harry_potter_sorting_flutter/presentation/widgets/character_photo.dart';
 import 'package:harry_potter_sorting_flutter/presentation/widgets/info_box.dart';
 import 'package:harry_potter_sorting_flutter/presentation/widgets/reset_button.dart';
 import 'package:harry_potter_sorting_flutter/router/router.dart';
 import 'package:provider/provider.dart';
-
-import '../../../../style/app_colors.dart';
 
 class ListNavPage extends StatefulWidget {
   const ListNavPage({super.key});
@@ -105,77 +102,17 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
                       itemBuilder: (context, index) {
                         final character = entries[index];
 
-                        return InkWell(
-                          onTap: () => context.router.push(DetailRoute(name: entries[index].name)),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
-                            child: Row(
-                              children: [
-                                CharacterPhoto(
-                                  width: 35,
-                                  height: 50,
-                                  borderRadius: 2.0,
-                                  imageSrc: character.imageSrc,
-                                  smallIconSize: 20,
-                                ),
+                        return CharacterListItem(
+                            character: character,
+                            onTap: () => context.router.push(DetailRoute(name: character.name)),
+                            onRetry: () {
+                              //hide keyboard
+                              FocusScope.of(context).unfocus();
 
-                                const SizedBox(width: 12.0),
+                              context.read<BottomNavIndexNotifier>().updateIndex(0);
 
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      character.name,
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 24.0,
-                                          color: AppColors.gold),
-                                    ),
-                                    Text(
-                                      'Attempts: ${character.totalCount}',
-                                      style: const TextStyle(fontSize: 18.0),
-                                    ),
-                                  ],
-                                ),
-
-                                const Spacer(),
-
-                                //show success icon if there is 1 successful attempt
-                                if (character.successCount > 0) ...[
-                                  const StatusIcon(
-                                      icon: Icons.check, backgroundColor: Colors.green),
-                                ],
-
-                                Row(
-                                  spacing: 12.0,
-                                  children: [
-                                    //show retry button if no success recorded
-                                    if (character.successCount == 0)
-                                      StatusIcon(
-                                          icon: Icons.refresh,
-                                          backgroundColor: Colors.grey,
-                                          onTap: () {
-                                            //hide keyboard
-                                            FocusScope.of(context).unfocus();
-
-                                            context.read<BottomNavIndexNotifier>().updateIndex(0);
-
-                                            getIt<CharacterToProvidersMapper>()
-                                                .map(character, context);
-                                          }),
-
-                                    //show failure icon if attempts were made, but 0 successful;
-                                    if (character.totalCount > 0 && character.successCount == 0)
-                                      const StatusIcon(
-                                        icon: Icons.close,
-                                        backgroundColor: Colors.red,
-                                      ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
+                              getIt<CharacterToProvidersMapper>().map(character, context);
+                            });
                       },
                       itemCount: entries.length,
                     );
