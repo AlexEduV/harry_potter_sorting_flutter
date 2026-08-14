@@ -72,8 +72,8 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
               child: SearchBar(
                 padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 16.0)),
                 hintText: 'Filter Characters...',
-                hintStyle: WidgetStateProperty.all(const TextStyle(fontSize: 20)),
-                textStyle: WidgetStateProperty.all(const TextStyle(fontSize: 20)),
+                hintStyle: WidgetStateProperty.all(const TextStyle(fontSize: 24)),
+                textStyle: WidgetStateProperty.all(const TextStyle(fontSize: 24)),
                 trailing: const [
                   Icon(Icons.search),
                 ],

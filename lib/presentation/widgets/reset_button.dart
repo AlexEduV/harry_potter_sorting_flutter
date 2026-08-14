@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../style/app_colors.dart';
+
 class ResetButton extends StatelessWidget {
   final Function() onTap;
 
@@ -10,7 +12,6 @@ class ResetButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Padding(
       padding: const EdgeInsets.only(right: 16.0),
       child: TextButton(
@@ -18,8 +19,8 @@ class ResetButton extends StatelessWidget {
         child: const Text(
           'Reset',
           style: TextStyle(
-            color: Colors.black87,
-            fontSize: 18.0,
+            color: AppColors.gold,
+            fontSize: 20.0,
           ),
         ),
       ),

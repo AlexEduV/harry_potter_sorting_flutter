@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class InfoBox extends StatelessWidget {
-
   final String value;
   final String description;
 
@@ -13,7 +12,6 @@ class InfoBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       width: 80,
       height: 80,
@@ -28,17 +26,15 @@ class InfoBox extends StatelessWidget {
           children: [
             Text(
               value,
-              style: const TextStyle(fontSize: 20.0),
+              style: const TextStyle(fontSize: 24.0),
             ),
-
             Text(
               description,
-              style: const TextStyle(fontSize: 16.0),
+              style: const TextStyle(fontSize: 20.0),
             ),
           ],
         ),
       ),
     );
-
   }
 }
