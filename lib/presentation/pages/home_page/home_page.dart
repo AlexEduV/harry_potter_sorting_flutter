@@ -33,6 +33,8 @@ class _HomePageState extends State<HomePage> {
             currentIndex: notifier.selectedIndex,
             selectedItemColor: AppColors.gold,
             unselectedItemColor: Colors.grey,
+            selectedFontSize: 18,
+            unselectedFontSize: 16,
             onTap: onItemTapped,
             items: const [
               BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
