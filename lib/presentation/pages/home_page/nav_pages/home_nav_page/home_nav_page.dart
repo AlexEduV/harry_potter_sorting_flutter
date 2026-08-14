@@ -5,6 +5,7 @@ import 'package:harry_potter_sorting_flutter/core/di/dependency_injection.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_provider.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
 import 'package:harry_potter_sorting_flutter/domain/entities/character_entity.dart';
+import 'package:harry_potter_sorting_flutter/domain/entities/house.dart';
 import 'package:harry_potter_sorting_flutter/domain/mappers/character_to_providers_mapper.dart';
 import 'package:harry_potter_sorting_flutter/domain/repositories/character_repository.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_cache_provider.dart';
@@ -137,21 +138,17 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                       Row(
                         children: [
                           PickerItem(
-                            //todo: migrate to enum
-                            name: 'Gryffindor',
-                            imageSrc: 'assets/house_crests/gryffindor-96.png',
+                            name: House.gryffindor.displayName,
+                            imageSrc: House.gryffindor.imageSrc,
                             backgroundColor: notifier.buttonColors[0],
-                            onTap: () => _onPickerItemTap(
-                              0,
-                              'Gryffindor',
-                            ),
+                            onTap: () => _onPickerItemTap(0, House.gryffindor),
                           ),
                           const SizedBox(width: 8.0),
                           PickerItem(
-                            name: 'Slytherin',
-                            imageSrc: 'assets/house_crests/slytherin-96.png',
+                            name: House.slytherin.displayName,
+                            imageSrc: House.slytherin.imageSrc,
                             backgroundColor: notifier.buttonColors[1],
-                            onTap: () => _onPickerItemTap(1, 'Slytherin'),
+                            onTap: () => _onPickerItemTap(1, House.slytherin),
                           ),
                         ],
                       ),
@@ -159,17 +156,17 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                       Row(
                         children: [
                           PickerItem(
-                            name: 'Ravenclaw',
-                            imageSrc: 'assets/house_crests/ravenclaw-96.png',
+                            name: House.ravenclaw.displayName,
+                            imageSrc: House.ravenclaw.imageSrc,
                             backgroundColor: notifier.buttonColors[2],
-                            onTap: () => _onPickerItemTap(2, 'Ravenclaw'),
+                            onTap: () => _onPickerItemTap(2, House.ravenclaw),
                           ),
                           const SizedBox(width: 8.0),
                           PickerItem(
-                            name: 'Hufflepuff',
-                            imageSrc: 'assets/house_crests/hufflepuff-96.png',
+                            name: House.hufflepuff.displayName,
+                            imageSrc: House.hufflepuff.imageSrc,
                             backgroundColor: notifier.buttonColors[3],
-                            onTap: () => _onPickerItemTap(3, 'Hufflepuff'),
+                            onTap: () => _onPickerItemTap(3, House.hufflepuff),
                           ),
                         ],
                       ),
@@ -177,9 +174,9 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                       Row(
                         children: [
                           PickerItem(
-                            name: 'Not in House',
+                            name: House.none.displayName,
                             backgroundColor: notifier.buttonColors[4],
-                            onTap: () => _onPickerItemTap(4, ''),
+                            onTap: () => _onPickerItemTap(4, House.none),
                           ),
                         ],
                       ),
@@ -203,11 +200,11 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     getIt<CharacterToProvidersMapper>().map(result, context);
   }
 
-  bool _isRightHouse(CharacterEntity? character, String value) {
-    return value == character?.house;
+  bool _isRightHouse(CharacterEntity? character, House house) {
+    return house == character?.house;
   }
 
-  Future<void> _onPickerItemTap(int index, String houseName) async {
+  Future<void> _onPickerItemTap(int index, House house) async {
     final pickerColorNotifier = context.read<PickerColorNotifier>();
     final characterStatsNotifier = context.read<CharacterStatsNotifier>();
     final characterNotifier = context.read<CharacterNotifier>();
@@ -219,7 +216,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     characterStatsNotifier.incrementTotal();
 
     final character = characterNotifier.character;
-    if (_isRightHouse(character, houseName)) {
+    if (_isRightHouse(character, house)) {
       characterStatsNotifier.incrementSuccessCount();
       pickerColorNotifier.updateColor(index, Colors.green);
     } else {

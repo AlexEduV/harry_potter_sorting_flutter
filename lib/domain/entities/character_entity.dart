@@ -1,12 +1,13 @@
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
 import 'package:harry_potter_sorting_flutter/data/dto/character_dto.dart';
+import 'package:harry_potter_sorting_flutter/domain/entities/house.dart';
 
 class CharacterEntity {
   final String id;
   final String name;
   final String imageSrc;
 
-  final String house;
+  final House house;
 
   final String? dateOfBirth;
 
@@ -28,7 +29,7 @@ class CharacterEntity {
         id: character.longId,
         name: character.name,
         imageSrc: character.imageSrc,
-        house: character.house,
+        house: House.fromString(character.house),
         dateOfBirth: character.dateOfBirth,
         actor: character.actor,
         species: character.species);
@@ -39,7 +40,7 @@ class CharacterEntity {
       id: dto.id,
       name: dto.name,
       imageSrc: dto.imageSrc,
-      house: dto.house,
+      house: House.fromString(dto.house),
       dateOfBirth: dto.dateOfBirth,
       actor: dto.actor,
       species: dto.species,
