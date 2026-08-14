@@ -5,6 +5,7 @@ class AppColors {
   static const deepGold = Color(0xFFE6B800);
 
   static const charcoalGrey = Color(0xFF333333);
+
   static const lightGrey = Color(0xFFE4E4E4);
 
   static const pickerDefaultButtonColor = charcoalGrey;
