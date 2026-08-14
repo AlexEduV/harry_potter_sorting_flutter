@@ -49,9 +49,12 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
         ],
         scrolledUnderElevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 16.0),
-        child: Column(
+      body: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 16.0),
+          child: Column(
           children: [
             //row of total info boxes
             Consumer<CharacterListNotifier>(builder: (context, notifier, child) {
@@ -109,7 +112,12 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
                       return const Center(child: Text('No characters found'));
                     }
 
-                    return ListView.builder(
+                    return NotificationListener<ScrollStartNotification>(
+                      onNotification: (_) {
+                        FocusScope.of(context).unfocus();
+                        return false;
+                      },
+                      child: ListView.builder(
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       cacheExtent: 500,
                       itemBuilder: (context, index) {
@@ -128,10 +136,12 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
                             });
                       },
                       itemCount: entries.length,
+                    ),
                     );
                   }),
             ),
           ],
+        ),
         ),
       ),
     );
