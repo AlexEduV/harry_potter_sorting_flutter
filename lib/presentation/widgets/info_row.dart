@@ -11,7 +11,8 @@ class InfoRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.center,
+      spacing: 16,
       children: [
         InfoBox(value: '${infoStats.totalCount}', description: 'Total'),
         InfoBox(value: '${infoStats.successCount}', description: 'Success'),
