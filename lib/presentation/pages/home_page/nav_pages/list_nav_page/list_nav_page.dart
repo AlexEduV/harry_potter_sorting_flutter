@@ -8,6 +8,7 @@ import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pa
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/filter_value_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/widgets/character_list_item.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/notifiers/bottom_nav_index_notifier.dart';
+import 'package:harry_potter_sorting_flutter/presentation/style/app_colors.dart';
 import 'package:harry_potter_sorting_flutter/presentation/widgets/reset_button.dart';
 import 'package:harry_potter_sorting_flutter/router/router.dart';
 import 'package:provider/provider.dart';
@@ -69,10 +70,22 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: SearchBar(
                 padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 16.0)),
-                backgroundColor: const WidgetStatePropertyAll(Colors.white),
+                backgroundColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+                  if (states.contains(WidgetState.focused)) {
+                    return Colors.white; // Color when pressed/tapped
+                  }
+                  return AppColors.lightGrey; // Default color
+                }),
+                side: WidgetStateProperty.resolveWith<BorderSide?>((Set<WidgetState> states) {
+                  if (states.contains(WidgetState.focused)) {
+                    return const BorderSide(
+                        color: AppColors.lightGrey, width: 3.0); // Color when pressed/tapped
+                  }
+                  return null; // Default color
+                }),
+                //const WidgetStatePropertyAll(BorderSide(color: Colors.grey, width: 2.0)),
                 shadowColor: const WidgetStatePropertyAll(Colors.white),
                 elevation: const WidgetStatePropertyAll(0),
-                side: const WidgetStatePropertyAll(BorderSide(color: Colors.grey, width: 2.0)),
                 hintText: 'Filter Characters',
                 hintStyle: WidgetStateProperty.all(const TextStyle(fontSize: 24)),
                 textStyle: WidgetStateProperty.all(const TextStyle(fontSize: 24)),
