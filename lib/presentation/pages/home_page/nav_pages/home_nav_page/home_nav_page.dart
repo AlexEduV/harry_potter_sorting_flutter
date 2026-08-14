@@ -202,13 +202,12 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
   Future<void> _onPickerItemTap(int index, House house) async {
     final pickerColorNotifier = context.read<PickerColorNotifier>();
     final characterStatsNotifier = context.read<CharacterStatsNotifier>();
-    final characterNotifier = context.read<CharacterNotifier>();
+    final character = context.read<CharacterNotifier>().character;
 
     if (pickerColorNotifier.containsSelectedItem) return;
 
     characterStatsNotifier.incrementTotal();
 
-    final character = characterNotifier.character;
     if (house == character?.house) {
       characterStatsNotifier.incrementSuccessCount();
       pickerColorNotifier.updateColor(index, Colors.green);
@@ -217,8 +216,6 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
       pickerColorNotifier.updateColor(index, Colors.red);
     }
 
-    //update database by name
-    //todo: move this code to domain layer;
     final characterName = character?.name;
     if (characterName == null) {
       return;
