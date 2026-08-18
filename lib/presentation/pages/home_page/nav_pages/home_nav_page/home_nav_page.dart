@@ -8,7 +8,7 @@ import 'package:harry_potter_sorting_flutter/domain/repositories/character_repos
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_cache_provider.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_stats_notifier.dart';
-import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/picker_color_notifier.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/picker_state_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/widgets/picker_item.dart';
 import 'package:harry_potter_sorting_flutter/presentation/style/app_colors.dart';
 import 'package:harry_potter_sorting_flutter/presentation/widgets/character_photo.dart';
@@ -113,7 +113,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
             ),
 
             //picker
-            Consumer<PickerColorNotifier>(
+            Consumer<PickerStateNotifier>(
               builder: (context, notifier, child) {
                 return Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -190,7 +190,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
   }
 
   Future<void> _onPickerItemTap(int index, House house) async {
-    final pickerColorNotifier = context.read<PickerColorNotifier>();
+    final pickerColorNotifier = context.read<PickerStateNotifier>();
     final characterStatsNotifier = context.read<CharacterStatsNotifier>();
     final character = context.read<CharacterNotifier>().character;
 
@@ -226,7 +226,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     if (character == null) return;
 
     context.read<CharacterStatsNotifier>().resetAllCounts(character.name);
-    context.read<PickerColorNotifier>().resetColors();
+    context.read<PickerStateNotifier>().resetColors();
   }
 
   Color _getColorFromState(ButtonPickerState state) {

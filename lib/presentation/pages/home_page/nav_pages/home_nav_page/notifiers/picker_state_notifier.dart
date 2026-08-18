@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 enum ButtonPickerState { idle, success, error }
 
-class PickerColorNotifier extends ChangeNotifier {
+class PickerStateNotifier extends ChangeNotifier {
   static const _pickerButtonCount = 5;
 
   List<ButtonPickerState> _buttonStates = List.filled(_pickerButtonCount, ButtonPickerState.idle);

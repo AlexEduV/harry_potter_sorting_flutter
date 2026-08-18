@@ -5,7 +5,7 @@ import 'package:harry_potter_sorting_flutter/presentation/pages/detail_page/noti
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_cache_provider.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_stats_notifier.dart';
-import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/picker_color_notifier.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/picker_state_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/character_list_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/filter_value_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/notifiers/bottom_nav_index_notifier.dart';
@@ -26,7 +26,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => CharacterNotifier()),
         ChangeNotifierProvider(create: (_) => BottomNavIndexNotifier()),
         ChangeNotifierProvider(create: (_) => CharacterStatsNotifier(getIt())),
-        ChangeNotifierProvider(create: (_) => PickerColorNotifier()),
+        ChangeNotifierProvider(create: (_) => PickerStateNotifier()),
         ChangeNotifierProvider(create: (_) => DetailCharacterNotifier(getIt())),
         ChangeNotifierProvider(create: (_) => CharacterListNotifier(getIt())),
         ChangeNotifierProvider(create: (_) => FilterValueNotifier()),
