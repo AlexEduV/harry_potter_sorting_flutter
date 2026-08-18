@@ -1,5 +1,3 @@
-import 'dart:math' show Random;
-
 import 'package:flutter/foundation.dart';
 import 'package:harry_potter_sorting_flutter/data/services/character_api_service.dart';
 import 'package:harry_potter_sorting_flutter/domain/data_sources/local/character_local_storage.dart';
@@ -50,10 +48,10 @@ class CharacterRepositoryImpl implements CharacterRepository {
 
   @override
   Future<CharacterEntity?> getCharacter() async {
-    final all = await _localStorage.getAll();
-    final entities = all.map(CharacterEntity.fromSchema).toList();
-    if (entities.isEmpty) return null;
-    return entities[Random().nextInt(all.length)];
+    final randomCharacter = await _localStorage.getRandomCharacter();
+    if (randomCharacter == null) return null;
+
+    return CharacterEntity.fromSchema(randomCharacter);
   }
 
   @override

@@ -101,4 +101,12 @@ class CharacterLocalStorageImpl implements CharacterLocalStorage {
         successCount: Value(stats.successCount),
       ));
   }
+
+  @override
+  Future<Character?> getRandomCharacter() {
+    return (_database.select(_database.characters)
+          ..orderBy([(t) => OrderingTerm.random()])
+          ..limit(1))
+        .getSingleOrNull();
+  }
 }

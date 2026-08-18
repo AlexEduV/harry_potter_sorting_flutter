@@ -17,4 +17,6 @@ abstract class CharacterLocalStorage extends BaseLocalStorage<Character> {
   Future<void> resetAllStats();
 
   Future<InfoStatsEntity> getTotalStats();
+
+  Future<Character?> getRandomCharacter();
 }
