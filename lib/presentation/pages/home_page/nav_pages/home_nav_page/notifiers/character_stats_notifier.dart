@@ -1,11 +1,13 @@
 import 'package:flutter/widgets.dart';
 import 'package:harry_potter_sorting_flutter/domain/entities/info_stats_entity.dart';
+import 'package:harry_potter_sorting_flutter/domain/repositories/character_repository.dart';
 import 'package:harry_potter_sorting_flutter/domain/usecases/reset_character_stats_usecase.dart';
 
 class CharacterStatsNotifier extends ChangeNotifier {
   final ResetCharacterStatsUseCase _resetCharacterStatsUseCase;
+  final CharacterRepository _characterRepository;
 
-  CharacterStatsNotifier(this._resetCharacterStatsUseCase);
+  CharacterStatsNotifier(this._resetCharacterStatsUseCase, this._characterRepository);
 
   int _totalCount = 0;
   int _successCount = 0;
@@ -53,5 +55,9 @@ class CharacterStatsNotifier extends ChangeNotifier {
   InfoStatsEntity getCurrentData() {
     return InfoStatsEntity(
         totalCount: totalCount, successCount: successCount, failCount: failedCount);
+  }
+
+  Future<void> persistCurrentStats(String characterName) async {
+    await _characterRepository.updateStatsByName(characterName, getCurrentData());
   }
 }

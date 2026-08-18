@@ -55,6 +55,10 @@ class CharacterRepositoryImpl implements CharacterRepository {
   }
 
   @override
+  Future<void> updateStatsByName(String name, InfoStatsEntity stats) =>
+      _localStorage.updateStatsByName(name, stats);
+
+  @override
   Future<InfoStatsEntity> getTotalStats() => _localStorage.getTotalStats();
 
   @override

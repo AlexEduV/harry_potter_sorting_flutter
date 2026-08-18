@@ -1,10 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:harry_potter_sorting_flutter/common/enums/house.dart';
-import 'package:harry_potter_sorting_flutter/core/di/dependency_injection.dart';
-import 'package:harry_potter_sorting_flutter/domain/data_sources/local/character_local_storage.dart';
-import 'package:harry_potter_sorting_flutter/domain/mappers/character_to_providers_mapper.dart';
-import 'package:harry_potter_sorting_flutter/domain/repositories/character_repository.dart';
+import 'package:harry_potter_sorting_flutter/domain/entities/info_stats_entity.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_cache_provider.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_stats_notifier.dart';
@@ -17,7 +14,6 @@ import 'package:harry_potter_sorting_flutter/router/router.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-import '../../../../../domain/entities/info_stats_entity.dart';
 import '../../../../widgets/info_row.dart';
 
 class HomeNavPage extends StatefulWidget {
@@ -27,14 +23,14 @@ class HomeNavPage extends StatefulWidget {
   State<HomeNavPage> createState() => _HomeNavPageState();
 }
 
-class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
+class _HomeNavPageState extends State<HomeNavPage> {
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _loadCharacters();
-      await _loadCharacter();
+      await _loadAllCharacters();
+      await _loadNextCharacter();
     });
   }
 
@@ -49,7 +45,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
         ],
       ),
       body: RefreshIndicator(
-        onRefresh: () => _loadCharacter(),
+        onRefresh: () => _loadNextCharacter(),
         color: AppColors.white,
         backgroundColor: AppColors.charcoalGrey,
         child: CustomScrollView(
@@ -123,15 +119,15 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                             PickerItem(
                               name: House.gryffindor.displayName,
                               imageSrc: House.gryffindor.imageSrc,
-                              backgroundColor: _getColorFromState(notifier.buttonStates[0]),
-                              onTap: () => _onPickerItemTap(0, House.gryffindor),
+                              backgroundColor: _getColorFromState(notifier.buttonStates[House.gryffindor.index]),
+                              onTap: () => _onPickerItemTap(House.gryffindor.index, House.gryffindor),
                             ),
                             const SizedBox(width: 8.0),
                             PickerItem(
                               name: House.slytherin.displayName,
                               imageSrc: House.slytherin.imageSrc,
-                              backgroundColor: _getColorFromState(notifier.buttonStates[1]),
-                              onTap: () => _onPickerItemTap(1, House.slytherin),
+                              backgroundColor: _getColorFromState(notifier.buttonStates[House.slytherin.index]),
+                              onTap: () => _onPickerItemTap(House.slytherin.index, House.slytherin),
                             ),
                           ],
                         ),
@@ -141,15 +137,15 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                             PickerItem(
                               name: House.ravenclaw.displayName,
                               imageSrc: House.ravenclaw.imageSrc,
-                              backgroundColor: _getColorFromState(notifier.buttonStates[2]),
-                              onTap: () => _onPickerItemTap(2, House.ravenclaw),
+                              backgroundColor: _getColorFromState(notifier.buttonStates[House.ravenclaw.index]),
+                              onTap: () => _onPickerItemTap(House.ravenclaw.index, House.ravenclaw),
                             ),
                             const SizedBox(width: 8.0),
                             PickerItem(
                               name: House.hufflepuff.displayName,
                               imageSrc: House.hufflepuff.imageSrc,
-                              backgroundColor: _getColorFromState(notifier.buttonStates[3]),
-                              onTap: () => _onPickerItemTap(3, House.hufflepuff),
+                              backgroundColor: _getColorFromState(notifier.buttonStates[House.hufflepuff.index]),
+                              onTap: () => _onPickerItemTap(House.hufflepuff.index, House.hufflepuff),
                             ),
                           ],
                         ),
@@ -159,8 +155,8 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                             PickerItem(
                               name: House.none.displayName,
                               imageSrc: House.none.imageSrc,
-                              backgroundColor: _getColorFromState(notifier.buttonStates[4]),
-                              onTap: () => _onPickerItemTap(4, House.none),
+                              backgroundColor: _getColorFromState(notifier.buttonStates[House.none.index]),
+                              onTap: () => _onPickerItemTap(House.none.index, House.none),
                             ),
                           ],
                         ),
@@ -176,17 +172,18 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     );
   }
 
-  Future<void> _loadCharacters() async {
+  Future<void> _loadAllCharacters() async {
     await context.read<CharacterCacheProvider>().loadCharacters();
   }
 
-  Future<void> _loadCharacter() async {
-    //todo: move this from presentation layer
-    final result = await getIt<CharacterRepository>().getCharacter();
+  Future<void> _loadNextCharacter() async {
+    final result = await context.read<CharacterCacheProvider>().getNextCharacter();
 
     if (!mounted || result == null) return;
 
-    getIt<CharacterToProvidersMapper>().map(result, context);
+    context.read<CharacterNotifier>().updateCharacter(result);
+    context.read<PickerStateNotifier>().resetColors();
+    context.read<CharacterStatsNotifier>().updateAllCounts(result.infoStatsEntity ?? InfoStatsEntity.initial());
   }
 
   Future<void> _onPickerItemTap(int index, House house) async {
@@ -211,8 +208,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
       return;
     }
 
-    final statsEntity = characterStatsNotifier.getCurrentData();
-    await getIt<CharacterLocalStorage>().updateStatsByName(characterName, statsEntity);
+    await characterStatsNotifier.persistCurrentStats(characterName);
   }
 
   Future<void> _openDetailsPage(String? name) async {

@@ -5,7 +5,6 @@ import 'package:harry_potter_sorting_flutter/core/di/dependency_injection.dart';
 import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
 import 'package:harry_potter_sorting_flutter/data/services/character_api_service.dart';
 import 'package:harry_potter_sorting_flutter/domain/data_sources/local/character_local_storage.dart';
-import 'package:harry_potter_sorting_flutter/domain/mappers/character_to_providers_mapper.dart';
 import 'package:harry_potter_sorting_flutter/domain/repositories/character_repository.dart';
 import 'package:harry_potter_sorting_flutter/domain/usecases/get_characters_usecase.dart';
 import 'package:harry_potter_sorting_flutter/domain/usecases/reset_character_stats_usecase.dart';
@@ -29,8 +28,6 @@ void main() {
         () => expect(getIt.isRegistered<CharacterLocalStorage>(), isTrue));
     test('registers CharacterRepository',
         () => expect(getIt.isRegistered<CharacterRepository>(), isTrue));
-    test('registers CharacterToProvidersMapper',
-        () => expect(getIt.isRegistered<CharacterToProvidersMapper>(), isTrue));
     test('registers GetCharactersUseCase',
         () => expect(getIt.isRegistered<GetCharactersUseCase>(), isTrue));
     test('registers ResetCharacterStatsUseCase',

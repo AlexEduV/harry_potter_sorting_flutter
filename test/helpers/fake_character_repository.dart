@@ -37,6 +37,9 @@ class FakeCharacterRepository implements CharacterRepository {
       Future.value(const InfoStatsEntity(totalCount: 0, successCount: 0, failCount: 0));
 
   @override
+  Future<void> updateStatsByName(String name, InfoStatsEntity stats) => Future.value();
+
+  @override
   Future<void> resetAllCharactersAttemptsStats() => Future.value();
 }
 
