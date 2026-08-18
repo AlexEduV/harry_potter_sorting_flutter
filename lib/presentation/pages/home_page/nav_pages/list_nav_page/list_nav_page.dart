@@ -26,12 +26,6 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
   final _searchFocusNode = FocusNode();
 
   @override
-  void dispose() {
-    _searchFocusNode.dispose();
-    super.dispose();
-  }
-
-  @override
   void initState() {
     super.initState();
 
@@ -42,6 +36,12 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
         getAllSubmittedCharacters(),
       ]);
     });
+  }
+
+  @override
+  void dispose() {
+    _searchFocusNode.dispose();
+    super.dispose();
   }
 
   @override
