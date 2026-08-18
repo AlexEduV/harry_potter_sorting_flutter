@@ -11,9 +11,11 @@ class CharacterListNotifier extends ChangeNotifier {
   CharacterListNotifier(this._getCharactersUseCase);
 
   List<Character> _entries = [];
+
   List<Character> get entries => _entries;
 
   int _totalAll = 0;
+
   int get total => _totalAll;
 
   void updateTotal(int newValue) {
@@ -22,6 +24,7 @@ class CharacterListNotifier extends ChangeNotifier {
   }
 
   int _successAll = 0;
+
   int get success => _successAll;
 
   void updateSuccess(int newValue) {
@@ -30,6 +33,7 @@ class CharacterListNotifier extends ChangeNotifier {
   }
 
   int _failedAll = 0;
+
   int get failed => _failedAll;
 
   void updateFailures(int newValue) {
@@ -38,8 +42,7 @@ class CharacterListNotifier extends ChangeNotifier {
   }
 
   Future<void> fetchCharacters({String filter = ''}) async {
-    debugPrint('fetching list...');
-    debugPrint('filter: $filter');
+    debugPrint('fetching list with filter: $filter');
 
     _entries = await _getCharactersUseCase.call(filter);
     notifyListeners();

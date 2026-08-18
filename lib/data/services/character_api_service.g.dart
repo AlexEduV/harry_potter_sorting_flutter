@@ -13,9 +13,7 @@ class _CharacterApiService implements CharacterApiService {
     this._dio, {
     this.baseUrl,
     this.errorLogger,
-  }) {
-    baseUrl ??= 'https://hp-api.onrender.com/api';
-  }
+  });
 
   final Dio _dio;
 

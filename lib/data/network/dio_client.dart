@@ -1,26 +1,23 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:harry_potter_sorting_flutter/common/constants/api_constants.dart';
+import 'package:harry_potter_sorting_flutter/data/network/logging_interceptor.dart';
 
 class DioClient {
+  static final Dio _client = _createClient();
 
-  static final Dio client = Dio();
+  static Dio get client => _client;
 
-  static String handleError(DioException e) {
-    // Log the exception for debugging purposes
-    debugPrint('Error: ${e.toString()}');
+  static Dio _createClient() {
+    final dio = Dio(BaseOptions(
+      baseUrl: ApiConstants.baseUrl,
+      connectTimeout: const Duration(seconds: 10),
+      receiveTimeout: const Duration(seconds: 10),
+    ));
 
-    // Handle known errors
-    if (e.type == DioExceptionType.connectionTimeout) {
-      return 'Connection Error - Timeout';
-    }
-    else if (e.type == DioExceptionType.badResponse) {
-      return 'Server Error. Please, try again';
-    }
-    else if (e.type == DioExceptionType.cancel) {
-      return 'Request was canceled';
-    }
+    dio.interceptors.add(LoggingInterceptor(logUsing: debugPrint));
+    dio.transformer = BackgroundTransformer();
 
-    // Fallback for unknown errors
-    return 'Unknown Error: Please try again later';
+    return dio;
   }
 }
