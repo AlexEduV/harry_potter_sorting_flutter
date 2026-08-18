@@ -15,6 +15,7 @@ class DioClient {
         receiveTimeout: const Duration(seconds: 10)));
 
     dio.interceptors.add(LoggingInterceptor(logUsing: debugPrint));
+    dio.transformer = BackgroundTransformer();
 
     return dio;
   }
