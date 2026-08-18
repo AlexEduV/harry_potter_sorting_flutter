@@ -15,6 +15,7 @@ import 'package:harry_potter_sorting_flutter/presentation/widgets/character_phot
 import 'package:harry_potter_sorting_flutter/presentation/widgets/reset_button.dart';
 import 'package:harry_potter_sorting_flutter/router/router.dart';
 import 'package:provider/provider.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../../../domain/entities/info_stats_entity.dart';
 import '../../../../widgets/info_row.dart';
@@ -28,8 +29,6 @@ class HomeNavPage extends StatefulWidget {
 
 class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
   //todo: I have made draggable only part of the screen, which may cause some confusion
-
-  //todo: apply shimmer effect to both photo and text while the first time loading
 
   @override
   void initState() {
@@ -82,45 +81,29 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                       Consumer<CharacterNotifier>(builder: (context, characterNotifier, child) {
                         final character = characterNotifier.character;
 
-                        if (character == null) {
-                          return const SizedBox.shrink();
-                        }
-
-                        return Column(
-                          children: [
-                            Consumer<CharacterCacheProvider>(
-                              builder: (context, cacheNotifier, child) {
-                                if (cacheNotifier.isLoading) {
-                                  return child!;
-                                } else {
-                                  return CharacterPhoto(
-                                    imageSrc: character.imageSrc,
-                                    onTap: () => _openDetailsPage(character.name),
-                                  );
-                                }
-                              },
-                              child: const SizedBox(
-                                width: 50,
-                                height: 180,
-                                child: Center(
-                                  child: CircularProgressIndicator(
-                                    color: AppColors.gold,
-                                    strokeWidth: 2.0,
-                                    backgroundColor: AppColors.transparent,
+                        return Consumer<CharacterCacheProvider>(
+                            builder: (context, cacheNotifier, child) {
+                          return Skeletonizer(
+                            containersColor: AppColors.lightGrey,
+                            enabled: character == null || cacheNotifier.isLoading,
+                            child: Column(
+                              spacing: 8,
+                              children: [
+                                CharacterPhoto(
+                                  imageSrc: character?.imageSrc,
+                                  onTap: () => _openDetailsPage(character?.name),
+                                ),
+                                Text(
+                                  character?.name ?? 'Placeholder text',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 22.0,
                                   ),
                                 ),
-                              ),
+                              ],
                             ),
-                            const SizedBox(height: 8.0),
-                            Text(
-                              character.name,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 22.0,
-                              ),
-                            ),
-                          ],
-                        );
+                          );
+                        });
                       }),
                     ],
                   ),
