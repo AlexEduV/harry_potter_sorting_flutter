@@ -16,7 +16,7 @@ class CharacterListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.transparent,
+      color: AppColors.transparent,
       child: InkWell(
         onTap: onTap,
         child: Padding(
@@ -52,7 +52,7 @@ class CharacterListItem extends StatelessWidget {
 
               //show success icon if there is 1 successful attempt
               if (character.successCount > 0) ...[
-                const StatusIcon(icon: Icons.check, backgroundColor: Colors.green),
+                const StatusIcon(icon: Icons.check, backgroundColor: AppColors.success),
               ],
 
               Row(
@@ -60,13 +60,14 @@ class CharacterListItem extends StatelessWidget {
                 children: [
                   //show retry button if no success recorded
                   if (character.successCount == 0)
-                    StatusIcon(icon: Icons.refresh, backgroundColor: Colors.grey, onTap: onRetry),
+                    StatusIcon(
+                        icon: Icons.refresh, backgroundColor: AppColors.grey, onTap: onRetry),
 
                   //show failure icon if attempts were made, but 0 successful;
                   if (character.totalCount > 0 && character.successCount == 0)
                     const StatusIcon(
                       icon: Icons.close,
-                      backgroundColor: Colors.red,
+                      backgroundColor: AppColors.error,
                     ),
                 ],
               ),

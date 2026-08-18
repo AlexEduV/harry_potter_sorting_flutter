@@ -13,7 +13,7 @@ class PickerColorNotifier extends ChangeNotifier {
     notifyListeners();
 
     //reset red color after 1 second, the green stays the same;
-    if (color == Colors.red) {
+    if (color == AppColors.error) {
       Future.delayed(const Duration(seconds: 1), () {
         resetColor(index);
       });
@@ -31,5 +31,5 @@ class PickerColorNotifier extends ChangeNotifier {
   }
 
   bool get containsSelectedItem =>
-      _buttonColors.contains(Colors.green) || _buttonColors.contains(Colors.red);
+      _buttonColors.contains(AppColors.success) || _buttonColors.contains(AppColors.error);
 }

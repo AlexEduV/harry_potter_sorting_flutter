@@ -60,99 +60,99 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
         child: Padding(
           padding: const EdgeInsets.only(top: 16.0),
           child: Column(
-          children: [
-            //row of total info boxes
-            Consumer<CharacterListNotifier>(builder: (context, notifier, child) {
-              return InfoRow(
-                infoStats: InfoStatsEntity(
-                    totalCount: notifier.total,
-                    successCount: notifier.success,
-                    failCount: notifier.failed),
-              );
-            }),
+            children: [
+              //row of total info boxes
+              Consumer<CharacterListNotifier>(builder: (context, notifier, child) {
+                return InfoRow(
+                  infoStats: InfoStatsEntity(
+                      totalCount: notifier.total,
+                      successCount: notifier.success,
+                      failCount: notifier.failed),
+                );
+              }),
 
-            const SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
 
-            //search bar
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: SearchBar(
-                focusNode: _searchFocusNode,
-                padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 16.0)),
-                backgroundColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
-                  if (states.contains(WidgetState.focused)) {
-                    return Colors.white; // Color when pressed/tapped
-                  }
-                  return AppColors.lightGrey; // Default color
-                }),
-                side: WidgetStateProperty.resolveWith<BorderSide?>((Set<WidgetState> states) {
-                  if (states.contains(WidgetState.focused)) {
-                    return const BorderSide(
-                        color: AppColors.lightGrey, width: 3.0); // Color when pressed/tapped
-                  }
-                  return null; // Default color
-                }),
-                //const WidgetStatePropertyAll(BorderSide(color: Colors.grey, width: 2.0)),
-                shadowColor: const WidgetStatePropertyAll(Colors.white),
-                elevation: const WidgetStatePropertyAll(0),
-                hintText: 'Filter Characters',
-                hintStyle: WidgetStateProperty.all(const TextStyle(fontSize: 24)),
-                textStyle: WidgetStateProperty.all(const TextStyle(fontSize: 24)),
-                leading: const Icon(Icons.search),
-                keyboardType: TextInputType.name,
-                onChanged: (value) {
-                  context.read<FilterValueNotifier>().update(value);
-                  getAllSubmittedCharacters(filter: value);
-                },
-              ),
-            ),
-
-            const SizedBox(height: 16.0),
-
-            //list view
-            Expanded(
-              child: Selector<CharacterListNotifier, List<Character>>(
-                  selector: (_, notifier) => notifier.entries,
-                  builder: (context, entries, child) {
-                    if (entries.isEmpty) {
-                      return const Center(child: Text('No characters found'));
+              //search bar
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: SearchBar(
+                  focusNode: _searchFocusNode,
+                  padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 16.0)),
+                  backgroundColor:
+                      WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+                    if (states.contains(WidgetState.focused)) {
+                      return AppColors.white; // Color when pressed/tapped
                     }
-
-                    return NotificationListener<ScrollStartNotification>(
-                      onNotification: (_) {
-                        FocusScope.of(context).unfocus();
-                        return false;
-                      },
-                      child: ListView.builder(
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      cacheExtent: 500,
-                      itemBuilder: (context, index) {
-                        final character = entries[index];
-
-                        return CharacterListItem(
-                            character: character,
-                            onTap: () async {
-                              _searchFocusNode.unfocus();
-                              _searchFocusNode.canRequestFocus = false;
-                              await context.router.push(DetailRoute(name: character.name));
-                              _searchFocusNode.canRequestFocus = true;
-                            },
-                            onRetry: () {
-                              //hide keyboard
-                              FocusScope.of(context).unfocus();
-
-                              context.read<BottomNavIndexNotifier>().updateIndex(0);
-
-                              getIt<CharacterToProvidersMapper>().map(character, context);
-                            });
-                      },
-                      itemCount: entries.length,
-                    ),
-                    );
+                    return AppColors.lightGrey; // Default color
                   }),
-            ),
-          ],
-        ),
+                  side: WidgetStateProperty.resolveWith<BorderSide?>((Set<WidgetState> states) {
+                    if (states.contains(WidgetState.focused)) {
+                      return const BorderSide(
+                          color: AppColors.lightGrey, width: 3.0); // Color when pressed/tapped
+                    }
+                    return null; // Default color
+                  }),
+                  shadowColor: const WidgetStatePropertyAll(AppColors.white),
+                  elevation: const WidgetStatePropertyAll(0),
+                  hintText: 'Filter Characters',
+                  hintStyle: WidgetStateProperty.all(const TextStyle(fontSize: 24)),
+                  textStyle: WidgetStateProperty.all(const TextStyle(fontSize: 24)),
+                  leading: const Icon(Icons.search),
+                  keyboardType: TextInputType.name,
+                  onChanged: (value) {
+                    context.read<FilterValueNotifier>().update(value);
+                    getAllSubmittedCharacters(filter: value);
+                  },
+                ),
+              ),
+
+              const SizedBox(height: 16.0),
+
+              //list view
+              Expanded(
+                child: Selector<CharacterListNotifier, List<Character>>(
+                    selector: (_, notifier) => notifier.entries,
+                    builder: (context, entries, child) {
+                      if (entries.isEmpty) {
+                        return const Center(child: Text('No characters found'));
+                      }
+
+                      return NotificationListener<ScrollStartNotification>(
+                        onNotification: (_) {
+                          FocusScope.of(context).unfocus();
+                          return false;
+                        },
+                        child: ListView.builder(
+                          padding: const EdgeInsets.symmetric(vertical: 16.0),
+                          cacheExtent: 500,
+                          itemBuilder: (context, index) {
+                            final character = entries[index];
+
+                            return CharacterListItem(
+                                character: character,
+                                onTap: () async {
+                                  _searchFocusNode.unfocus();
+                                  _searchFocusNode.canRequestFocus = false;
+                                  await context.router.push(DetailRoute(name: character.name));
+                                  _searchFocusNode.canRequestFocus = true;
+                                },
+                                onRetry: () {
+                                  //hide keyboard
+                                  FocusScope.of(context).unfocus();
+
+                                  context.read<BottomNavIndexNotifier>().updateIndex(0);
+
+                                  getIt<CharacterToProvidersMapper>().map(character, context);
+                                });
+                          },
+                          itemCount: entries.length,
+                        ),
+                      );
+                    }),
+              ),
+            ],
+          ),
         ),
       ),
     );

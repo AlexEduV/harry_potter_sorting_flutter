@@ -52,8 +52,8 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
       ),
       body: RefreshIndicator(
         onRefresh: () => _loadCharacter(),
-        color: Colors.white,
-        backgroundColor: Colors.blue,
+        color: AppColors.white,
+        backgroundColor: AppColors.charcoalGrey,
         child: Column(
           children: [
             Expanded(
@@ -105,7 +105,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                                   child: CircularProgressIndicator(
                                     color: AppColors.gold,
                                     strokeWidth: 2.0,
-                                    backgroundColor: Colors.transparent,
+                                    backgroundColor: AppColors.transparent,
                                   ),
                                 ),
                               ),
@@ -215,10 +215,10 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
     if (house == character?.house) {
       characterStatsNotifier.incrementSuccessCount();
-      pickerColorNotifier.updateColor(index, Colors.green);
+      pickerColorNotifier.updateColor(index, AppColors.success);
     } else {
       characterStatsNotifier.incrementFailedCount();
-      pickerColorNotifier.updateColor(index, Colors.red);
+      pickerColorNotifier.updateColor(index, AppColors.error);
     }
 
     final characterName = character?.name;

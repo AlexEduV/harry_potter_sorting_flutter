@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:harry_potter_sorting_flutter/presentation/style/app_colors.dart';
 
 class CharacterPhoto extends StatelessWidget {
-
   final double width;
   final double height;
   final double borderRadius;
@@ -24,15 +24,14 @@ class CharacterPhoto extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Material(
       elevation: onTap != null ? 2 : 0,
-      color: imageSrc == null || imageSrc!.isEmpty ? Colors.grey.shade200 : Colors.transparent,
+      color: imageSrc == null || imageSrc!.isEmpty ? Colors.grey.shade200 : AppColors.transparent,
       borderRadius: BorderRadius.circular(borderRadius),
       child: InkWell(
         onTap: onTap,
-        splashColor: Colors.white.withAlpha(126),
-        highlightColor: Colors.transparent,
+        splashColor: AppColors.white.withAlpha(126),
+        highlightColor: AppColors.transparent,
         borderRadius: BorderRadius.circular(borderRadius),
         child: Container(
           width: width,
@@ -47,7 +46,6 @@ class CharacterPhoto extends StatelessWidget {
                     imageUrl: imageSrc!,
                     fit: BoxFit.cover,
                     placeholder: (context, url) {
-
                       return const Center(
                         child: Padding(
                           padding: EdgeInsets.all(2.0),
@@ -58,23 +56,22 @@ class CharacterPhoto extends StatelessWidget {
                       );
                     },
                     errorWidget: (context, url, error) {
-
                       return Center(
                         child: Icon(
                           Icons.broken_image,
-                          color: Colors.red,
+                          color: AppColors.error,
                           size: smallIconSize,
                         ),
                       );
                     },
-            ) :
-            Center(
-              child: Icon(
-                Icons.image,
-                color: Colors.grey,
-                size: smallIconSize,
-              ),
-            ),
+                  )
+                : Center(
+                    child: Icon(
+                      Icons.image,
+                      color: AppColors.grey,
+                      size: smallIconSize,
+                    ),
+                  ),
           ),
         ),
       ),

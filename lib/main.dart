@@ -9,6 +9,7 @@ import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pa
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/character_list_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/filter_value_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/notifiers/bottom_nav_index_notifier.dart';
+import 'package:harry_potter_sorting_flutter/presentation/style/app_colors.dart';
 import 'package:harry_potter_sorting_flutter/router/router.dart';
 import 'package:provider/provider.dart';
 
@@ -50,14 +51,14 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
           fontFamily: 'HarryP',
           appBarTheme: const AppBarTheme(
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.black,
+            backgroundColor: AppColors.white,
+            foregroundColor: AppColors.charcoalGrey,
             centerTitle: true,
           ),
-          scaffoldBackgroundColor: Colors.white,
+          scaffoldBackgroundColor: AppColors.white,
           bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-            backgroundColor: Colors.white,
-            selectedItemColor: Colors.black,
+            backgroundColor: AppColors.white,
+            selectedItemColor: AppColors.black,
           )),
       routerConfig: _router.config(),
       debugShowCheckedModeBanner: false,

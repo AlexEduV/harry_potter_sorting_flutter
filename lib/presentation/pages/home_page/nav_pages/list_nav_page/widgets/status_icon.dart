@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../style/app_colors.dart';
+
 class StatusIcon extends StatelessWidget {
   final IconData icon;
   final Color backgroundColor;
@@ -25,7 +27,7 @@ class StatusIcon extends StatelessWidget {
         ),
         child: Icon(
           icon,
-          color: Colors.white,
+          color: AppColors.white,
           size: 24.0,
         ),
       ),
