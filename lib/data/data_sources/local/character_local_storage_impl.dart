@@ -109,4 +109,11 @@ class CharacterLocalStorageImpl implements CharacterLocalStorage {
           ..limit(1))
         .getSingleOrNull();
   }
+
+  @override
+  Future<List<Character>> filterCharactersByName(String name) {
+    if (name.isEmpty) return _database.managers.characters.get();
+
+    return _database.managers.characters.filter((f) => f.name.contains(name)).get();
+  }
 }

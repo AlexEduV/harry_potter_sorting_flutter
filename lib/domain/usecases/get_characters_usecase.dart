@@ -9,6 +9,6 @@ class GetCharactersUseCase extends UseCaseWithParams<String, Future<List<Charact
 
   @override
   Future<List<CharacterEntity>> call(String params) {
-    return _repository.getAllSubmittedCharacters(filter: params);
+    return _repository.filterCharactersByName(filter: params);
   }
 }

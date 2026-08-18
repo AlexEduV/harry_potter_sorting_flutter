@@ -25,17 +25,9 @@ class CharacterRepositoryImpl implements CharacterRepository {
   }
 
   @override
-  Future<List<CharacterEntity>> getAllSubmittedCharacters({String filter = ''}) async {
-    final result = await _localStorage.getAll();
-
-    if (filter.isEmpty) {
-      return result.map((element) => CharacterEntity.fromSchema(element)).toList();
-    }
-
-    return result
-        .where((character) => character.name.toLowerCase().contains(filter.toLowerCase()))
-        .map((element) => CharacterEntity.fromSchema(element))
-        .toList();
+  Future<List<CharacterEntity>> filterCharactersByName({String filter = ''}) async {
+    final result = await _localStorage.filterCharactersByName(filter);
+    return result.map((element) => CharacterEntity.fromSchema(element)).toList();
   }
 
   @override

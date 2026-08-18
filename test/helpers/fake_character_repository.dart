@@ -12,7 +12,7 @@ class FakeCharacterRepository implements CharacterRepository {
   List<CharacterEntity> submittedCharacters = [];
 
   @override
-  Future<List<CharacterEntity>> getAllSubmittedCharacters({String filter = ''}) {
+  Future<List<CharacterEntity>> filterCharactersByName({String filter = ''}) {
     lastGetAllFilter = filter;
     return Future.value(submittedCharacters);
   }
