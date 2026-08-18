@@ -21,8 +21,7 @@ void setupDependencies() {
   getIt.registerSingleton<AppDatabase>(DatabaseProvider.getDatabase());
   getIt.registerSingleton<CharacterApiService>(CharacterApiService(getIt()));
 
-  getIt.registerLazySingleton<CharacterLocalStorage>(
-      () => CharacterLocalStorageImpl(getIt<AppDatabase>()));
+  getIt.registerLazySingleton<CharacterLocalStorage>(() => CharacterLocalStorageImpl(getIt()));
 
   getIt.registerLazySingleton<CharacterRepository>(
       () => CharacterRepositoryImpl(getIt<CharacterApiService>(), getIt<CharacterLocalStorage>()));
