@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:harry_potter_sorting_flutter/common/extensions/double_extensions.dart';
 
+import '../style/app_colors.dart';
+
 class InfoBox extends StatelessWidget {
   final String value;
   final String description;
@@ -164,8 +166,8 @@ class _GlassPainter extends CustomPainter {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Colors.white.withAlpha(200),
-            Colors.white.withAlpha(0),
+            AppColors.white.withAlpha(200),
+            AppColors.white.withAlpha(0),
           ],
         ).createShader(glossRect),
     );
@@ -179,8 +181,8 @@ class _GlassPainter extends CustomPainter {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Colors.white.withAlpha(0),
-            Colors.white.withAlpha(50),
+            AppColors.white.withAlpha(0),
+            AppColors.white.withAlpha(50),
           ],
         ).createShader(reflectRect),
     );
@@ -198,7 +200,7 @@ class _GlassPainter extends CustomPainter {
       final angle = random.nextDouble() * pi;
       final opacity = random.nextDouble() * 0.1 + 0.03;
 
-      strokePaint.color = Colors.white.withAlpha(opacity.alpha);
+      strokePaint.color = AppColors.white.withAlpha(opacity.alpha);
       canvas.drawLine(
         Offset(x, y),
         Offset(x + cos(angle) * length, y + sin(angle) * length),

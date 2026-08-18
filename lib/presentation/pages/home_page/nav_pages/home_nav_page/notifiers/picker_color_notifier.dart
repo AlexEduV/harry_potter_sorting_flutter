@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:harry_potter_sorting_flutter/presentation/style/app_colors.dart';
 
 class PickerColorNotifier extends ChangeNotifier {
+  //todo: this file might need some refactoring in the variable definition and usage of unnamed vars and debounce mechanism;
+
   static const Color defaultColor = AppColors.pickerDefaultButtonColor;
 
   List<Color> _buttonColors = List.filled(5, defaultColor);
@@ -13,10 +15,8 @@ class PickerColorNotifier extends ChangeNotifier {
     notifyListeners();
 
     //reset red color after 1 second, the green stays the same;
-    if (color == Colors.red) {
-      Future.delayed(const Duration(seconds: 1), () {
-        resetColor(index);
-      });
+    if (color == AppColors.error) {
+      Future.delayed(const Duration(seconds: 1), () => _resetColor(index));
     }
   }
 
@@ -25,11 +25,11 @@ class PickerColorNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  void resetColor(int index) {
+  void _resetColor(int index) {
     _buttonColors[index] = defaultColor;
     notifyListeners();
   }
 
   bool get containsSelectedItem =>
-      _buttonColors.contains(Colors.green) || _buttonColors.contains(Colors.red);
+      _buttonColors.contains(AppColors.success) || _buttonColors.contains(AppColors.error);
 }

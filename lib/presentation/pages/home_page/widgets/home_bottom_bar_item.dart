@@ -17,34 +17,37 @@ class HomeBottomBarItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<BottomNavIndexNotifier>(builder: (context, notifier, child) {
-      return InkWell(
-        borderRadius: BorderRadius.circular(16.0),
-        onTap: () => _onItemTapped(context, index),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            spacing: 6.0,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(6.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6.0),
-                  color: AppColors.lightGrey,
+      return Material(
+        color: AppColors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(16.0),
+          onTap: () => _onItemTapped(context, index),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              spacing: 6.0,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(6.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(6.0),
+                    color: index == notifier.selectedIndex ? AppColors.white : AppColors.lightGrey,
+                  ),
+                  child: Icon(
+                    icon,
+                    color: index == notifier.selectedIndex ? AppColors.gold : AppColors.grey,
+                  ),
                 ),
-                child: Icon(
-                  icon,
-                  color: Colors.grey,
-                ),
-              ),
-              Text(
-                label,
-                style: TextStyle(
+                Text(
+                  label,
+                  style: TextStyle(
                     fontSize: 18,
-                    color:
-                        index == notifier.selectedIndex ? AppColors.gold : AppColors.charcoalGrey),
-              ),
-            ],
+                    color: index == notifier.selectedIndex ? AppColors.gold : AppColors.lightGrey,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       );

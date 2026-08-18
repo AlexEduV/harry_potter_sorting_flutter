@@ -25,8 +25,8 @@ class PickerItem extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(16.0),
           onTap: onTap,
-          splashColor: Colors.white.withAlpha(126),
-          highlightColor: Colors.transparent,
+          splashColor: AppColors.white.withAlpha(126),
+          highlightColor: AppColors.transparent,
           child: Container(
             height: imageSrc == null ? 70 : 90,
             decoration: BoxDecoration(
@@ -53,8 +53,8 @@ class PickerItem extends StatelessWidget {
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                     color: backgroundColor != AppColors.pickerDefaultButtonColor
-                        ? Colors.white
-                        : Colors.amber,
+                        ? AppColors.white
+                        : AppColors.gold,
                     shadows: const [
                       Shadow(
                         blurRadius: 2.0,
