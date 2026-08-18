@@ -13,6 +13,11 @@ class CharacterRepositoryImpl implements CharacterRepository {
 
   @override
   Future<List<CharacterEntity>> loadCharacters() async {
+    final cachedCharacters = await _localStorage.getAll();
+    if (cachedCharacters.isNotEmpty) {
+      return cachedCharacters.map((element) => CharacterEntity.fromSchema(element)).toList();
+    }
+
     try {
       final results = await _characterApiService.getAllCharacters();
       final characters = results.map((e) => CharacterEntity.fromDto(e)).toList();
