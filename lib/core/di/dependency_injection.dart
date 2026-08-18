@@ -18,7 +18,7 @@ void setupDependencies() {
 
   getIt.registerSingleton<Dio>(DioClient.client);
   getIt.registerSingleton<AppDatabase>(AppDatabase());
-  getIt.registerSingleton<CharacterApiService>(CharacterApiService(getIt()));
+  getIt.registerLazySingleton<CharacterApiService>(() => CharacterApiService(getIt()));
 
   getIt.registerLazySingleton<CharacterLocalStorage>(() => CharacterLocalStorageImpl(getIt()));
 
