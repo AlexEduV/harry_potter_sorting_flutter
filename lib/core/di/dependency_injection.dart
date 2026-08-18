@@ -13,11 +13,11 @@ import 'package:harry_potter_sorting_flutter/domain/usecases/reset_character_sta
 
 final getIt = GetIt.instance;
 
-void setupDependencies() {
+void setupDependencies({AppDatabase? database}) {
   if (getIt.isRegistered<Dio>()) return;
 
   getIt.registerSingleton<Dio>(DioClient.client);
-  getIt.registerSingleton<AppDatabase>(AppDatabase());
+  getIt.registerSingleton<AppDatabase>(database ?? AppDatabase());
   getIt.registerLazySingleton<CharacterApiService>(() => CharacterApiService(getIt()));
 
   getIt.registerLazySingleton<CharacterLocalStorage>(() => CharacterLocalStorageImpl(getIt()));
