@@ -68,9 +68,10 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                         builder: (context, notifier, child) {
                           return InfoRow(
                             infoStats: InfoStatsEntity(
-                                totalCount: notifier.totalCount,
-                                successCount: notifier.successCount,
-                                failCount: notifier.failedCount),
+                              totalCount: notifier.totalCount,
+                              successCount: notifier.successCount,
+                              failCount: notifier.failedCount,
+                            ),
                           );
                         },
                       ),
