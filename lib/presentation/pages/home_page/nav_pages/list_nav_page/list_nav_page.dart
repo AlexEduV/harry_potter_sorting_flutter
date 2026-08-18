@@ -143,7 +143,7 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
 
                                   context.read<BottomNavIndexNotifier>().updateIndex(0);
 
-                                  getIt<CharacterToProvidersMapper>().map(context);
+                                  getIt<CharacterToProvidersMapper>().map(character, context);
                                 });
                           },
                           itemCount: entries.length,

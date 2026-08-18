@@ -25,7 +25,7 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => CharacterNotifier(getIt())),
+        ChangeNotifierProvider(create: (_) => CharacterNotifier()),
         ChangeNotifierProvider(create: (_) => BottomNavIndexNotifier()),
         ChangeNotifierProvider(create: (_) => CharacterStatsNotifier(getIt())),
         ChangeNotifierProvider(create: (_) => PickerStateNotifier()),

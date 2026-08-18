@@ -4,6 +4,7 @@ import 'package:harry_potter_sorting_flutter/common/enums/house.dart';
 import 'package:harry_potter_sorting_flutter/core/di/dependency_injection.dart';
 import 'package:harry_potter_sorting_flutter/domain/data_sources/local/character_local_storage.dart';
 import 'package:harry_potter_sorting_flutter/domain/mappers/character_to_providers_mapper.dart';
+import 'package:harry_potter_sorting_flutter/domain/repositories/character_repository.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_cache_provider.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_stats_notifier.dart';
@@ -180,11 +181,12 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
   }
 
   Future<void> _loadNextCharacter() async {
-    await context.read<CharacterNotifier>().loadNextCharacter();
+    //todo: move this from presentation layer
+    final result = await getIt<CharacterRepository>().getCharacter();
 
-    if (!mounted) return;
+    if (!mounted || result == null) return;
 
-    getIt<CharacterToProvidersMapper>().map(context);
+    getIt<CharacterToProvidersMapper>().map(result, context);
   }
 
   Future<void> _onPickerItemTap(int index, House house) async {
