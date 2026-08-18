@@ -1,42 +1,49 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:harry_potter_sorting_flutter/presentation/style/app_colors.dart';
+
+enum ButtonPickerState { idle, success, error }
 
 class PickerColorNotifier extends ChangeNotifier {
-  //todo: this file might need some refactoring in the variable definition and usage of unnamed vars and debounce mechanism;
+  static const _pickerButtonCount = 5;
 
-  static const Color defaultColor = AppColors.pickerDefaultButtonColor;
+  List<ButtonPickerState> _buttonStates = List.filled(_pickerButtonCount, ButtonPickerState.idle);
 
-  List<Color> _buttonColors = List.filled(5, defaultColor);
-
-  List<Color> get buttonColors => List.unmodifiable(_buttonColors);
+  List<ButtonPickerState> get buttonStates => List.unmodifiable(_buttonStates);
 
   Timer? _resetTimer;
 
-  void updateColor(int index, Color color) {
-    _buttonColors[index] = color;
+  void updateState(int index, ButtonPickerState state) {
+    _buttonStates[index] = state;
     notifyListeners();
 
-    //reset red color after 1 second, the green stays the same;
-    if (color == AppColors.error) {
-      _resetTimer = Timer(const Duration(seconds: 1), () => _resetColor(index));
+    //reset state after 1 second to default, but only on error, since the green stays.
+    if (state == ButtonPickerState.error) {
+      _resetTimer?.cancel();
+      _resetTimer = Timer(const Duration(seconds: 1), () => _resetStateByIndex(index));
     }
   }
 
   void resetColors() {
     _resetTimer?.cancel();
-    _buttonColors = List.filled(5, defaultColor);
+    _buttonStates = List.filled(_pickerButtonCount, ButtonPickerState.idle);
     notifyListeners();
   }
 
-  void _resetColor(int index) {
-    _buttonColors[index] = defaultColor;
+  void _resetStateByIndex(int index) {
+    if (_buttonStates.length <= index) {
+      debugPrint(
+          'invalid index at resetting color: $index, while the length is ${_buttonStates.length}');
+      return;
+    }
+
+    _buttonStates[index] = ButtonPickerState.idle;
     notifyListeners();
   }
 
   bool get containsSelectedItem =>
-      _buttonColors.contains(AppColors.success) || _buttonColors.contains(AppColors.error);
+      _buttonStates.contains(ButtonPickerState.success) ||
+      _buttonStates.contains(ButtonPickerState.error);
 
   @override
   void dispose() {
