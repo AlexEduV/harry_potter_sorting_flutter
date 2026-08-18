@@ -25,8 +25,8 @@ class CharacterRepositoryImpl implements CharacterRepository {
   }
 
   @override
-  Future<List<CharacterEntity>> filterCharactersByName({String filter = ''}) async {
-    final result = await _localStorage.filterCharactersByName(filter);
+  Future<List<CharacterEntity>> filterCharactersByName({String name = ''}) async {
+    final result = await _localStorage.filterCharactersByName(name);
     return result.map((element) => CharacterEntity.fromSchema(element)).toList();
   }
 
