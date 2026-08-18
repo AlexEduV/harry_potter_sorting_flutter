@@ -10,9 +10,9 @@ abstract class CharacterLocalStorage extends BaseLocalStorage<Character> {
 
   Future<void> saveAll(List<CharacterEntity> entities);
 
-  void updateStatsByName(String name, InfoStatsEntity stats);
+  Future<void> updateStatsByName(String name, InfoStatsEntity stats);
 
-  void resetStatsByName(String name);
+  Future<void> resetStatsByName(String name);
 
   Future<void> resetAllStats();
 

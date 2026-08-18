@@ -212,7 +212,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     }
 
     final statsEntity = characterStatsNotifier.getCurrentData();
-    getIt<CharacterLocalStorage>().updateStatsByName(characterName, statsEntity);
+    await getIt<CharacterLocalStorage>().updateStatsByName(characterName, statsEntity);
   }
 
   Future<void> _openDetailsPage(String? name) async {

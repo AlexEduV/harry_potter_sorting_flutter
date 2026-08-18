@@ -18,7 +18,7 @@ class FakeCharacterRepository implements CharacterRepository {
   }
 
   @override
-  void resetCharacterAttemptsStatsByName(String name) {
+  Future<void> resetCharacterAttemptsStatsByName(String name) async {
     lastResetName = name;
   }
 

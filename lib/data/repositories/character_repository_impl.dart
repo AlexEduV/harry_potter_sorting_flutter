@@ -52,7 +52,8 @@ class CharacterRepositoryImpl implements CharacterRepository {
   Future<InfoStatsEntity> getTotalStats() => _localStorage.getTotalStats();
 
   @override
-  void resetCharacterAttemptsStatsByName(String name) => _localStorage.resetStatsByName(name);
+  Future<void> resetCharacterAttemptsStatsByName(String name) =>
+      _localStorage.resetStatsByName(name);
 
   @override
   Future<void> resetAllCharactersAttemptsStats() => _localStorage.resetAllStats();

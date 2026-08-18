@@ -55,7 +55,7 @@ class CharacterLocalStorageImpl implements CharacterLocalStorage {
           ));
 
   @override
-  void resetStatsByName(String name) {
+  Future<void> resetStatsByName(String name) async {
     _database.update(_database.characters)
       ..where((table) => table.name.equals(name))
       ..write(const CharactersCompanion(
@@ -92,7 +92,7 @@ class CharacterLocalStorageImpl implements CharacterLocalStorage {
   }
 
   @override
-  void updateStatsByName(String name, InfoStatsEntity stats) {
+  Future<void> updateStatsByName(String name, InfoStatsEntity stats) async {
     _database.update(_database.characters)
       ..where((table) => table.name.equals(name))
       ..write(CharactersCompanion(

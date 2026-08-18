@@ -4,11 +4,16 @@ import 'package:harry_potter_sorting_flutter/domain/entities/info_stats_entity.d
 
 abstract class CharacterRepository {
   Future<List<CharacterEntity>> loadCharacters();
+
   Future<Character?> getCharacterByName(String name);
+
   Future<Character?> getCharacter();
-  void resetCharacterAttemptsStatsByName(String name);
+
+  Future<void> resetCharacterAttemptsStatsByName(String name);
 
   Future<List<Character>> getAllSubmittedCharacters({String filter = ''});
+
   Future<InfoStatsEntity> getTotalStats();
+
   Future<void> resetAllCharactersAttemptsStats();
 }
