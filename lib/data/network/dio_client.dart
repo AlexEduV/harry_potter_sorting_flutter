@@ -10,9 +10,10 @@ class DioClient {
 
   static Dio _createClient() {
     final dio = Dio(BaseOptions(
-        baseUrl: ApiConstants.baseUrl,
-        connectTimeout: const Duration(seconds: 10),
-        receiveTimeout: const Duration(seconds: 10)));
+      baseUrl: ApiConstants.baseUrl,
+      connectTimeout: const Duration(seconds: 10),
+      receiveTimeout: const Duration(seconds: 10),
+    ));
 
     dio.interceptors.add(LoggingInterceptor(logUsing: debugPrint));
     dio.transformer = BackgroundTransformer();
