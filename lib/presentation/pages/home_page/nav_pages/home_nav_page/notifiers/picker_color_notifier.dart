@@ -14,6 +14,12 @@ class PickerColorNotifier extends ChangeNotifier {
   Timer? _resetTimer;
 
   void updateState(int index, ButtonPickerState state) {
+    if (_buttonStates.length <= index) {
+      debugPrint(
+          'invalid index at resetting color: $index, while the length is ${_buttonStates.length}');
+      return;
+    }
+
     _buttonStates[index] = state;
     notifyListeners();
 
