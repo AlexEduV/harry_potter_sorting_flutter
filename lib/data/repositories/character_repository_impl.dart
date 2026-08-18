@@ -20,6 +20,7 @@ class CharacterRepositoryImpl implements CharacterRepository {
       return characters;
     } catch (e) {
       debugPrint('error loading characters: $e');
+      //todo: try to show error state in UI
       return [];
     }
   }
