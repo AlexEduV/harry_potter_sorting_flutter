@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:harry_potter_sorting_flutter/common/constants/api_constants.dart';
 import 'package:harry_potter_sorting_flutter/data/network/logging_interceptor.dart';
 
@@ -9,7 +9,10 @@ class DioClient {
   static Dio client() => _client;
 
   static Dio _createClient() {
-    final dio = Dio(BaseOptions(baseUrl: ApiConstants.baseUrl));
+    final dio = Dio(BaseOptions(
+        baseUrl: ApiConstants.baseUrl,
+        connectTimeout: const Duration(seconds: 10),
+        receiveTimeout: const Duration(seconds: 10)));
 
     dio.interceptors.add(LoggingInterceptor(logUsing: debugPrint));
 
