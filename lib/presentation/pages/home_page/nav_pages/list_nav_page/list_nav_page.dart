@@ -1,9 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:harry_potter_sorting_flutter/core/di/dependency_injection.dart';
 import 'package:harry_potter_sorting_flutter/domain/entities/character_entity.dart';
 import 'package:harry_potter_sorting_flutter/domain/entities/info_stats_entity.dart';
-import 'package:harry_potter_sorting_flutter/domain/mappers/character_to_providers_mapper.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_notifier.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_stats_notifier.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/picker_state_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/character_list_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/filter_value_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/widgets/character_list_item.dart';
@@ -143,7 +144,9 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
 
                                   context.read<BottomNavIndexNotifier>().updateIndex(0);
 
-                                  getIt<CharacterToProvidersMapper>().map(character, context);
+                                  context.read<CharacterNotifier>().updateCharacter(character);
+                                  context.read<PickerStateNotifier>().resetColors();
+                                  context.read<CharacterStatsNotifier>().updateAllCounts(character.infoStatsEntity ?? InfoStatsEntity.initial());
                                 });
                           },
                           itemCount: entries.length,

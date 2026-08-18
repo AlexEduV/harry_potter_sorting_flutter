@@ -10,6 +10,8 @@ abstract class CharacterRepository {
 
   Future<void> resetCharacterAttemptsStatsByName(String name);
 
+  Future<void> updateStatsByName(String name, InfoStatsEntity stats);
+
   Future<List<CharacterEntity>> filterCharactersByName({String name = ''});
 
   Future<InfoStatsEntity> getTotalStats();

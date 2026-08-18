@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harry_potter_sorting_flutter/domain/entities/character_entity.dart';
 import 'package:harry_potter_sorting_flutter/domain/repositories/character_repository.dart';
 
 class CharacterCacheProvider extends ChangeNotifier {
@@ -22,4 +23,6 @@ class CharacterCacheProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<CharacterEntity?> getNextCharacter() => _characterRepository.getCharacter();
 }
