@@ -1,6 +1,5 @@
 import 'package:harry_potter_sorting_flutter/common/enums/house.dart';
-import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
-import 'package:harry_potter_sorting_flutter/data/dto/character_dto.dart';
+import 'package:harry_potter_sorting_flutter/domain/entities/info_stats_entity.dart';
 
 class CharacterEntity {
   final String id;
@@ -14,6 +13,8 @@ class CharacterEntity {
   final String actor;
   final String species;
 
+  final InfoStatsEntity? infoStatsEntity;
+
   const CharacterEntity({
     required this.id,
     required this.name,
@@ -22,30 +23,8 @@ class CharacterEntity {
     required this.dateOfBirth,
     required this.actor,
     required this.species,
+    this.infoStatsEntity,
   });
-
-  factory CharacterEntity.fromSchema(Character character) {
-    return CharacterEntity(
-        id: character.longId,
-        name: character.name,
-        imageSrc: character.imageSrc,
-        house: House.fromString(character.house),
-        dateOfBirth: character.dateOfBirth,
-        actor: character.actor,
-        species: character.species);
-  }
-
-  factory CharacterEntity.fromDto(CharacterDto dto) {
-    return CharacterEntity(
-      id: dto.id,
-      name: dto.name,
-      imageSrc: dto.imageSrc,
-      house: House.fromString(dto.house),
-      dateOfBirth: dto.dateOfBirth,
-      actor: dto.actor,
-      species: dto.species,
-    );
-  }
 
   @override
   bool operator ==(Object other) =>
@@ -58,8 +37,10 @@ class CharacterEntity {
           house == other.house &&
           dateOfBirth == other.dateOfBirth &&
           actor == other.actor &&
-          species == other.species;
+          species == other.species &&
+          infoStatsEntity == other.infoStatsEntity;
 
   @override
-  int get hashCode => Object.hash(id, name, imageSrc, house, dateOfBirth, actor, species);
+  int get hashCode =>
+      Object.hash(id, name, imageSrc, house, dateOfBirth, actor, species, infoStatsEntity);
 }

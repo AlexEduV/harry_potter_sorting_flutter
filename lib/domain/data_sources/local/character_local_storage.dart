@@ -6,15 +6,19 @@ import 'package:harry_potter_sorting_flutter/domain/entities/info_stats_entity.d
 abstract class CharacterLocalStorage extends BaseLocalStorage<Character> {
   Future<Character?> findByName(String name);
 
+  Future<List<Character>> filterCharactersByName(String name);
+
   Future<void> insert(CharacterEntity entity);
 
   Future<void> saveAll(List<CharacterEntity> entities);
 
-  void updateStatsByName(String name, InfoStatsEntity stats);
+  Future<void> updateStatsByName(String name, InfoStatsEntity stats);
 
-  void resetStatsByName(String name);
+  Future<void> resetStatsByName(String name);
 
   Future<void> resetAllStats();
 
   Future<InfoStatsEntity> getTotalStats();
+
+  Future<Character?> getRandomCharacter();
 }

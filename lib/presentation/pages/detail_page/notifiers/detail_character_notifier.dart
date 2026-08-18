@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
+import 'package:harry_potter_sorting_flutter/domain/entities/character_entity.dart';
 import 'package:harry_potter_sorting_flutter/domain/repositories/character_repository.dart';
 
 class DetailCharacterNotifier extends ChangeNotifier {
@@ -7,8 +7,9 @@ class DetailCharacterNotifier extends ChangeNotifier {
 
   DetailCharacterNotifier(this._characterRepository);
 
-  Character? _character;
-  Character? get character => _character;
+  CharacterEntity? _character;
+
+  CharacterEntity? get character => _character;
 
   void setCharacter(String name) async {
     final character = await _characterRepository.getCharacterByName(name);

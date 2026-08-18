@@ -21,8 +21,8 @@ void main() {
 
     test('returns characters from repository', () async {
       final characters = [
-        makeCharacter(id: 1, name: 'Harry Potter'),
-        makeCharacter(id: 2, name: 'Hermione Granger'),
+        makeCharacter(id: '1', name: 'Harry Potter'),
+        makeCharacter(id: '2', name: 'Hermione Granger'),
       ];
       repository.submittedCharacters = characters;
 
@@ -38,7 +38,7 @@ void main() {
     });
 
     test('returns filtered result from repository', () async {
-      final harry = makeCharacter(id: 1, name: 'Harry Potter');
+      final harry = makeCharacter(id: '1', name: 'Harry Potter');
       repository.submittedCharacters = [harry];
 
       final result = await useCase.call('Harry');

@@ -8,7 +8,7 @@ import 'package:harry_potter_sorting_flutter/domain/repositories/character_repos
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_cache_provider.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_stats_notifier.dart';
-import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/picker_color_notifier.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/picker_state_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/widgets/picker_item.dart';
 import 'package:harry_potter_sorting_flutter/presentation/style/app_colors.dart';
 import 'package:harry_potter_sorting_flutter/presentation/widgets/character_photo.dart';
@@ -113,7 +113,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
             ),
 
             //picker
-            Consumer<PickerColorNotifier>(
+            Consumer<PickerStateNotifier>(
               builder: (context, notifier, child) {
                 return Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -124,14 +124,14 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                           PickerItem(
                             name: House.gryffindor.displayName,
                             imageSrc: House.gryffindor.imageSrc,
-                            backgroundColor: notifier.buttonColors[0],
+                            backgroundColor: _getColorFromState(notifier.buttonStates[0]),
                             onTap: () => _onPickerItemTap(0, House.gryffindor),
                           ),
                           const SizedBox(width: 8.0),
                           PickerItem(
                             name: House.slytherin.displayName,
                             imageSrc: House.slytherin.imageSrc,
-                            backgroundColor: notifier.buttonColors[1],
+                            backgroundColor: _getColorFromState(notifier.buttonStates[1]),
                             onTap: () => _onPickerItemTap(1, House.slytherin),
                           ),
                         ],
@@ -142,14 +142,14 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                           PickerItem(
                             name: House.ravenclaw.displayName,
                             imageSrc: House.ravenclaw.imageSrc,
-                            backgroundColor: notifier.buttonColors[2],
+                            backgroundColor: _getColorFromState(notifier.buttonStates[2]),
                             onTap: () => _onPickerItemTap(2, House.ravenclaw),
                           ),
                           const SizedBox(width: 8.0),
                           PickerItem(
                             name: House.hufflepuff.displayName,
                             imageSrc: House.hufflepuff.imageSrc,
-                            backgroundColor: notifier.buttonColors[3],
+                            backgroundColor: _getColorFromState(notifier.buttonStates[3]),
                             onTap: () => _onPickerItemTap(3, House.hufflepuff),
                           ),
                         ],
@@ -160,7 +160,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
                           PickerItem(
                             name: House.none.displayName,
                             imageSrc: House.none.imageSrc,
-                            backgroundColor: notifier.buttonColors[4],
+                            backgroundColor: _getColorFromState(notifier.buttonStates[4]),
                             onTap: () => _onPickerItemTap(4, House.none),
                           ),
                         ],
@@ -190,7 +190,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
   }
 
   Future<void> _onPickerItemTap(int index, House house) async {
-    final pickerColorNotifier = context.read<PickerColorNotifier>();
+    final pickerColorNotifier = context.read<PickerStateNotifier>();
     final characterStatsNotifier = context.read<CharacterStatsNotifier>();
     final character = context.read<CharacterNotifier>().character;
 
@@ -200,10 +200,10 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
 
     if (house == character?.house) {
       characterStatsNotifier.incrementSuccessCount();
-      pickerColorNotifier.updateColor(index, AppColors.success);
+      pickerColorNotifier.updateState(index, ButtonPickerState.success);
     } else {
       characterStatsNotifier.incrementFailedCount();
-      pickerColorNotifier.updateColor(index, AppColors.error);
+      pickerColorNotifier.updateState(index, ButtonPickerState.error);
     }
 
     final characterName = character?.name;
@@ -212,7 +212,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     }
 
     final statsEntity = characterStatsNotifier.getCurrentData();
-    getIt<CharacterLocalStorage>().updateStatsByName(characterName, statsEntity);
+    await getIt<CharacterLocalStorage>().updateStatsByName(characterName, statsEntity);
   }
 
   Future<void> _openDetailsPage(String? name) async {
@@ -226,6 +226,17 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     if (character == null) return;
 
     context.read<CharacterStatsNotifier>().resetAllCounts(character.name);
-    context.read<PickerColorNotifier>().resetColors();
+    context.read<PickerStateNotifier>().resetColors();
+  }
+
+  Color _getColorFromState(ButtonPickerState state) {
+    switch (state) {
+      case ButtonPickerState.idle:
+        return AppColors.pickerDefaultButtonColor;
+      case ButtonPickerState.success:
+        return AppColors.success;
+      case ButtonPickerState.error:
+        return AppColors.error;
+    }
   }
 }

@@ -55,7 +55,7 @@ class CharacterLocalStorageImpl implements CharacterLocalStorage {
           ));
 
   @override
-  void resetStatsByName(String name) {
+  Future<void> resetStatsByName(String name) async {
     _database.update(_database.characters)
       ..where((table) => table.name.equals(name))
       ..write(const CharactersCompanion(
@@ -92,7 +92,7 @@ class CharacterLocalStorageImpl implements CharacterLocalStorage {
   }
 
   @override
-  void updateStatsByName(String name, InfoStatsEntity stats) {
+  Future<void> updateStatsByName(String name, InfoStatsEntity stats) async {
     _database.update(_database.characters)
       ..where((table) => table.name.equals(name))
       ..write(CharactersCompanion(
@@ -100,5 +100,20 @@ class CharacterLocalStorageImpl implements CharacterLocalStorage {
         failCount: Value(stats.failCount),
         successCount: Value(stats.successCount),
       ));
+  }
+
+  @override
+  Future<Character?> getRandomCharacter() {
+    return (_database.select(_database.characters)
+          ..orderBy([(t) => OrderingTerm.random()])
+          ..limit(1))
+        .getSingleOrNull();
+  }
+
+  @override
+  Future<List<Character>> filterCharactersByName(String name) {
+    if (name.isEmpty) return _database.managers.characters.get();
+
+    return _database.managers.characters.filter((f) => f.name.contains(name)).get();
   }
 }

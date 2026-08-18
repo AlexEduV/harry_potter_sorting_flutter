@@ -1,4 +1,4 @@
-import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
+import 'package:harry_potter_sorting_flutter/common/enums/house.dart';
 import 'package:harry_potter_sorting_flutter/domain/entities/character_entity.dart';
 import 'package:harry_potter_sorting_flutter/domain/entities/info_stats_entity.dart';
 import 'package:harry_potter_sorting_flutter/domain/repositories/character_repository.dart';
@@ -9,16 +9,16 @@ class FakeCharacterRepository implements CharacterRepository {
   String? lastGetAllFilter;
 
   // Configurable return values
-  List<Character> submittedCharacters = [];
+  List<CharacterEntity> submittedCharacters = [];
 
   @override
-  Future<List<Character>> getAllSubmittedCharacters({String filter = ''}) {
-    lastGetAllFilter = filter;
+  Future<List<CharacterEntity>> filterCharactersByName({String name = ''}) {
+    lastGetAllFilter = name;
     return Future.value(submittedCharacters);
   }
 
   @override
-  void resetCharacterAttemptsStatsByName(String name) {
+  Future<void> resetCharacterAttemptsStatsByName(String name) async {
     lastResetName = name;
   }
 
@@ -27,10 +27,10 @@ class FakeCharacterRepository implements CharacterRepository {
   Future<List<CharacterEntity>> loadCharacters() => Future.value([]);
 
   @override
-  Future<Character?> getCharacterByName(String name) => Future.value(null);
+  Future<CharacterEntity?> getCharacterByName(String name) => Future.value(null);
 
   @override
-  Future<Character> getCharacter() => throw UnimplementedError();
+  Future<CharacterEntity> getCharacter() => throw UnimplementedError();
 
   @override
   Future<InfoStatsEntity> getTotalStats() =>
@@ -40,12 +40,12 @@ class FakeCharacterRepository implements CharacterRepository {
   Future<void> resetAllCharactersAttemptsStats() => Future.value();
 }
 
-Character makeCharacter({
-  int id = 1,
+CharacterEntity makeCharacter({
+  String id = '1',
   String longId = 'abc',
   String name = 'Harry Potter',
   String imageSrc = 'https://example.com/harry.jpg',
-  String house = 'Gryffindor',
+  House house = House.gryffindor,
   String actor = 'Daniel Radcliffe',
   String species = 'human',
   String dateOfBirth = '31-07-1980',
@@ -53,16 +53,14 @@ Character makeCharacter({
   int failCount = 0,
   int totalCount = 0,
 }) =>
-    Character(
+    CharacterEntity(
       id: id,
-      longId: longId,
       name: name,
       imageSrc: imageSrc,
       house: house,
       actor: actor,
       species: species,
       dateOfBirth: dateOfBirth,
-      successCount: successCount,
-      failCount: failCount,
-      totalCount: totalCount,
+      infoStatsEntity:
+          InfoStatsEntity(totalCount: totalCount, successCount: successCount, failCount: failCount),
     );
