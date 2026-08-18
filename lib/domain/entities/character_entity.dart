@@ -1,6 +1,4 @@
 import 'package:harry_potter_sorting_flutter/common/enums/house.dart';
-import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
-import 'package:harry_potter_sorting_flutter/data/dto/character_dto.dart';
 import 'package:harry_potter_sorting_flutter/domain/entities/info_stats_entity.dart';
 
 class CharacterEntity {
@@ -27,31 +25,6 @@ class CharacterEntity {
     required this.species,
     this.infoStatsEntity,
   });
-
-  factory CharacterEntity.fromSchema(Character character) {
-    return CharacterEntity(
-      id: character.longId,
-      name: character.name,
-      imageSrc: character.imageSrc,
-      house: House.fromString(character.house),
-      dateOfBirth: character.dateOfBirth,
-      actor: character.actor,
-      species: character.species,
-      infoStatsEntity: InfoStatsEntity.fromSchema(character),
-    );
-  }
-
-  factory CharacterEntity.fromDto(CharacterDto dto) {
-    return CharacterEntity(
-      id: dto.id,
-      name: dto.name,
-      imageSrc: dto.imageSrc,
-      house: House.fromString(dto.house),
-      dateOfBirth: dto.dateOfBirth,
-      actor: dto.actor,
-      species: dto.species,
-    );
-  }
 
   @override
   bool operator ==(Object other) =>
