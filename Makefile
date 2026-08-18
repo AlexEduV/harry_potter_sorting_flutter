@@ -8,6 +8,7 @@ build-hard:
 show-coverage:
 	PATH=$$PATH:$$HOME/.pub-cache/bin \
 	flutter test --coverage --concurrency=4 --exclude-tags integration
+	lcov --remove coverage/lcov.info '*.g.dart' '*.gr.dart' --ignore-errors unused -o coverage/lcov.info
 	genhtml coverage/lcov.info -o coverage/html
 	open coverage/html/index.html
 
