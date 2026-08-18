@@ -32,19 +32,18 @@ class HomeBottomBarItem extends StatelessWidget {
                   padding: const EdgeInsets.all(6.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(6.0),
-                    color: AppColors.lightGrey,
+                    color: index == notifier.selectedIndex ? AppColors.white : AppColors.lightGrey,
                   ),
                   child: Icon(
                     icon,
-                    color: AppColors.grey,
+                    color: index == notifier.selectedIndex ? AppColors.gold : AppColors.grey,
                   ),
                 ),
                 Text(
                   label,
                   style: TextStyle(
                     fontSize: 18,
-                    color:
-                        index == notifier.selectedIndex ? AppColors.gold : AppColors.charcoalGrey,
+                    color: index == notifier.selectedIndex ? AppColors.gold : AppColors.lightGrey,
                   ),
                 ),
               ],

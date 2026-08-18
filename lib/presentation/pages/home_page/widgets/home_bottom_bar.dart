@@ -8,8 +8,8 @@ class HomeBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(
-      decoration:
-          BoxDecoration(borderRadius: BorderRadius.circular(16.0), color: AppColors.lightGrey),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16.0), color: AppColors.bottomNavBarBackgroundColor),
       child: Padding(
         padding: const EdgeInsets.all(4.0).copyWith(bottom: 12.0),
         child: const Row(
