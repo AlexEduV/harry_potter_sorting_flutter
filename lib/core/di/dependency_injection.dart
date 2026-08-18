@@ -15,20 +15,20 @@ import 'package:harry_potter_sorting_flutter/domain/usecases/reset_character_sta
 final getIt = GetIt.instance;
 
 void setupDependencies() {
-  if (!getIt.isRegistered<Dio>()) {
-    getIt.registerSingleton<Dio>(DioClient.client);
-    getIt.registerSingleton<AppDatabase>(DatabaseProvider.getDatabase());
-    getIt.registerSingleton<CharacterApiService>(CharacterApiService(getIt<Dio>()));
+  if (getIt.isRegistered<Dio>()) return;
 
-    getIt.registerLazySingleton<CharacterLocalStorage>(
-        () => CharacterLocalStorageImpl(getIt<AppDatabase>()));
+  getIt.registerSingleton<Dio>(DioClient.client);
+  getIt.registerSingleton<AppDatabase>(DatabaseProvider.getDatabase());
+  getIt.registerSingleton<CharacterApiService>(CharacterApiService(getIt()));
 
-    getIt.registerLazySingleton<CharacterRepository>(() =>
-        CharacterRepositoryImpl(getIt<CharacterApiService>(), getIt<CharacterLocalStorage>()));
+  getIt.registerLazySingleton<CharacterLocalStorage>(
+      () => CharacterLocalStorageImpl(getIt<AppDatabase>()));
 
-    getIt.registerLazySingleton(() => CharacterToProvidersMapper());
+  getIt.registerLazySingleton<CharacterRepository>(
+      () => CharacterRepositoryImpl(getIt<CharacterApiService>(), getIt<CharacterLocalStorage>()));
 
-    getIt.registerLazySingleton(() => GetCharactersUseCase(getIt()));
-    getIt.registerLazySingleton(() => ResetCharacterStatsUseCase(getIt()));
-  }
+  getIt.registerLazySingleton(() => CharacterToProvidersMapper());
+
+  getIt.registerLazySingleton(() => GetCharactersUseCase(getIt()));
+  getIt.registerLazySingleton(() => ResetCharacterStatsUseCase(getIt()));
 }
