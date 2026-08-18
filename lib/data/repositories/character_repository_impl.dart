@@ -1,7 +1,6 @@
 import 'dart:math' show Random;
 
 import 'package:flutter/foundation.dart';
-import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
 import 'package:harry_potter_sorting_flutter/data/services/character_api_service.dart';
 import 'package:harry_potter_sorting_flutter/domain/data_sources/local/character_local_storage.dart';
 import 'package:harry_potter_sorting_flutter/domain/entities/character_entity.dart';
@@ -28,24 +27,33 @@ class CharacterRepositoryImpl implements CharacterRepository {
   }
 
   @override
-  Future<List<Character>> getAllSubmittedCharacters({String filter = ''}) async {
+  Future<List<CharacterEntity>> getAllSubmittedCharacters({String filter = ''}) async {
     final result = await _localStorage.getAll();
 
-    if (filter.isEmpty) return result;
+    if (filter.isEmpty) {
+      return result.map((element) => CharacterEntity.fromSchema(element)).toList();
+    }
 
     return result
         .where((character) => character.name.toLowerCase().contains(filter.toLowerCase()))
+        .map((element) => CharacterEntity.fromSchema(element))
         .toList();
   }
 
   @override
-  Future<Character?> getCharacterByName(String name) => _localStorage.findByName(name);
+  Future<CharacterEntity?> getCharacterByName(String name) async {
+    final result = await _localStorage.findByName(name);
+    if (result == null) return null;
+
+    return CharacterEntity.fromSchema(result);
+  }
 
   @override
-  Future<Character?> getCharacter() async {
+  Future<CharacterEntity?> getCharacter() async {
     final all = await _localStorage.getAll();
-    if (all.isEmpty) return null;
-    return all[Random().nextInt(all.length)];
+    final entities = all.map(CharacterEntity.fromSchema).toList();
+    if (entities.isEmpty) return null;
+    return entities[Random().nextInt(all.length)];
   }
 
   @override

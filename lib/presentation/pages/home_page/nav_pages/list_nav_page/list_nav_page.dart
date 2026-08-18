@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:harry_potter_sorting_flutter/core/di/dependency_injection.dart';
-import 'package:harry_potter_sorting_flutter/data/database/database_schema.dart';
+import 'package:harry_potter_sorting_flutter/domain/entities/character_entity.dart';
 import 'package:harry_potter_sorting_flutter/domain/entities/info_stats_entity.dart';
 import 'package:harry_potter_sorting_flutter/domain/mappers/character_to_providers_mapper.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/character_list_notifier.dart';
@@ -111,7 +111,7 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
 
               //list view
               Expanded(
-                child: Selector<CharacterListNotifier, List<Character>>(
+                child: Selector<CharacterListNotifier, List<CharacterEntity>>(
                     selector: (_, notifier) => notifier.entries,
                     builder: (context, entries, child) {
                       if (entries.isEmpty) {

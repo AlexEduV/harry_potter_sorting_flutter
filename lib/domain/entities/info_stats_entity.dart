@@ -19,6 +19,10 @@ class InfoStatsEntity {
     );
   }
 
+  factory InfoStatsEntity.initial() {
+    return const InfoStatsEntity(totalCount: 0, successCount: 0, failCount: 0);
+  }
+
   factory InfoStatsEntity.fromSchemaResult(
       ({int failCount, int successCount, int totalCount}) result) {
     return InfoStatsEntity(

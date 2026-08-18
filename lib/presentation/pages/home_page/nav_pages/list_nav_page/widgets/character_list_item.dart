@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:harry_potter_sorting_flutter/domain/entities/character_entity.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/widgets/status_icon.dart';
 
-import '../../../../../../data/database/database_schema.dart';
 import '../../../../../style/app_colors.dart';
 import '../../../../../widgets/character_photo.dart';
 
 class CharacterListItem extends StatelessWidget {
-  final Character character;
+  final CharacterEntity character;
   final Function() onTap;
   final Function() onRetry;
 
@@ -42,7 +42,7 @@ class CharacterListItem extends StatelessWidget {
                         fontWeight: FontWeight.bold, fontSize: 24.0, color: AppColors.gold),
                   ),
                   Text(
-                    'Attempts: ${character.totalCount}',
+                    'Attempts: ${character.infoStatsEntity?.totalCount ?? 0}',
                     style: const TextStyle(fontSize: 18.0),
                   ),
                 ],
@@ -51,7 +51,7 @@ class CharacterListItem extends StatelessWidget {
               const Spacer(),
 
               //show success icon if there is 1 successful attempt
-              if (character.successCount > 0) ...[
+              if ((character.infoStatsEntity?.successCount ?? 0) > 0) ...[
                 const StatusIcon(icon: Icons.check, backgroundColor: AppColors.success),
               ],
 
@@ -59,12 +59,13 @@ class CharacterListItem extends StatelessWidget {
                 spacing: 12.0,
                 children: [
                   //show retry button if no success recorded
-                  if (character.successCount == 0)
+                  if (character.infoStatsEntity?.successCount == 0)
                     StatusIcon(
                         icon: Icons.refresh, backgroundColor: AppColors.grey, onTap: onRetry),
 
                   //show failure icon if attempts were made, but 0 successful;
-                  if (character.totalCount > 0 && character.successCount == 0)
+                  if ((character.infoStatsEntity?.totalCount ?? 0) > 0 &&
+                      character.infoStatsEntity?.successCount == 0)
                     const StatusIcon(
                       icon: Icons.close,
                       backgroundColor: AppColors.error,
