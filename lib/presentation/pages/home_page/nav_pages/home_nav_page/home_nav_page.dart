@@ -28,8 +28,6 @@ class HomeNavPage extends StatefulWidget {
 }
 
 class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
-  //todo: I have made draggable only part of the screen, which may cause some confusion
-
   @override
   void initState() {
     super.initState();
