@@ -10,7 +10,7 @@ class PickerColorNotifier extends ChangeNotifier {
 
   List<Color> _buttonColors = List.filled(5, defaultColor);
 
-  List<Color> get buttonColors => _buttonColors;
+  List<Color> get buttonColors => List.unmodifiable(_buttonColors);
 
   Timer? _resetTimer;
 
