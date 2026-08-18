@@ -6,7 +6,7 @@ import 'package:harry_potter_sorting_flutter/data/network/logging_interceptor.da
 class DioClient {
   static final Dio _client = _createClient();
 
-  static Dio client() => _client;
+  static Dio get client => _client;
 
   static Dio _createClient() {
     final dio = Dio(BaseOptions(

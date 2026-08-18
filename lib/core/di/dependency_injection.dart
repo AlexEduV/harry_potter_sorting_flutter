@@ -16,7 +16,7 @@ final getIt = GetIt.instance;
 void setupDependencies() {
   if (getIt.isRegistered<Dio>()) return;
 
-  getIt.registerSingleton<Dio>(DioClient.client());
+  getIt.registerSingleton<Dio>(DioClient.client);
   getIt.registerSingleton<AppDatabase>(AppDatabase());
   getIt.registerLazySingleton<CharacterApiService>(() => CharacterApiService(getIt()));
 
