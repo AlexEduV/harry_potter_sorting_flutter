@@ -8,9 +8,8 @@ import '../entities/character_entity.dart';
 import '../entities/info_stats_entity.dart';
 
 class CharacterToProvidersMapper {
-  void map(CharacterEntity result, BuildContext context) {
-    final character = result;
-    final statsEntity = result.infoStatsEntity ?? InfoStatsEntity.initial();
+  void map(CharacterEntity character, BuildContext context) {
+    final statsEntity = character.infoStatsEntity ?? InfoStatsEntity.initial();
 
     context.read<CharacterNotifier>().updateCharacter(character);
     context.read<PickerStateNotifier>().resetColors();

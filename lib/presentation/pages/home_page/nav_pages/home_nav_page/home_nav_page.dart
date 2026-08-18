@@ -33,8 +33,8 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _loadCharacters();
-      await _loadCharacter();
+      await _loadAllCharacters();
+      await _loadNextCharacter();
     });
   }
 
@@ -49,7 +49,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
         ],
       ),
       body: RefreshIndicator(
-        onRefresh: () => _loadCharacter(),
+        onRefresh: () => _loadNextCharacter(),
         color: AppColors.white,
         backgroundColor: AppColors.charcoalGrey,
         child: CustomScrollView(
@@ -176,11 +176,11 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
     );
   }
 
-  Future<void> _loadCharacters() async {
+  Future<void> _loadAllCharacters() async {
     await context.read<CharacterCacheProvider>().loadCharacters();
   }
 
-  Future<void> _loadCharacter() async {
+  Future<void> _loadNextCharacter() async {
     //todo: move this from presentation layer
     final result = await getIt<CharacterRepository>().getCharacter();
 
