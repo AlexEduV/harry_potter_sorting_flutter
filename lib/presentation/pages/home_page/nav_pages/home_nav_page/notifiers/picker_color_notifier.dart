@@ -15,7 +15,7 @@ class PickerColorNotifier extends ChangeNotifier {
     //reset red color after 1 second, the green stays the same;
     if (color == AppColors.error) {
       Future.delayed(const Duration(seconds: 1), () {
-        resetColor(index);
+        _resetColor(index);
       });
     }
   }
@@ -25,7 +25,7 @@ class PickerColorNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  void resetColor(int index) {
+  void _resetColor(int index) {
     _buttonColors[index] = defaultColor;
     notifyListeners();
   }
