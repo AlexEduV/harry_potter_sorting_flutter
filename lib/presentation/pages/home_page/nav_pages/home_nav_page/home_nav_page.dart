@@ -45,6 +45,7 @@ class _HomeNavPageState extends State<HomeNavPage> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0.0,
         title: const Text('Home Screen'),
         actions: [
           ResetButton(onTap: _onResetButtonTapped),
