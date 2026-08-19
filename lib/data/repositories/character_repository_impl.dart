@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:harry_potter_sorting_flutter/data/services/character_api_service.dart';
 import 'package:harry_potter_sorting_flutter/domain/data_sources/local/character_local_storage.dart';
 import 'package:harry_potter_sorting_flutter/domain/entities/character_entity.dart';
@@ -20,16 +19,10 @@ class CharacterRepositoryImpl implements CharacterRepository {
       return cachedCharacters.map((element) => element.toEntity()).toList();
     }
 
-    try {
-      final results = await _characterApiService.getAllCharacters();
-      final characters = results.map((e) => e.toEntity()).toList();
-      await _localStorage.saveAll(characters);
-      return characters;
-    } catch (e) {
-      debugPrint('error loading characters: $e');
-      //todo: try to show error state in UI
-      return [];
-    }
+    final results = await _characterApiService.getAllCharacters();
+    final characters = results.map((e) => e.toEntity()).toList();
+    await _localStorage.saveAll(characters);
+    return characters;
   }
 
   @override

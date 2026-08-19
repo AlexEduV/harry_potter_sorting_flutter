@@ -78,6 +78,22 @@ class _HomeNavPageState extends State<HomeNavPage> {
 
                           return Consumer<CharacterCacheProvider>(
                               builder: (context, cacheNotifier, child) {
+                            if (cacheNotifier.hasError && character == null) {
+                              return Column(
+                                spacing: 12,
+                                children: [
+                                  const Text(
+                                    'Failed to load characters',
+                                    style: TextStyle(fontSize: 16.0),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: _retry,
+                                    child: const Text('Retry'),
+                                  ),
+                                ],
+                              );
+                            }
+
                             return Skeletonizer(
                               containersColor: AppColors.lightGrey,
                               enabled: character == null || cacheNotifier.isLoading,
@@ -173,6 +189,11 @@ class _HomeNavPageState extends State<HomeNavPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _retry() async {
+    await _loadAllCharacters();
+    await _loadNextCharacter();
   }
 
   Future<void> _loadAllCharacters() async {
