@@ -10,8 +10,12 @@ class CharacterListItem extends StatelessWidget {
   final void Function() onTap;
   final void Function() onRetryTap;
 
-  const CharacterListItem(
-      {required this.character, required this.onTap, required this.onRetryTap, super.key});
+  const CharacterListItem({
+    required this.character,
+    required this.onTap,
+    required this.onRetryTap,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
