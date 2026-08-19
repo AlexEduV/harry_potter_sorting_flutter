@@ -72,9 +72,7 @@ class _HomeNavPageState extends State<HomeNavPage> {
                             );
                           },
                         ),
-
                         const SizedBox(height: 32.0),
-
                         Consumer<CharacterNotifier>(builder: (context, characterNotifier, child) {
                           final character = characterNotifier.character;
 
@@ -104,7 +102,6 @@ class _HomeNavPageState extends State<HomeNavPage> {
                         }),
                       ],
                     ),
-
                     Consumer<PickerStateNotifier>(
                       builder: (context, notifier, child) {
                         return Column(
@@ -114,15 +111,19 @@ class _HomeNavPageState extends State<HomeNavPage> {
                                 PickerItem(
                                   name: House.gryffindor.displayName,
                                   imageSrc: House.gryffindor.imageSrc,
-                                  backgroundColor: _getColorFromState(notifier.buttonStates[House.gryffindor.index]),
-                                  onTap: () => _onPickerItemTap(House.gryffindor.index, House.gryffindor),
+                                  backgroundColor: _getColorFromState(
+                                      notifier.buttonStates[House.gryffindor.index]),
+                                  onTap: () =>
+                                      _onPickerItemTap(House.gryffindor.index, House.gryffindor),
                                 ),
                                 const SizedBox(width: 8.0),
                                 PickerItem(
                                   name: House.slytherin.displayName,
                                   imageSrc: House.slytherin.imageSrc,
-                                  backgroundColor: _getColorFromState(notifier.buttonStates[House.slytherin.index]),
-                                  onTap: () => _onPickerItemTap(House.slytherin.index, House.slytherin),
+                                  backgroundColor: _getColorFromState(
+                                      notifier.buttonStates[House.slytherin.index]),
+                                  onTap: () =>
+                                      _onPickerItemTap(House.slytherin.index, House.slytherin),
                                 ),
                               ],
                             ),
@@ -132,15 +133,19 @@ class _HomeNavPageState extends State<HomeNavPage> {
                                 PickerItem(
                                   name: House.ravenclaw.displayName,
                                   imageSrc: House.ravenclaw.imageSrc,
-                                  backgroundColor: _getColorFromState(notifier.buttonStates[House.ravenclaw.index]),
-                                  onTap: () => _onPickerItemTap(House.ravenclaw.index, House.ravenclaw),
+                                  backgroundColor: _getColorFromState(
+                                      notifier.buttonStates[House.ravenclaw.index]),
+                                  onTap: () =>
+                                      _onPickerItemTap(House.ravenclaw.index, House.ravenclaw),
                                 ),
                                 const SizedBox(width: 8.0),
                                 PickerItem(
                                   name: House.hufflepuff.displayName,
                                   imageSrc: House.hufflepuff.imageSrc,
-                                  backgroundColor: _getColorFromState(notifier.buttonStates[House.hufflepuff.index]),
-                                  onTap: () => _onPickerItemTap(House.hufflepuff.index, House.hufflepuff),
+                                  backgroundColor: _getColorFromState(
+                                      notifier.buttonStates[House.hufflepuff.index]),
+                                  onTap: () =>
+                                      _onPickerItemTap(House.hufflepuff.index, House.hufflepuff),
                                 ),
                               ],
                             ),
@@ -150,7 +155,8 @@ class _HomeNavPageState extends State<HomeNavPage> {
                                 PickerItem(
                                   name: House.none.displayName,
                                   imageSrc: House.none.imageSrc,
-                                  backgroundColor: _getColorFromState(notifier.buttonStates[House.none.index]),
+                                  backgroundColor:
+                                      _getColorFromState(notifier.buttonStates[House.none.index]),
                                   onTap: () => _onPickerItemTap(House.none.index, House.none),
                                 ),
                               ],
@@ -180,7 +186,9 @@ class _HomeNavPageState extends State<HomeNavPage> {
 
     context.read<CharacterNotifier>().updateCharacter(result);
     context.read<PickerStateNotifier>().resetColors();
-    context.read<CharacterStatsNotifier>().updateAllCounts(result.infoStatsEntity ?? InfoStatsEntity.initial());
+    context
+        .read<CharacterStatsNotifier>()
+        .updateAllCounts(result.infoStatsEntity ?? InfoStatsEntity.initial());
   }
 
   Future<void> _onPickerItemTap(int index, House house) async {
