@@ -7,6 +7,7 @@ import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pa
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_stats_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/picker_state_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/widgets/picker_item.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/widgets/app_error_widget.dart';
 import 'package:harry_potter_sorting_flutter/presentation/style/app_colors.dart';
 import 'package:harry_potter_sorting_flutter/presentation/widgets/character_photo.dart';
 import 'package:harry_potter_sorting_flutter/presentation/widgets/reset_button.dart';
@@ -79,18 +80,8 @@ class _HomeNavPageState extends State<HomeNavPage> {
                           return Consumer<CharacterCacheProvider>(
                               builder: (context, cacheNotifier, child) {
                             if (cacheNotifier.hasError && character == null) {
-                              return Column(
-                                spacing: 12,
-                                children: [
-                                  const Text(
-                                    'Failed to load characters',
-                                    style: TextStyle(fontSize: 16.0),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: _retry,
-                                    child: const Text('Retry'),
-                                  ),
-                                ],
+                              return AppErrorWidget(
+                                onRetry: () => _retry(),
                               );
                             }
 
