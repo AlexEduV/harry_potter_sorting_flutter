@@ -44,129 +44,126 @@ class _HomeNavPageState extends State<HomeNavPage> {
           ResetButton(onTap: _onResetButtonTapped),
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: () => _loadNextCharacter(),
-        color: AppColors.white,
-        backgroundColor: AppColors.charcoalGrey,
-        child: CustomScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          slivers: [
-            SliverToBoxAdapter(
+      body: LayoutBuilder(
+        builder: (context, constraints) => RefreshIndicator(
+          onRefresh: () => _loadNextCharacter(),
+          color: AppColors.white,
+          backgroundColor: AppColors.charcoalGrey,
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
               child: Padding(
-                padding: const EdgeInsets.all(16.0).copyWith(bottom: 0),
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // info items
-                    Consumer<CharacterStatsNotifier>(
+                    Column(
+                      children: [
+                        Consumer<CharacterStatsNotifier>(
+                          builder: (context, notifier, child) {
+                            return InfoRow(
+                              infoStats: InfoStatsEntity(
+                                totalCount: notifier.totalCount,
+                                successCount: notifier.successCount,
+                                failCount: notifier.failedCount,
+                              ),
+                            );
+                          },
+                        ),
+
+                        const SizedBox(height: 32.0),
+
+                        Consumer<CharacterNotifier>(builder: (context, characterNotifier, child) {
+                          final character = characterNotifier.character;
+
+                          return Consumer<CharacterCacheProvider>(
+                              builder: (context, cacheNotifier, child) {
+                            return Skeletonizer(
+                              containersColor: AppColors.lightGrey,
+                              enabled: character == null || cacheNotifier.isLoading,
+                              child: Column(
+                                spacing: 8,
+                                children: [
+                                  CharacterPhoto(
+                                    imageSrc: character?.imageSrc,
+                                    onTap: () => _openDetailsPage(character?.name),
+                                  ),
+                                  Text(
+                                    character?.name ?? 'Placeholder text',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 22.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          });
+                        }),
+                      ],
+                    ),
+
+                    Consumer<PickerStateNotifier>(
                       builder: (context, notifier, child) {
-                        return InfoRow(
-                          infoStats: InfoStatsEntity(
-                            totalCount: notifier.totalCount,
-                            successCount: notifier.successCount,
-                            failCount: notifier.failedCount,
-                          ),
+                        return Column(
+                          children: [
+                            Row(
+                              children: [
+                                PickerItem(
+                                  name: House.gryffindor.displayName,
+                                  imageSrc: House.gryffindor.imageSrc,
+                                  backgroundColor: _getColorFromState(notifier.buttonStates[House.gryffindor.index]),
+                                  onTap: () => _onPickerItemTap(House.gryffindor.index, House.gryffindor),
+                                ),
+                                const SizedBox(width: 8.0),
+                                PickerItem(
+                                  name: House.slytherin.displayName,
+                                  imageSrc: House.slytherin.imageSrc,
+                                  backgroundColor: _getColorFromState(notifier.buttonStates[House.slytherin.index]),
+                                  onTap: () => _onPickerItemTap(House.slytherin.index, House.slytherin),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8.0),
+                            Row(
+                              children: [
+                                PickerItem(
+                                  name: House.ravenclaw.displayName,
+                                  imageSrc: House.ravenclaw.imageSrc,
+                                  backgroundColor: _getColorFromState(notifier.buttonStates[House.ravenclaw.index]),
+                                  onTap: () => _onPickerItemTap(House.ravenclaw.index, House.ravenclaw),
+                                ),
+                                const SizedBox(width: 8.0),
+                                PickerItem(
+                                  name: House.hufflepuff.displayName,
+                                  imageSrc: House.hufflepuff.imageSrc,
+                                  backgroundColor: _getColorFromState(notifier.buttonStates[House.hufflepuff.index]),
+                                  onTap: () => _onPickerItemTap(House.hufflepuff.index, House.hufflepuff),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8.0),
+                            Row(
+                              children: [
+                                PickerItem(
+                                  name: House.none.displayName,
+                                  imageSrc: House.none.imageSrc,
+                                  backgroundColor: _getColorFromState(notifier.buttonStates[House.none.index]),
+                                  onTap: () => _onPickerItemTap(House.none.index, House.none),
+                                ),
+                              ],
+                            ),
+                          ],
                         );
                       },
                     ),
-
-                    const SizedBox(height: 32.0),
-
-                    //photo and name
-                    Consumer<CharacterNotifier>(builder: (context, characterNotifier, child) {
-                      final character = characterNotifier.character;
-
-                      return Consumer<CharacterCacheProvider>(
-                          builder: (context, cacheNotifier, child) {
-                        return Skeletonizer(
-                          containersColor: AppColors.lightGrey,
-                          enabled: character == null || cacheNotifier.isLoading,
-                          child: Column(
-                            spacing: 8,
-                            children: [
-                              CharacterPhoto(
-                                imageSrc: character?.imageSrc,
-                                onTap: () => _openDetailsPage(character?.name),
-                              ),
-                              Text(
-                                character?.name ?? 'Placeholder text',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 22.0,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      });
-                    }),
                   ],
                 ),
               ),
             ),
-
-            //picker
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: Consumer<PickerStateNotifier>(
-                builder: (context, notifier, child) {
-                  return Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Row(
-                          children: [
-                            PickerItem(
-                              name: House.gryffindor.displayName,
-                              imageSrc: House.gryffindor.imageSrc,
-                              backgroundColor: _getColorFromState(notifier.buttonStates[House.gryffindor.index]),
-                              onTap: () => _onPickerItemTap(House.gryffindor.index, House.gryffindor),
-                            ),
-                            const SizedBox(width: 8.0),
-                            PickerItem(
-                              name: House.slytherin.displayName,
-                              imageSrc: House.slytherin.imageSrc,
-                              backgroundColor: _getColorFromState(notifier.buttonStates[House.slytherin.index]),
-                              onTap: () => _onPickerItemTap(House.slytherin.index, House.slytherin),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8.0),
-                        Row(
-                          children: [
-                            PickerItem(
-                              name: House.ravenclaw.displayName,
-                              imageSrc: House.ravenclaw.imageSrc,
-                              backgroundColor: _getColorFromState(notifier.buttonStates[House.ravenclaw.index]),
-                              onTap: () => _onPickerItemTap(House.ravenclaw.index, House.ravenclaw),
-                            ),
-                            const SizedBox(width: 8.0),
-                            PickerItem(
-                              name: House.hufflepuff.displayName,
-                              imageSrc: House.hufflepuff.imageSrc,
-                              backgroundColor: _getColorFromState(notifier.buttonStates[House.hufflepuff.index]),
-                              onTap: () => _onPickerItemTap(House.hufflepuff.index, House.hufflepuff),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8.0),
-                        Row(
-                          children: [
-                            PickerItem(
-                              name: House.none.displayName,
-                              imageSrc: House.none.imageSrc,
-                              backgroundColor: _getColorFromState(notifier.buttonStates[House.none.index]),
-                              onTap: () => _onPickerItemTap(House.none.index, House.none),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
