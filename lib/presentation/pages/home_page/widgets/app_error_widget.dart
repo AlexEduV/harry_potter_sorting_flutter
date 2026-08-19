@@ -7,23 +7,21 @@ class AppErrorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        spacing: 12,
-        children: [
-          const Text(
-            'Failed to load characters',
-            style: TextStyle(fontSize: 22.0),
+    return Column(
+      spacing: 12,
+      children: [
+        const Text(
+          'Failed to load characters',
+          style: TextStyle(fontSize: 22.0),
+        ),
+        ElevatedButton(
+          onPressed: onRetry,
+          child: const Text(
+            'Retry',
+            style: TextStyle(fontSize: 20),
           ),
-          ElevatedButton(
-            onPressed: onRetry,
-            child: const Text(
-              'Retry',
-              style: TextStyle(fontSize: 20),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
