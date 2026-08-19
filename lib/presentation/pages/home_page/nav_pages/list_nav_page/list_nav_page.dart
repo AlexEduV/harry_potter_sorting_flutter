@@ -61,18 +61,21 @@ class _ListNavPageState extends State<ListNavPage> {
         child: Padding(
           padding: const EdgeInsets.only(top: 16.0),
           child: Column(
+            spacing: 16,
             children: [
               //row of total info boxes
-              Consumer<CharacterListNotifier>(builder: (context, notifier, child) {
-                return InfoRow(
-                  infoStats: InfoStatsEntity(
-                      totalCount: notifier.total,
-                      successCount: notifier.success,
-                      failCount: notifier.failed),
-                );
-              }),
-
-              const SizedBox(height: 16.0),
+              Selector<CharacterListNotifier, ({int success, int fail, int total})>(
+                selector: (context, notifier) => notifier.getCurrentStats(),
+                builder: (context, stats, child) {
+                  return InfoRow(
+                    infoStats: InfoStatsEntity(
+                      totalCount: stats.total,
+                      successCount: stats.success,
+                      failCount: stats.fail,
+                    ),
+                  );
+                },
+              ),
 
               //search bar
               Padding(
@@ -106,8 +109,6 @@ class _ListNavPageState extends State<ListNavPage> {
                   },
                 ),
               ),
-
-              const SizedBox(height: 16.0),
 
               //list view
               Expanded(
