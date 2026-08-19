@@ -2,14 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:harry_potter_sorting_flutter/domain/entities/character_entity.dart';
 import 'package:harry_potter_sorting_flutter/domain/entities/info_stats_entity.dart';
-import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_notifier.dart';
-import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_stats_notifier.dart';
-import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/picker_state_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/character_list_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/filter_value_notifier.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/widgets/app_search_bar.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/widgets/character_list_item.dart';
-import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/notifiers/bottom_nav_index_notifier.dart';
-import 'package:harry_potter_sorting_flutter/presentation/style/app_colors.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/widgets/empty_results_placeholder.dart';
 import 'package:harry_potter_sorting_flutter/presentation/widgets/reset_button.dart';
 import 'package:harry_potter_sorting_flutter/router/router.dart';
 import 'package:provider/provider.dart';
@@ -17,24 +14,28 @@ import 'package:provider/provider.dart';
 import '../../../../widgets/info_row.dart';
 
 class ListNavPage extends StatefulWidget {
-  const ListNavPage({super.key});
+  const ListNavPage({
+    required this.onRetry,
+    super.key,
+  });
+
+  final void Function(CharacterEntity) onRetry;
 
   @override
   State<ListNavPage> createState() => _ListNavPageState();
 }
 
-class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
+class _ListNavPageState extends State<ListNavPage> {
   final _searchFocusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
 
-    //get all entries from the base
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Future.wait([
-        getInitCombinedStats(),
-        getAllSubmittedCharacters(),
+        context.read<CharacterListNotifier>().getInitCombinedStats(),
+        _fetchCharacters(),
       ]);
     });
   }
@@ -51,7 +52,7 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
       appBar: AppBar(
         title: const Text('List Screen'),
         actions: [
-          ResetButton(onTap: onResetButtonTapped),
+          ResetButton(onTap: _onResetButtonTapped),
         ],
         scrolledUnderElevation: 0,
       ),
@@ -61,98 +62,60 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
         child: Padding(
           padding: const EdgeInsets.only(top: 16.0),
           child: Column(
+            spacing: 16,
             children: [
-              //row of total info boxes
-              Consumer<CharacterListNotifier>(builder: (context, notifier, child) {
-                return InfoRow(
-                  infoStats: InfoStatsEntity(
-                      totalCount: notifier.total,
-                      successCount: notifier.success,
-                      failCount: notifier.failed),
-                );
-              }),
-
-              const SizedBox(height: 16.0),
-
-              //search bar
+              Selector<CharacterListNotifier, ({int success, int fail, int total})>(
+                selector: (context, notifier) => notifier.getCurrentStats(),
+                builder: (context, stats, child) {
+                  return InfoRow(
+                    infoStats: InfoStatsEntity(
+                      totalCount: stats.total,
+                      successCount: stats.success,
+                      failCount: stats.fail,
+                    ),
+                  );
+                },
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: SearchBar(
-                  focusNode: _searchFocusNode,
-                  padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 16.0)),
-                  backgroundColor:
-                      WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
-                    if (states.contains(WidgetState.focused)) {
-                      return AppColors.white; // Color when pressed/tapped
-                    }
-                    return AppColors.lightGrey; // Default color
-                  }),
-                  side: WidgetStateProperty.resolveWith<BorderSide?>((Set<WidgetState> states) {
-                    if (states.contains(WidgetState.focused)) {
-                      return const BorderSide(
-                          color: AppColors.lightGrey, width: 3.0); // Color when pressed/tapped
-                    }
-                    return null; // Default color
-                  }),
-                  shadowColor: const WidgetStatePropertyAll(AppColors.white),
-                  elevation: const WidgetStatePropertyAll(0),
-                  hintText: 'Filter Characters',
-                  hintStyle: WidgetStateProperty.all(const TextStyle(fontSize: 24)),
-                  textStyle: WidgetStateProperty.all(const TextStyle(fontSize: 24)),
-                  leading: const Icon(Icons.search),
-                  keyboardType: TextInputType.name,
+                child: AppSearchBar(
+                  searchFocusNode: _searchFocusNode,
                   onChanged: (value) {
                     context.read<FilterValueNotifier>().update(value);
-                    getAllSubmittedCharacters(filter: value);
+                    _fetchCharacters(filter: value);
                   },
                 ),
               ),
-
-              const SizedBox(height: 16.0),
-
-              //list view
               Expanded(
                 child: Selector<CharacterListNotifier, List<CharacterEntity>>(
-                    selector: (_, notifier) => notifier.entries,
-                    builder: (context, entries, child) {
-                      if (entries.isEmpty) {
-                        return const Center(child: Text('No characters found'));
-                      }
+                  selector: (_, notifier) => notifier.entries,
+                  builder: (context, entries, child) {
+                    if (entries.isEmpty) {
+                      return const EmptyResultsPlaceholder();
+                    }
 
-                      return NotificationListener<ScrollStartNotification>(
-                        onNotification: (_) {
-                          FocusScope.of(context).unfocus();
-                          return false;
+                    return NotificationListener<ScrollStartNotification>(
+                      onNotification: (_) {
+                        FocusScope.of(context).unfocus();
+                        return false;
+                      },
+                      child: ListView.builder(
+                        padding: const EdgeInsets.symmetric(vertical: 16.0),
+                        cacheExtent: 500,
+                        itemBuilder: (context, index) {
+                          final character = entries[index];
+
+                          return CharacterListItem(
+                            character: character,
+                            onTap: () => onItemTap(character),
+                            onRetryTap: () => onRetryTap(character),
+                          );
                         },
-                        child: ListView.builder(
-                          padding: const EdgeInsets.symmetric(vertical: 16.0),
-                          cacheExtent: 500,
-                          itemBuilder: (context, index) {
-                            final character = entries[index];
-
-                            return CharacterListItem(
-                                character: character,
-                                onTap: () async {
-                                  _searchFocusNode.unfocus();
-                                  _searchFocusNode.canRequestFocus = false;
-                                  await context.router.push(DetailRoute(name: character.name));
-                                  _searchFocusNode.canRequestFocus = true;
-                                },
-                                onRetry: () {
-                                  //hide keyboard
-                                  FocusScope.of(context).unfocus();
-
-                                  context.read<BottomNavIndexNotifier>().updateIndex(0);
-
-                                  context.read<CharacterNotifier>().updateCharacter(character);
-                                  context.read<PickerStateNotifier>().resetColors();
-                                  context.read<CharacterStatsNotifier>().updateAllCounts(character.infoStatsEntity ?? InfoStatsEntity.initial());
-                                });
-                          },
-                          itemCount: entries.length,
-                        ),
-                      );
-                    }),
+                        itemCount: entries.length,
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
           ),
@@ -161,18 +124,24 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
     );
   }
 
-  Future<void> getAllSubmittedCharacters({String filter = ''}) async {
-    context.read<CharacterListNotifier>().fetchCharacters(filter: filter);
+  Future<void> _fetchCharacters({String filter = ''}) async {
+    await context.read<CharacterListNotifier>().fetchCharacters(filter: filter);
   }
 
-  Future<void> getInitCombinedStats() async {
-    context.read<CharacterListNotifier>().getInitCombinedStats();
-  }
-
-  Future<void> onResetButtonTapped() async {
+  Future<void> _onResetButtonTapped() async {
     final filterValue = context.read<FilterValueNotifier>().value;
 
     await context.read<CharacterListNotifier>().resetAllCounts();
-    getAllSubmittedCharacters(filter: filterValue);
+    await _fetchCharacters(filter: filterValue);
+  }
+
+  Future<void> onItemTap(CharacterEntity character) async {
+    _searchFocusNode.unfocus();
+    await context.router.push(DetailRoute(name: character.name));
+  }
+
+  void onRetryTap(CharacterEntity character) {
+    FocusScope.of(context).unfocus();
+    widget.onRetry(character);
   }
 }

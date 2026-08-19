@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../../../style/app_colors.dart';
 
-class DetailListItem extends StatelessWidget {
+class DetailRow extends StatelessWidget {
   final String label;
   final String value;
 
-  const DetailListItem({
+  const DetailRow({
     required this.label,
     required this.value,
     super.key,

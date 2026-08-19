@@ -1,7 +1,7 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/detail_page/notifiers/detail_character_notifier.dart';
-import 'package:harry_potter_sorting_flutter/presentation/pages/detail_page/widgets/detail_list_item.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/detail_page/widgets/detail_row.dart';
 import 'package:harry_potter_sorting_flutter/presentation/widgets/character_photo.dart';
 import 'package:provider/provider.dart';
 
@@ -15,14 +15,12 @@ class DetailPage extends StatefulWidget {
   State<DetailPage> createState() => _DetailPageState();
 }
 
-class _DetailPageState extends State<DetailPage> with WidgetsBindingObserver {
+class _DetailPageState extends State<DetailPage> {
   @override
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<DetailCharacterNotifier>().setCharacter(widget.name);
-    });
+    context.read<DetailCharacterNotifier>().setCharacter(widget.name);
   }
 
   @override
@@ -51,10 +49,10 @@ class _DetailPageState extends State<DetailPage> with WidgetsBindingObserver {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     spacing: 12.0,
                     children: [
-                      DetailListItem(label: 'House:', value: character.house.displayName),
-                      DetailListItem(label: 'Date of Birth:', value: character.dateOfBirth ?? ''),
-                      DetailListItem(label: 'Actor:', value: character.actor),
-                      DetailListItem(label: 'Species:', value: character.species),
+                      DetailRow(label: 'House:', value: character.house.displayName),
+                      DetailRow(label: 'Date of Birth:', value: character.dateOfBirth ?? ''),
+                      DetailRow(label: 'Actor:', value: character.actor),
+                      DetailRow(label: 'Species:', value: character.species),
                     ],
                   ),
                 if ((character.infoStatsEntity?.successCount ?? 0) == 0)

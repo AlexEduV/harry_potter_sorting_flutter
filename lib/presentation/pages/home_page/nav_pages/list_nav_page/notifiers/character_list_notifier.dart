@@ -68,4 +68,8 @@ class CharacterListNotifier extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  ({int success, int fail, int total}) getCurrentStats() {
+    return (success: _successAll, fail: _failedAll, total: _totalAll);
+  }
 }

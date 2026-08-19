@@ -7,11 +7,15 @@ import '../../../../../widgets/character_photo.dart';
 
 class CharacterListItem extends StatelessWidget {
   final CharacterEntity character;
-  final Function() onTap;
-  final Function() onRetry;
+  final void Function() onTap;
+  final void Function() onRetryTap;
 
-  const CharacterListItem(
-      {required this.character, required this.onTap, required this.onRetry, super.key});
+  const CharacterListItem({
+    required this.character,
+    required this.onTap,
+    required this.onRetryTap,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +65,7 @@ class CharacterListItem extends StatelessWidget {
                   //show retry button if no success recorded
                   if (character.infoStatsEntity?.successCount == 0)
                     StatusIcon(
-                        icon: Icons.refresh, backgroundColor: AppColors.grey, onTap: onRetry),
+                        icon: Icons.refresh, backgroundColor: AppColors.grey, onTap: onRetryTap),
 
                   //show failure icon if attempts were made, but 0 successful;
                   if ((character.infoStatsEntity?.totalCount ?? 0) > 0 &&
