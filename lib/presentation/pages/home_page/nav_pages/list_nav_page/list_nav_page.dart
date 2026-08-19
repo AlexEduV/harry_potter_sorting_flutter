@@ -143,7 +143,6 @@ class _ListNavPageState extends State<ListNavPage> {
   }
 
   Future<void> onRetryTap(CharacterEntity character) async {
-    //hide keyboard
     FocusScope.of(context).unfocus();
 
     context.read<BottomNavIndexNotifier>().updateIndex(0);
