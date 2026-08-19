@@ -116,7 +116,10 @@ class _ListNavPageState extends State<ListNavPage> {
                     selector: (_, notifier) => notifier.entries,
                     builder: (context, entries, child) {
                       if (entries.isEmpty) {
-                        return const Center(child: Text('No characters found'));
+                        return const Text(
+                          'No characters found',
+                          style: TextStyle(fontSize: 24),
+                        );
                       }
 
                       return NotificationListener<ScrollStartNotification>(
