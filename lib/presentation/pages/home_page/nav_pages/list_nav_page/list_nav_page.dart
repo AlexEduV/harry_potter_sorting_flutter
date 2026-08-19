@@ -23,7 +23,7 @@ class ListNavPage extends StatefulWidget {
   State<ListNavPage> createState() => _ListNavPageState();
 }
 
-class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
+class _ListNavPageState extends State<ListNavPage> {
   final _searchFocusNode = FocusNode();
 
   @override
@@ -33,8 +33,8 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
     //get all entries from the base
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Future.wait([
-        getInitCombinedStats(),
-        getAllSubmittedCharacters(),
+        context.read<CharacterListNotifier>().getInitCombinedStats(),
+        _getAllSubmittedCharacters(),
       ]);
     });
   }
@@ -51,7 +51,7 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
       appBar: AppBar(
         title: const Text('List Screen'),
         actions: [
-          ResetButton(onTap: onResetButtonTapped),
+          ResetButton(onTap: _onResetButtonTapped),
         ],
         scrolledUnderElevation: 0,
       ),
@@ -103,7 +103,7 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
                   keyboardType: TextInputType.name,
                   onChanged: (value) {
                     context.read<FilterValueNotifier>().update(value);
-                    getAllSubmittedCharacters(filter: value);
+                    _getAllSubmittedCharacters(filter: value);
                   },
                 ),
               ),
@@ -146,7 +146,8 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
 
                                   context.read<CharacterNotifier>().updateCharacter(character);
                                   context.read<PickerStateNotifier>().resetColors();
-                                  context.read<CharacterStatsNotifier>().updateAllCounts(character.infoStatsEntity ?? InfoStatsEntity.initial());
+                                  context.read<CharacterStatsNotifier>().updateAllCounts(
+                                      character.infoStatsEntity ?? InfoStatsEntity.initial());
                                 });
                           },
                           itemCount: entries.length,
@@ -161,18 +162,14 @@ class _ListNavPageState extends State<ListNavPage> with WidgetsBindingObserver {
     );
   }
 
-  Future<void> getAllSubmittedCharacters({String filter = ''}) async {
-    context.read<CharacterListNotifier>().fetchCharacters(filter: filter);
+  Future<void> _getAllSubmittedCharacters({String filter = ''}) async {
+    await context.read<CharacterListNotifier>().fetchCharacters(filter: filter);
   }
 
-  Future<void> getInitCombinedStats() async {
-    context.read<CharacterListNotifier>().getInitCombinedStats();
-  }
-
-  Future<void> onResetButtonTapped() async {
+  Future<void> _onResetButtonTapped() async {
     final filterValue = context.read<FilterValueNotifier>().value;
 
     await context.read<CharacterListNotifier>().resetAllCounts();
-    getAllSubmittedCharacters(filter: filterValue);
+    _getAllSubmittedCharacters(filter: filterValue);
   }
 }
