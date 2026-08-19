@@ -83,14 +83,13 @@ class _ListNavPageState extends State<ListNavPage> {
                   backgroundColor:
                       WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
                     if (states.contains(WidgetState.focused)) {
-                      return AppColors.white; // Color when pressed/tapped
+                      return AppColors.white;
                     }
                     return AppColors.lightGrey; // Default color
                   }),
                   side: WidgetStateProperty.resolveWith<BorderSide?>((Set<WidgetState> states) {
                     if (states.contains(WidgetState.focused)) {
-                      return const BorderSide(
-                          color: AppColors.lightGrey, width: 3.0); // Color when pressed/tapped
+                      return const BorderSide(color: AppColors.lightGrey, width: 3.0);
                     }
                     return null; // Default color
                   }),
