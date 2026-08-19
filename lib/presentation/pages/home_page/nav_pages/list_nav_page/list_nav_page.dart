@@ -6,6 +6,7 @@ import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pa
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/filter_value_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/widgets/app_search_bar.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/widgets/character_list_item.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/widgets/empty_results_placeholder.dart';
 import 'package:harry_potter_sorting_flutter/presentation/widgets/reset_button.dart';
 import 'package:harry_potter_sorting_flutter/router/router.dart';
 import 'package:provider/provider.dart';
@@ -90,10 +91,7 @@ class _ListNavPageState extends State<ListNavPage> {
                   selector: (_, notifier) => notifier.entries,
                   builder: (context, entries, child) {
                     if (entries.isEmpty) {
-                      return const Text(
-                        'No characters found',
-                        style: TextStyle(fontSize: 24),
-                      );
+                      return const EmptyResultsPlaceholder();
                     }
 
                     return NotificationListener<ScrollStartNotification>(
