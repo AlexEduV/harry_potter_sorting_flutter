@@ -34,7 +34,7 @@ class _ListNavPageState extends State<ListNavPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Future.wait([
         context.read<CharacterListNotifier>().getInitCombinedStats(),
-        _getAllSubmittedCharacters(),
+        _fetchCharacters(),
       ]);
     });
   }
@@ -63,7 +63,6 @@ class _ListNavPageState extends State<ListNavPage> {
           child: Column(
             spacing: 16,
             children: [
-              //row of total info boxes
               Selector<CharacterListNotifier, ({int success, int fail, int total})>(
                 selector: (context, notifier) => notifier.getCurrentStats(),
                 builder: (context, stats, child) {
@@ -76,20 +75,16 @@ class _ListNavPageState extends State<ListNavPage> {
                   );
                 },
               ),
-
-              //search bar
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: AppSearchBar(
                   searchFocusNode: _searchFocusNode,
                   onChanged: (value) {
                     context.read<FilterValueNotifier>().update(value);
-                    _getAllSubmittedCharacters(filter: value);
+                    _fetchCharacters(filter: value);
                   },
                 ),
               ),
-
-              //list view
               Expanded(
                 child: Selector<CharacterListNotifier, List<CharacterEntity>>(
                   selector: (_, notifier) => notifier.entries,
@@ -131,7 +126,7 @@ class _ListNavPageState extends State<ListNavPage> {
     );
   }
 
-  Future<void> _getAllSubmittedCharacters({String filter = ''}) async {
+  Future<void> _fetchCharacters({String filter = ''}) async {
     await context.read<CharacterListNotifier>().fetchCharacters(filter: filter);
   }
 
@@ -139,7 +134,7 @@ class _ListNavPageState extends State<ListNavPage> {
     final filterValue = context.read<FilterValueNotifier>().value;
 
     await context.read<CharacterListNotifier>().resetAllCounts();
-    await _getAllSubmittedCharacters(filter: filterValue);
+    await _fetchCharacters(filter: filterValue);
   }
 
   Future<void> onItemTap(CharacterEntity character) async {
