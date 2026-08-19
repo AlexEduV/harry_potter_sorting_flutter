@@ -31,7 +31,6 @@ class _ListNavPageState extends State<ListNavPage> {
   void initState() {
     super.initState();
 
-    //get all entries from the base
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Future.wait([
         context.read<CharacterListNotifier>().getInitCombinedStats(),
