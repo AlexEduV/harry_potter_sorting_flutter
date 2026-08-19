@@ -7,8 +7,8 @@ import '../../../../../widgets/character_photo.dart';
 
 class CharacterListItem extends StatelessWidget {
   final CharacterEntity character;
-  final Function() onTap;
-  final Function() onRetryTap;
+  final void Function() onTap;
+  final void Function() onRetryTap;
 
   const CharacterListItem(
       {required this.character, required this.onTap, required this.onRetryTap, super.key});

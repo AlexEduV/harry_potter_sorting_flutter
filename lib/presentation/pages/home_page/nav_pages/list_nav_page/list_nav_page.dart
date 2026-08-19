@@ -15,7 +15,7 @@ import '../../../../widgets/info_row.dart';
 class ListNavPage extends StatefulWidget {
   const ListNavPage({required this.onRetry, super.key});
 
-  final Function(CharacterEntity) onRetry;
+  final void Function(CharacterEntity) onRetry;
 
   @override
   State<ListNavPage> createState() => _ListNavPageState();
