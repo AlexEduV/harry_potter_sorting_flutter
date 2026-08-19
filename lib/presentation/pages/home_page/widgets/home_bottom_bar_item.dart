@@ -57,12 +57,14 @@ class HomeBottomBarItem extends StatelessWidget {
   void _onItemTapped(BuildContext context, int newIndex) {
     context.read<BottomNavIndexNotifier>().updateIndex(newIndex);
 
-    //if in list
     if (newIndex == 1) {
-      context.read<CharacterListNotifier>().getInitCombinedStats();
+      final listNotifier = context.read<CharacterListNotifier>();
+      listNotifier.getInitCombinedStats();
 
-      final filterValue = context.read<FilterValueNotifier>().value;
-      context.read<CharacterListNotifier>().fetchCharacters(filter: filterValue);
+      if (listNotifier.entries.isEmpty) {
+        final filterValue = context.read<FilterValueNotifier>().value;
+        listNotifier.fetchCharacters(filter: filterValue);
+      }
     }
   }
 }
