@@ -10,14 +10,19 @@ class CharacterCacheProvider extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
+  bool _hasError = false;
+  bool get hasError => _hasError;
+
   Future<void> loadCharacters() async {
     try {
       _isLoading = true;
+      _hasError = false;
       notifyListeners();
 
       await _characterRepository.loadCharacters();
     } catch (e) {
       debugPrint('Error fetching characters: $e');
+      _hasError = true;
     } finally {
       _isLoading = false;
       notifyListeners();

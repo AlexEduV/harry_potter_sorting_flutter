@@ -51,7 +51,7 @@ void main() {
 
   group('characters table — round-trip', () {
     test('persists all text fields', () async {
-      await db.into(db.characters).insert(CharactersCompanion(
+      await db.into(db.characters).insert(const CharactersCompanion(
             longId: Value('xyz'),
             name: Value('Hermione Granger'),
             imageSrc: Value('https://example.com/hermione.jpg'),
@@ -72,7 +72,7 @@ void main() {
     });
 
     test('persists explicit stat values', () async {
-      await db.into(db.characters).insert(CharactersCompanion(
+      await db.into(db.characters).insert(const CharactersCompanion(
             longId: Value('s1'),
             name: Value('Ron Weasley'),
             imageSrc: Value(''),
@@ -94,10 +94,12 @@ void main() {
 
   group('characters table — autoincrement', () {
     test('id column is unique across rows', () async {
-      await db.into(db.characters).insert(
-          _minimalInsert.copyWith(longId: const Value('a'), name: const Value('Harry')));
-      await db.into(db.characters).insert(
-          _minimalInsert.copyWith(longId: const Value('b'), name: const Value('Ron')));
+      await db
+          .into(db.characters)
+          .insert(_minimalInsert.copyWith(longId: const Value('a'), name: const Value('Harry')));
+      await db
+          .into(db.characters)
+          .insert(_minimalInsert.copyWith(longId: const Value('b'), name: const Value('Ron')));
 
       final rows = await db.select(db.characters).get();
       expect(rows[0].id, isNot(rows[1].id));

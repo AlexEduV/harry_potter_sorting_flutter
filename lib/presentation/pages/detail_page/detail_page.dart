@@ -44,7 +44,7 @@ class _DetailPageState extends State<DetailPage> {
               spacing: 32.0,
               children: [
                 CharacterPhoto(imageSrc: character.imageSrc),
-                if ((character.infoStatsEntity?.successCount ?? 0) > 0)
+                if ((character.infoStatsEntity?.successCount ?? 0) > 0) ...[
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     spacing: 12.0,
@@ -55,12 +55,13 @@ class _DetailPageState extends State<DetailPage> {
                       DetailRow(label: 'Species:', value: character.species),
                     ],
                   ),
-                if ((character.infoStatsEntity?.successCount ?? 0) == 0)
+                ] else ...[
                   Expanded(
                     child: SizedBox(
                       child: ClipRRect(child: Image.asset('assets/access-denied-badge.png')),
                     ),
                   ),
+                ],
               ],
             ),
           );

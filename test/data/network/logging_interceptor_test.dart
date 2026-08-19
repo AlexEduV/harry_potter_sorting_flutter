@@ -92,7 +92,7 @@ void main() {
   });
 
   group('LoggingInterceptor — onError', () {
-    Future<void> _fetch(List<String?> log, {int statusCode = HttpStatus.internalServerError}) async {
+    Future<void> fetch(List<String?> log, {int statusCode = HttpStatus.internalServerError}) async {
       try {
         await _makeDio(log, statusCode: statusCode).get('/characters');
       } on DioException catch (_) {}
@@ -100,31 +100,31 @@ void main() {
 
     test('logs URI on error', () async {
       final log = <String?>[];
-      await _fetch(log);
+      await fetch(log);
       expect(log.last, contains('characters'));
     });
 
     test('log line starts with ✗', () async {
       final log = <String?>[];
-      await _fetch(log);
+      await fetch(log);
       expect(log.last, startsWith('✗'));
     });
 
     test('logs error type on 500', () async {
       final log = <String?>[];
-      await _fetch(log, statusCode: HttpStatus.internalServerError);
+      await fetch(log, statusCode: HttpStatus.internalServerError);
       expect(log.last, contains('badResponse'));
     });
 
     test('logs error type on 404', () async {
       final log = <String?>[];
-      await _fetch(log, statusCode: HttpStatus.notFound);
+      await fetch(log, statusCode: HttpStatus.notFound);
       expect(log.last, contains('badResponse'));
     });
 
     test('produces exactly two log entries (request + error)', () async {
       final log = <String?>[];
-      await _fetch(log);
+      await fetch(log);
       expect(log, hasLength(2));
     });
   });
