@@ -158,7 +158,7 @@ class _ListNavPageState extends State<ListNavPage> {
     final filterValue = context.read<FilterValueNotifier>().value;
 
     await context.read<CharacterListNotifier>().resetAllCounts();
-    _getAllSubmittedCharacters(filter: filterValue);
+    await _getAllSubmittedCharacters(filter: filterValue);
   }
 
   Future<void> onItemTap(CharacterEntity character) async {
