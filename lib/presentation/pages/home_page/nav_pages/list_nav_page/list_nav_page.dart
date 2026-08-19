@@ -7,9 +7,9 @@ import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pa
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/picker_state_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/character_list_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/filter_value_notifier.dart';
+import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/widgets/app_search_bar.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/widgets/character_list_item.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/notifiers/bottom_nav_index_notifier.dart';
-import 'package:harry_potter_sorting_flutter/presentation/style/app_colors.dart';
 import 'package:harry_potter_sorting_flutter/presentation/widgets/reset_button.dart';
 import 'package:harry_potter_sorting_flutter/router/router.dart';
 import 'package:provider/provider.dart';
@@ -80,29 +80,8 @@ class _ListNavPageState extends State<ListNavPage> {
               //search bar
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: SearchBar(
-                  focusNode: _searchFocusNode,
-                  padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 16.0)),
-                  backgroundColor:
-                      WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
-                    if (states.contains(WidgetState.focused)) {
-                      return AppColors.white;
-                    }
-                    return AppColors.lightGrey; // Default color
-                  }),
-                  side: WidgetStateProperty.resolveWith<BorderSide?>((Set<WidgetState> states) {
-                    if (states.contains(WidgetState.focused)) {
-                      return const BorderSide(color: AppColors.lightGrey, width: 3.0);
-                    }
-                    return null; // Default color
-                  }),
-                  shadowColor: const WidgetStatePropertyAll(AppColors.white),
-                  elevation: const WidgetStatePropertyAll(0),
-                  hintText: 'Filter Characters',
-                  hintStyle: WidgetStateProperty.all(const TextStyle(fontSize: 24)),
-                  textStyle: WidgetStateProperty.all(const TextStyle(fontSize: 24)),
-                  leading: const Icon(Icons.search),
-                  keyboardType: TextInputType.name,
+                child: AppSearchBar(
+                  searchFocusNode: _searchFocusNode,
                   onChanged: (value) {
                     context.read<FilterValueNotifier>().update(value);
                     _getAllSubmittedCharacters(filter: value);
@@ -113,36 +92,37 @@ class _ListNavPageState extends State<ListNavPage> {
               //list view
               Expanded(
                 child: Selector<CharacterListNotifier, List<CharacterEntity>>(
-                    selector: (_, notifier) => notifier.entries,
-                    builder: (context, entries, child) {
-                      if (entries.isEmpty) {
-                        return const Text(
-                          'No characters found',
-                          style: TextStyle(fontSize: 24),
-                        );
-                      }
-
-                      return NotificationListener<ScrollStartNotification>(
-                        onNotification: (_) {
-                          FocusScope.of(context).unfocus();
-                          return false;
-                        },
-                        child: ListView.builder(
-                          padding: const EdgeInsets.symmetric(vertical: 16.0),
-                          cacheExtent: 500,
-                          itemBuilder: (context, index) {
-                            final character = entries[index];
-
-                            return CharacterListItem(
-                              character: character,
-                              onTap: () => onItemTap(character),
-                              onRetryTap: () => onRetryTap(character),
-                            );
-                          },
-                          itemCount: entries.length,
-                        ),
+                  selector: (_, notifier) => notifier.entries,
+                  builder: (context, entries, child) {
+                    if (entries.isEmpty) {
+                      return const Text(
+                        'No characters found',
+                        style: TextStyle(fontSize: 24),
                       );
-                    }),
+                    }
+
+                    return NotificationListener<ScrollStartNotification>(
+                      onNotification: (_) {
+                        FocusScope.of(context).unfocus();
+                        return false;
+                      },
+                      child: ListView.builder(
+                        padding: const EdgeInsets.symmetric(vertical: 16.0),
+                        cacheExtent: 500,
+                        itemBuilder: (context, index) {
+                          final character = entries[index];
+
+                          return CharacterListItem(
+                            character: character,
+                            onTap: () => onItemTap(character),
+                            onRetryTap: () => onRetryTap(character),
+                          );
+                        },
+                        itemCount: entries.length,
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
           ),
