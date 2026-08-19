@@ -134,9 +134,7 @@ class _ListNavPageState extends State<ListNavPage> {
                                 character: character,
                                 onTap: () async {
                                   _searchFocusNode.unfocus();
-                                  _searchFocusNode.canRequestFocus = false;
                                   await context.router.push(DetailRoute(name: character.name));
-                                  _searchFocusNode.canRequestFocus = true;
                                 },
                                 onRetry: () {
                                   //hide keyboard
