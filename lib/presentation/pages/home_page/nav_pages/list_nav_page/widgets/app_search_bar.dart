@@ -6,7 +6,11 @@ class AppSearchBar extends StatelessWidget {
   final FocusNode searchFocusNode;
   final Function(String) onChanged;
 
-  const AppSearchBar({required this.searchFocusNode, required this.onChanged, super.key});
+  const AppSearchBar({
+    required this.searchFocusNode,
+    required this.onChanged,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

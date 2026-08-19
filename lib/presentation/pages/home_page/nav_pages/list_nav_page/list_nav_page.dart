@@ -13,7 +13,10 @@ import 'package:provider/provider.dart';
 import '../../../../widgets/info_row.dart';
 
 class ListNavPage extends StatefulWidget {
-  const ListNavPage({required this.onRetry, super.key});
+  const ListNavPage({
+    required this.onRetry,
+    super.key,
+  });
 
   final void Function(CharacterEntity) onRetry;
 
