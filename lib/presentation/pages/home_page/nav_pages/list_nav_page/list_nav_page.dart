@@ -131,22 +131,10 @@ class _ListNavPageState extends State<ListNavPage> {
                             final character = entries[index];
 
                             return CharacterListItem(
-                                character: character,
-                                onTap: () async {
-                                  _searchFocusNode.unfocus();
-                                  await context.router.push(DetailRoute(name: character.name));
-                                },
-                                onRetry: () {
-                                  //hide keyboard
-                                  FocusScope.of(context).unfocus();
-
-                                  context.read<BottomNavIndexNotifier>().updateIndex(0);
-
-                                  context.read<CharacterNotifier>().updateCharacter(character);
-                                  context.read<PickerStateNotifier>().resetColors();
-                                  context.read<CharacterStatsNotifier>().updateAllCounts(
-                                      character.infoStatsEntity ?? InfoStatsEntity.initial());
-                                });
+                              character: character,
+                              onTap: () => onItemTap(character),
+                              onRetryTap: () => onRetryTap(character),
+                            );
                           },
                           itemCount: entries.length,
                         ),
@@ -169,5 +157,23 @@ class _ListNavPageState extends State<ListNavPage> {
 
     await context.read<CharacterListNotifier>().resetAllCounts();
     _getAllSubmittedCharacters(filter: filterValue);
+  }
+
+  Future<void> onItemTap(CharacterEntity character) async {
+    _searchFocusNode.unfocus();
+    await context.router.push(DetailRoute(name: character.name));
+  }
+
+  Future<void> onRetryTap(CharacterEntity character) async {
+    //hide keyboard
+    FocusScope.of(context).unfocus();
+
+    context.read<BottomNavIndexNotifier>().updateIndex(0);
+
+    context.read<CharacterNotifier>().updateCharacter(character);
+    context.read<PickerStateNotifier>().resetColors();
+    context
+        .read<CharacterStatsNotifier>()
+        .updateAllCounts(character.infoStatsEntity ?? InfoStatsEntity.initial());
   }
 }
