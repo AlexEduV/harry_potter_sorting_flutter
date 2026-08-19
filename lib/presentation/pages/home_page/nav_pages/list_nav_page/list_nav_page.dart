@@ -2,14 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:harry_potter_sorting_flutter/domain/entities/character_entity.dart';
 import 'package:harry_potter_sorting_flutter/domain/entities/info_stats_entity.dart';
-import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_notifier.dart';
-import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/character_stats_notifier.dart';
-import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/home_nav_page/notifiers/picker_state_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/character_list_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/notifiers/filter_value_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/widgets/app_search_bar.dart';
 import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/nav_pages/list_nav_page/widgets/character_list_item.dart';
-import 'package:harry_potter_sorting_flutter/presentation/pages/home_page/notifiers/bottom_nav_index_notifier.dart';
 import 'package:harry_potter_sorting_flutter/presentation/widgets/reset_button.dart';
 import 'package:harry_potter_sorting_flutter/router/router.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +13,9 @@ import 'package:provider/provider.dart';
 import '../../../../widgets/info_row.dart';
 
 class ListNavPage extends StatefulWidget {
-  const ListNavPage({super.key});
+  const ListNavPage({required this.onRetry, super.key});
+
+  final Function(CharacterEntity) onRetry;
 
   @override
   State<ListNavPage> createState() => _ListNavPageState();
@@ -144,13 +142,6 @@ class _ListNavPageState extends State<ListNavPage> {
 
   Future<void> onRetryTap(CharacterEntity character) async {
     FocusScope.of(context).unfocus();
-
-    context.read<BottomNavIndexNotifier>().updateIndex(0);
-
-    context.read<CharacterNotifier>().updateCharacter(character);
-    context.read<PickerStateNotifier>().resetColors();
-    context
-        .read<CharacterStatsNotifier>()
-        .updateAllCounts(character.infoStatsEntity ?? InfoStatsEntity.initial());
+    widget.onRetry(character);
   }
 }
