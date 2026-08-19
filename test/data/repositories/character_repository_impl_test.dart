@@ -169,18 +169,16 @@ void main() {
       expect(result.first.house, House.slytherin);
     });
 
-    test('returns empty list when cache is empty and API throws', () async {
+    test('throws when cache is empty and API throws', () async {
       api.shouldThrow = true;
 
-      final result = await repository.loadCharacters();
-
-      expect(result, isEmpty);
+      expect(() => repository.loadCharacters(), throwsException);
     });
 
     test('does not write to storage when API throws', () async {
       api.shouldThrow = true;
 
-      await repository.loadCharacters();
+      await expectLater(() => repository.loadCharacters(), throwsException);
 
       expect(storage.stored, isEmpty);
     });
