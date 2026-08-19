@@ -143,7 +143,7 @@ class _ListNavPageState extends State<ListNavPage> {
     await context.router.push(DetailRoute(name: character.name));
   }
 
-  Future<void> onRetryTap(CharacterEntity character) async {
+  void onRetryTap(CharacterEntity character) {
     FocusScope.of(context).unfocus();
     widget.onRetry(character);
   }
